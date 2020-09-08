@@ -1,0 +1,8 @@
+
+
+					<!--********************************************************************************-->
+					<!-- File Exception                                                                 -->
+					<!--********************************************************************************-->
+
+					<!-- throw an exception for moveFailed -->
+					<throwException exceptionType="java.lang.Exception" message="Integration service exception captured."/>

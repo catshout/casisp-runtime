@@ -1,0 +1,13 @@
+
+
+				<!--********************************************************************************-->
+				<!-- JSONArray Splitter Producer                                                    -->
+				<!--********************************************************************************-->
+
+				<!-- set properties for splitting -->
+				<setProperty name="arrayName"><constant>${body.jsonArraySplitter.arrayName}</constant></setProperty>
+				<setProperty name="splitSize"><constant>${body.jsonArraySplitter.splitSize}</constant></setProperty>
+
+				<!-- convert data to java.io.InputStream -->
+				<convertBodyTo type="java.io.InputStream" />
+				<process ref="jsonSplitter${exchange.properties.CamelSplitIndex}" />

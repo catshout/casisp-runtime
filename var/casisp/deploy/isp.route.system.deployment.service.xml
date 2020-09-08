@@ -1,0 +1,369 @@
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+
+	<!-- reference to aggregation strategies -->
+	<bean id="groupedExchange" class="org.apache.camel.processor.aggregate.GroupedExchangeAggregationStrategy" />
+	<bean id="useLatest" class="org.apache.camel.processor.aggregate.UseLatestAggregationStrategy" />
+
+	<!-- reference to ExchangeListProcessor -->
+	<bean id="exchangeListProcessor" class="de.ag.cas.casisp.exchangelistprocessor.ExchangeListProcessor" />
+
+	<camelContext id="isp.routes.system.deployment.service" xmlns="http://camel.apache.org/schema/blueprint" streamCache="true">
+
+		<route id="isp.routes.system.deployment.service">
+
+			<from uri="direct-vm:isp.route.system.deployment.service" />
+			<log message="isp.route.system.deployment.service - Route started"/>
+
+			<split streaming="true">
+				<jsonpath>$</jsonpath>
+
+				<setProperty name="serviceId"><jsonpath>$.serviceId</jsonpath></setProperty>
+				<log message="serviceId: ${exchangeProperty.serviceId}" />
+
+				<!-- add the body to the claim check stack for later use -->
+				<claimCheck operation="Set" key="inBody" />
+
+				<!-- split array of consumers -->
+				<split streaming="true" strategyRef="groupedExchange">
+					<jsonpath suppressExceptions="true">$.consumer[*]</jsonpath>
+					<setProperty name="consumerType"><jsonpath>$.consumerType</jsonpath></setProperty>
+					<log message="consumerType: ${header.consumerType}" />
+
+					<!-- process the consumer velocity template -->
+					<toD uri="velocity:file:{{karaf.home}}/templates/consumer.${header.consumerType}.vm?contentCache=false&amp;allowContextMapAll=true" />
+				</split>
+
+				<!-- set consumerComponents property -->
+				<choice>
+					<when>
+						<simple>${body.class().toString()} contains 'GroupedExchangeList'</simple>
+
+						<bean ref="exchangeListProcessor" />
+						<setProperty name="consumerComponents"><simple>${body}</simple></setProperty>
+					</when>
+				</choice>
+
+				<!-- get the body from the claim check stack -->
+				<claimCheck operation="Get" key="inBody" />
+
+				<!-- split array of consumers for context configuration -->
+				<split streaming="true" strategyRef="groupedExchange">
+					<jsonpath suppressExceptions="true">$.consumer[*]</jsonpath>
+					<setProperty name="consumerType"><jsonpath>$.consumerType</jsonpath></setProperty>
+
+					<!-- process the consumer velocity template -->
+					<setProperty name="contextObject"><jsonpath suppressExceptions="true">$.*.context</jsonpath></setProperty>
+
+					<choice>
+						<when>
+							<simple>${exchangeProperty.contextObject?.toString()} != '[]'</simple>
+
+							<toD uri="velocity:file:{{karaf.home}}/templates/consumer.context.${header.consumerType}.vm?contentCache=false&amp;allowContextMapAll=true" />
+						</when>
+					</choice>
+				</split>
+
+				<!-- set consumerComponents context property -->
+				<choice>
+					<when>
+						<simple>${body.class().toString()} contains 'GroupedExchangeList'</simple>
+
+						<bean ref="exchangeListProcessor" />
+						<setProperty name="consumerContextElements"><simple>${body}</simple></setProperty>
+					</when>
+				</choice>
+
+				<!-- get the body from the claim check stack -->
+				<claimCheck operation="Get" key="inBody" />
+
+				<!-- split array of consumers for blueprint configuration -->
+				<split streaming="true" strategyRef="groupedExchange">
+					<jsonpath suppressExceptions="true">$.consumer[*]</jsonpath>
+					<setProperty name="consumerType"><jsonpath>$.consumerType</jsonpath></setProperty>
+
+					<!-- process the consumer velocity template -->
+					<setProperty name="blueprintObject"><jsonpath suppressExceptions="true">$.*.blueprint</jsonpath></setProperty>
+
+					<choice>
+						<when>
+							<simple>${exchangeProperty.blueprintObject?.toString()} != '[]'</simple>
+
+							<toD uri="velocity:file:{{karaf.home}}/templates/consumer.blueprint.${header.consumerType}.vm?contentCache=false&amp;allowContextMapAll=true" />
+						</when>
+					</choice>
+				</split>
+
+				<!-- set consumerComponents blueprint property -->
+				<choice>
+					<when>
+						<simple>${body.class().toString()} contains 'GroupedExchangeList'</simple>
+
+						<bean ref="exchangeListProcessor" />
+						<setProperty name="consumerBlueprintElements"><simple>${body}</simple></setProperty>
+					</when>
+				</choice>
+
+				<!-- get the body from the claim check stack -->
+				<claimCheck operation="Get" key="inBody" />
+
+				<!-- split array of consumers for exception configuration -->
+				<split streaming="true" strategyRef="groupedExchange">
+					<jsonpath suppressExceptions="true">$.consumer[*]</jsonpath>
+					<setProperty name="consumerType"><jsonpath>$.consumerType</jsonpath></setProperty>
+
+					<!-- process the consumer velocity template -->
+					<setProperty name="exceptionObject"><jsonpath suppressExceptions="true">$.*.exception</jsonpath></setProperty>
+
+					<choice>
+						<when>
+							<simple>${exchangeProperty.exceptionObject?.toString()} != '[]'</simple>
+
+							<toD uri="velocity:file:{{karaf.home}}/templates/consumer.exception.${header.consumerType}.vm?contentCache=false&amp;allowContextMapAll=true" />
+						</when>
+					</choice>
+				</split>
+
+				<!-- set consumerComponents exception property -->
+				<choice>
+					<when>
+						<simple>${body.class().toString()} contains 'GroupedExchangeList'</simple>
+
+						<bean ref="exchangeListProcessor" />
+						<setProperty name="consumerExceptionElements"><simple>${body}</simple></setProperty>
+					</when>
+				</choice>
+
+				<!-- get the body from the claim check stack -->
+				<claimCheck operation="Get" key="inBody" />
+
+				<!-- split array of consumers for etc configuration -->
+				<split streaming="true" strategyRef="groupedExchange">
+					<jsonpath suppressExceptions="true">$.consumer[*]</jsonpath>
+					<setProperty name="consumerType"><jsonpath>$.consumerType</jsonpath></setProperty>
+
+					<!-- process the consumer velocity template -->
+					<setProperty name="etcObject"><jsonpath suppressExceptions="true">$.*.etc</jsonpath></setProperty>
+					<setProperty name="fileCreateFlag"><jsonpath suppressExceptions="true">$.*.etc.fileCreateFlag</jsonpath></setProperty>
+					<setProperty name="filePrefix"><jsonpath suppressExceptions="true">$.*.etc.filePrefix</jsonpath></setProperty>
+					<setProperty name="etcBody"><simple>${body}</simple></setProperty>
+					<setBody><simple>${exchangeProperty.filePrefix}</simple></setBody>
+
+					<!-- split array filePrefix -->
+					<split streaming="true" strategyRef="groupedExchange">
+						<jsonpath suppressExceptions="true">$</jsonpath>
+						<setProperty name="filePrefix"><simple>${body}</simple></setProperty>
+
+						<choice>
+							<when>
+								<simple>${exchangeProperty.fileCreateFlag?.toString()} == '[true]'</simple>
+								<log message="header.consumerType: ${header.consumerType}" />
+
+								<setBody><simple>${exchangeProperty.etcBody}</simple></setBody>
+								<toD uri="velocity:file:{{karaf.home}}/templates/consumer.etc.${header.consumerType}.vm?contentCache=false&amp;allowContextMapAll=true" />
+
+								<choice>
+									<when>
+										<simple>${exchangeProperty.filePrefix?.toString().length} > 0</simple>
+
+										<to uri="file:{{karaf.home}}/etc?fileName=${exchangeProperty.filePrefix}.${exchangeProperty.serviceId}.cfg" />
+									</when>
+									<otherwise>
+										<to uri="file:{{karaf.home}}/etc?fileName=${exchangeProperty.serviceId}.cfg" />
+									</otherwise>
+								</choice>
+							</when>
+						</choice>
+					</split>
+
+				</split>
+
+				<!-- get the body from the claim check stack -->
+				<claimCheck operation="Get" key="inBody" />
+
+				<!-- split array of processors -->
+				<split streaming="true" strategyRef="groupedExchange">
+					<jsonpath suppressExceptions="true">$.processor[*]</jsonpath>
+					<setProperty name="processorType"><jsonpath>$.processorType</jsonpath></setProperty>
+					<setProperty name="CamelSplitIndex"><simple>${header.CamelSplitIndex}</simple></setProperty>
+					<log message="processorType: ${header.processorType}" />
+
+					<!-- process the processor velocity template -->
+					<toD uri="velocity:file:{{karaf.home}}/templates/processor.${header.processorType}.vm?contentCache=false&amp;allowContextMapAll=true" />
+				</split>
+
+				<!-- set processorComponents property -->
+				<choice>
+					<when>
+						<simple>${body.class().toString()} contains 'GroupedExchangeList'</simple>
+
+						<bean ref="exchangeListProcessor" />
+						<setProperty name="processorComponents"><simple>${body}</simple></setProperty>
+					</when>
+				</choice>
+
+				<!-- get the body from the claim check stack -->
+				<claimCheck operation="Get" key="inBody" />
+
+				<!-- split array of processors for context configuration -->
+				<split streaming="true" strategyRef="groupedExchange">
+					<jsonpath suppressExceptions="true">$.processor[*]</jsonpath>
+					<setProperty name="processorType"><jsonpath>$.processorType</jsonpath></setProperty>
+					<setProperty name="CamelSplitIndex"><simple>${header.CamelSplitIndex}</simple></setProperty>
+
+					<!-- process the processor velocity template -->
+					<setProperty name="contextObject"><jsonpath suppressExceptions="true">$.*.context</jsonpath></setProperty>
+
+					<choice>
+						<when>
+							<simple>${exchangeProperty.contextObject?.toString()} != '[]'</simple>
+
+							<toD uri="velocity:file:{{karaf.home}}/templates/processor.context.${header.processorType}.vm?contentCache=false&amp;allowContextMapAll=true" />
+						</when>
+					</choice>
+				</split>
+
+				<!-- set processorComponents context property -->
+				<choice>
+					<when>
+						<simple>${body.class().toString()} contains 'GroupedExchangeList'</simple>
+
+						<bean ref="exchangeListProcessor" />
+						<setProperty name="processorContextElements"><simple>${body}</simple></setProperty>
+					</when>
+				</choice>
+
+				<!-- get the body from the claim check stack -->
+				<claimCheck operation="Get" key="inBody" />
+
+				<!-- split array of processors for blueprint configuration -->
+				<split streaming="true" strategyRef="groupedExchange">
+					<jsonpath suppressExceptions="true">$.processor[*]</jsonpath>
+					<setProperty name="processorType"><jsonpath>$.processorType</jsonpath></setProperty>
+					<setProperty name="CamelSplitIndex"><simple>${header.CamelSplitIndex}</simple></setProperty>
+
+					<!-- process the processor velocity template -->
+					<setProperty name="blueprintObject"><jsonpath suppressExceptions="true">$.*.blueprint</jsonpath></setProperty>
+
+					<choice>
+						<when>
+							<simple>${exchangeProperty.blueprintObject?.toString()} != '[]'</simple>
+
+							<toD uri="velocity:file:{{karaf.home}}/templates/processor.blueprint.${header.processorType}.vm?contentCache=false&amp;allowContextMapAll=true" />
+						</when>
+					</choice>
+				</split>
+
+				<!-- set processorComponents blueprint property -->
+				<choice>
+					<when>
+						<simple>${body.class().toString()} contains 'GroupedExchangeList'</simple>
+
+						<bean ref="exchangeListProcessor" />
+						<setProperty name="processorBlueprintElements"><simple>${body}</simple></setProperty>
+					</when>
+				</choice>
+
+				<!-- get the body from the claim check stack -->
+				<claimCheck operation="Get" key="inBody" />
+
+				<!-- split array of producers for components -->
+				<split streaming="true" strategyRef="groupedExchange">
+					<jsonpath suppressExceptions="true">$.producer[*]</jsonpath>
+					<setProperty name="producerType"><jsonpath>$.producerType</jsonpath></setProperty>
+					<setProperty name="CamelSplitIndex"><simple>${header.CamelSplitIndex}</simple></setProperty>
+					<log message="producerType: ${header.producerType}" />
+
+					<!-- process the producer velocity template -->
+					<toD uri="velocity:file:{{karaf.home}}/templates/producer.${header.producerType}.vm?contentCache=false&amp;allowContextMapAll=true" />
+				</split>
+
+				<!-- set producerComponents property -->
+				<choice>
+					<when>
+						<simple>${body.class().toString()} contains 'GroupedExchangeList'</simple>
+
+						<bean ref="exchangeListProcessor" />
+						<setProperty name="producerComponents"><simple>${body}</simple></setProperty>
+					</when>
+				</choice>
+
+				<!-- get the body from the claim check stack -->
+				<claimCheck operation="Get" key="inBody" />
+
+				<!-- split array of producers for context configuration -->
+				<split streaming="true" strategyRef="groupedExchange">
+					<jsonpath suppressExceptions="true">$.producer[*]</jsonpath>
+					<setProperty name="producerType"><jsonpath>$.producerType</jsonpath></setProperty>
+					<setProperty name="CamelSplitIndex"><simple>${header.CamelSplitIndex}</simple></setProperty>
+
+					<!-- process the producer velocity template -->
+					<setProperty name="contextObject"><jsonpath suppressExceptions="true">$.*.context</jsonpath></setProperty>
+
+					<choice>
+						<when>
+							<simple>${exchangeProperty.contextObject?.toString()} != '[]'</simple>
+
+							<toD uri="velocity:file:{{karaf.home}}/templates/producer.context.${header.producerType}.vm?contentCache=false&amp;allowContextMapAll=true" />
+						</when>
+					</choice>
+				</split>
+
+				<!-- set producerComponents context property -->
+				<choice>
+					<when>
+						<simple>${body.class().toString()} contains 'GroupedExchangeList'</simple>
+
+						<bean ref="exchangeListProcessor" />
+						<setProperty name="producerContextElements"><simple>${body}</simple></setProperty>
+					</when>
+				</choice>
+
+				<!-- get the body from the claim check stack -->
+				<claimCheck operation="Get" key="inBody" />
+
+				<!-- split array of producers for blueprint configuration -->
+				<split streaming="true" strategyRef="groupedExchange">
+					<jsonpath suppressExceptions="true">$.producer[*]</jsonpath>
+					<setProperty name="producerType"><jsonpath>$.producerType</jsonpath></setProperty>
+					<setProperty name="CamelSplitIndex"><simple>${header.CamelSplitIndex}</simple></setProperty>
+
+					<!-- process the producer velocity template -->
+					<setProperty name="blueprintObject"><jsonpath suppressExceptions="true">$.*.blueprint</jsonpath></setProperty>
+
+					<choice>
+						<when>
+							<simple>${exchangeProperty.blueprintObject?.toString()} != '[]'</simple>
+
+							<toD uri="velocity:file:{{karaf.home}}/templates/producer.blueprint.${header.producerType}.vm?contentCache=false&amp;allowContextMapAll=true" />
+						</when>
+					</choice>
+				</split>
+
+				<!-- set producerComponents blueprint property -->
+				<choice>
+					<when>
+						<simple>${body.class().toString()} contains 'GroupedExchangeList'</simple>
+
+						<bean ref="exchangeListProcessor" />
+						<setProperty name="producerBlueprintElements"><simple>${body}</simple></setProperty>
+					</when>
+				</choice>
+
+				<!-- get the body from the claim check stack -->
+				<claimCheck operation="Get" key="inBody" />
+
+				<!-- process the route velocity template -->
+				<toD uri="velocity:file:{{karaf.home}}/templates/route.vm?contentCache=false&amp;allowContextMapAll=true" />
+
+				<!-- write the route to the deploy folder -->
+				<to uri="file:{{karaf.home}}/deploy?fileName=isp.route.${exchangeProperty.serviceId}.xml" />
+			</split>
+
+			<setProperty name="serviceId"><jsonpath>$.serviceId</jsonpath></setProperty>
+			<setBody><simple>{"responseCode": 200, "responseMessage": "Service model '${exchangeProperty.serviceId}' succesfully parsed and deployment initiated."}</simple></setBody>
+			<log message="isp.route.system.deployment.service - Route finished" />
+		</route>
+
+	</camelContext>
+
+</blueprint>

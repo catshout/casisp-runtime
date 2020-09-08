@@ -1,0 +1,8 @@
+
+
+	<!--********************************************************************************-->
+	<!-- JMS Producer Blueprint                                                         -->
+	<!--********************************************************************************-->
+
+	<!-- set reference to the ActiveMQ JMS connection factory -->
+	<reference id="activemqProducerJms${exchange.properties.CamelSplitIndex}" interface="javax.jms.ConnectionFactory" />

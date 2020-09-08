@@ -1,0 +1,9 @@
+
+
+				<!--********************************************************************************-->
+				<!-- Set Property Processor                                                         -->
+				<!--********************************************************************************-->
+
+                <setProperty name="${body.setProperty.name}">
+					<${body.setProperty.language}#if(${body.setProperty.language} == 'simple' && ${body.setProperty.resultType}) resultType="${body.setProperty.resultType}"#end>${body.setProperty.expression}</${body.setProperty.language}>
+				</setProperty>

@@ -1,0 +1,170 @@
+{
+	"$schema": "http://json-schema.org/draft-06/schema#",
+	"$id": "http://c-a-s.de/casisp/integrationservice.json",
+	"type": "object",
+	"required": [
+		"apiId",
+		"apiName",
+		"contextPath",
+		"basePath"
+	],
+	"properties": {
+		"apiId": {
+			"type": "string"
+		},
+		"apiName": {
+			"type": "string"
+		},
+		"version": {
+			"type": "string",
+			"pattern": "^\\d\\.\\d\\.\\d$",
+			"default": "1.0.0"
+		},
+		"deployDev": {
+			"type": "boolean",
+			"default": false
+		},
+		"deployTest": {
+			"type": "boolean",
+			"default": false
+		},
+		"deployProd": {
+			"type": "boolean",
+			"default": false
+		},
+		"contextPath": {
+			"type": "string",
+			"default": ""
+		},
+		"basePath": {
+			"type": "string",
+			"default": ""
+		},
+		"description": {
+			"type": "string"
+		},
+		"etc": {
+			"type": "object",
+			"default": {
+				"fileCreateFlag": false,
+				"filePrefix": "org.ops4j.pax.web.context-admin"
+			},
+			"properties": {
+				"fileCreateFlag": {
+					"type": "boolean"
+				},
+				"filePrefix": {
+					"type": "string"
+				},
+				"basicAuthentication": {
+					"type": "object",
+					"properties": {
+						"credentials": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"rolename": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"endpoint": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"required": [
+					"method",
+					"uri"
+				],
+				"properties": {
+					"uri": {
+						"type": "string"
+					},
+					"method": {
+						"type": "string",
+						"enum": [
+							"get",
+							"post",
+							"put",
+							"delete"
+						]
+					},
+					"description": {
+						"type": "string"
+					},
+					"serviceEndpoint": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"type": {
+									"type": "string",
+									"enum": [
+										"jms",
+										"direct-vm"
+									]
+								},
+								"jms": {
+									"type": "object",
+									"properties": {
+										"type": {
+											"type": "string",
+											"enum": [
+												"queue",
+												"topic"
+											]
+										},
+										"destinationName": {
+											"type": "string"
+										}
+									}
+								},
+								"someName": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"cors": {
+			"type": "object",
+			"default": {
+				"enable": false
+			},
+			"properties": {
+				"enable": {
+					"type": "boolean"
+				},
+				"corsHeaders": {
+					"type": "array",
+					"maxItems": 1,
+					"items": {
+						"type": "object",
+						"properties": {
+							"origin": {
+								"type": "string"
+							},
+							"methods": {
+								"type": "string"
+							},
+							"headers": {
+								"type": "string"
+							},
+							"maxAge": {
+								"type": "integer"
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

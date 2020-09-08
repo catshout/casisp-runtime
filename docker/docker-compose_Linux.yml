@@ -1,0 +1,27 @@
+version: '3'
+services:
+  karaf:
+    container_name: casisp
+    user: "2000"
+    build: .
+    restart: unless-stopped
+    ports:
+      - "8101:8101"
+      - "1099:1099"
+      - "44444:44444"
+      - "8181:8181"
+      - "8443:8443"
+      - "8182:8182"
+      - "8444:8444"
+    volumes:
+      - /var/casisp/etc:/opt/apache-karaf/etc
+      - /var/casisp/deploy:/opt/apache-karaf/deploy
+      - /var/casisp/templates:/opt/apache-karaf/templates
+      - /var/casisp/files:/var/casisp/files
+    command: karaf
+    stdin_open: true
+    tty: true
+networks:
+  default:
+    external:
+      name: casisp

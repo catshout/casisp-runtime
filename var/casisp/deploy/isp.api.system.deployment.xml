@@ -1,0 +1,57 @@
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+		   xmlns:ext="http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.0.0"
+		   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		   xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 https://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
+
+	<reference id="httpService" interface="org.osgi.service.http.HttpService" />
+
+	<bean id="camelServlet" class="org.apache.camel.component.servlet.CamelHttpTransportServlet"/>
+
+	<bean class="org.apache.camel.component.osgi.OsgiServletRegisterer"
+	      init-method="register"
+	      destroy-method="unregister">
+		<property name="servletName" value="isp.api.route.system.deployment" />
+		<property name="alias" value="/casisp" />
+		<property name="httpService" ref="httpService" />
+		<property name="servlet" ref="camelServlet" />
+	</bean>
+
+	<camelContext id="isp.api.route.system.deployment" xmlns="http://camel.apache.org/schema/blueprint" streamCache="true" useBreadcrumb="true">
+
+		<!--********************************************************************************-->
+		<!-- REST API                                                                       -->
+		<!--********************************************************************************-->
+
+		<restConfiguration component="servlet" bindingMode="off"
+						   apiContextPath="/base/api-doc" enableCORS="true">
+			<endpointProperty key="servletName" value="isp.api.route.system.deployment" />
+			<dataFormatProperty key="prettyPrint" value="true" />
+			<apiProperty key="base.path" value="/base" />
+			<apiProperty key="api.description" value="CAS ISP - Deployment API" />
+			<apiProperty key="api.title" value="CAS ISP Deployment" />
+			<apiProperty key="api.version" value="1.0.0" />
+			<corsHeaders key="Access-Control-Allow-Origin" value="*" />
+			<corsHeaders key="Access-Control-Allow-Methods" value="GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, CONNECT, PATCH" />
+			<corsHeaders key="Access-Control-Allow-Headers" value="Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers" />
+			<corsHeaders key="Access-Control-Max-Age" value="3600" />
+		</restConfiguration>
+
+		<!-- REST endpoints -->
+        <rest path="/deploy">
+			<post uri="/api" id="isp.route.system.deployment.api">
+				<route>
+					<!-- send the chunk to direct -->
+					<to uri="direct-vm:isp.route.system.deployment.api" />
+				</route>
+			</post>
+			<post uri="/service" id="isp.route.system.deployment.service">
+				<route>
+					<!-- send the chunk to direct -->
+					<to uri="direct-vm:isp.route.system.deployment.service" />
+				</route>
+			</post>
+		</rest>
+
+	</camelContext>
+
+</blueprint>

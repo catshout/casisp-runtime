@@ -1,0 +1,31 @@
+    <!--********************************************************************************-->
+    <!-- Salesforce Blueprint                                                           -->
+    <!--********************************************************************************-->
+
+    <cm:property-placeholder persistent-id="casisp" />
+
+    <bean id="salesforce" class="org.apache.camel.component.salesforce.SalesforceComponent">
+        <property name="loginUrl" value="${salesforce.loginUrl}" />
+        <property name="clientId" value="${salesforce.clientId}" />
+        <property name="clientSecret" value="${salesforce.clientSecret}" />
+        <property name="userName" value="${salesforce.userName}" />
+        <property name="password" value="${salesforce.password}" />
+        <property name="lazyLogin" value="true" />
+#if($body.salesforceApexCall.blueprint.queryParams.size() > 0)
+        <property name="config">
+            <bean class="org.apache.camel.component.salesforce.SalesforceEndpointConfig">
+                <property name="apexQueryParams">
+                    <bean class="java.util.HashMap">
+                        <argument>
+                            <map key-type="java.lang.String" value-type="java.lang.String">
+#foreach($queryParam in $body.salesforceApexCall.blueprint.queryParams)
+                                    <entry key="$queryParam.parameter" value="$queryParam.value"/>
+#end
+                            </map>
+                        </argument>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+#end
+    </bean>

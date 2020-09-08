@@ -1,0 +1,7 @@
+
+
+	<!--********************************************************************************-->
+	<!-- Process Processor Blueprint                                                    -->
+	<!--********************************************************************************-->
+
+	<bean id="${body.process.blueprint.processClass}" class="${body.process.blueprint.processPackage}.${body.process.blueprint.processClass}" />
