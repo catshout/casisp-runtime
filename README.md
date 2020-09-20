@@ -2,7 +2,7 @@
 
 The purpose of the casisp-runtime is to setup, configure and run Apache Camel based integration services in a small amount of time and with no or less knowledge of the Apache Camel components.
 
-![Component overview][casisp-runtime.png]
+![alt text](casisp-runtime.png "Componenet overview")
 
 ## Pre-requisites
 
