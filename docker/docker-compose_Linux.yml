@@ -5,7 +5,7 @@ services:
     user: "2000"
     build: .
     restart: unless-stopped
-    network_mode: bridged
+    network_mode: bridge
     ports:
       - "8101:8101"
       - "1099:1099"
