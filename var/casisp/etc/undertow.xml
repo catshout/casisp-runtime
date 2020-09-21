@@ -100,8 +100,8 @@
 				<w:engine
                         enabled-cipher-suites="TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256 TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384 TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384 TLS_DHE_RSA_WITH_AES_128_GCM_SHA256 TLS_DHE_RSA_WITH_AES_256_GCM_SHA384 TLS_DHE_RSA_WITH_AES_128_CBC_SHA TLS_DHE_RSA_WITH_AES_256_CBC_SHA TLS_DHE_RSA_WITH_AES_128_CBC_SHA256 TLS_DHE_RSA_WITH_AES_256_CBC_SHA256"
                         enabled-protocols="TLSv1 TLSv1.1 TLSv1.2" />
-				<w:keystore path="${karaf.etc}/casag.p12" provider="PKCS12" alias="casag"
-                        keystore-password="CAS_ag_2020" key-password="CAS_ag_2020"
+				<w:keystore path="${karaf.etc}/casisp.p12" provider="PKCS12" alias="casisp"
+                        keystore-password="passw0rd" key-password="passw0rd"
                         generate-self-signed-certificate-host="localhost" />
 			</w:ssl>
 		</w:server-identities>
@@ -110,7 +110,7 @@
 			<w:jaas name="karaf" />
 			<!-- OR PropertiesIdentityManager (mutually exclusive with <w:jaas>) -->
 			<!--<w:properties path="users.properties" />-->
-			<w:truststore path="${karaf.etc}/truststore.jks" provider="JKS" keystore-password="CAS_ag_2020" />
+			<w:truststore path="${karaf.etc}/truststore.jks" provider="JKS" keystore-password="passw0rd" />
 		</w:authentication>
 		<user-principal-class-name>org.apache.karaf.jaas.boot.principal.UserPrincipal</user-principal-class-name>
 		<role-principal-class-name>org.apache.karaf.jaas.boot.principal.RolePrincipal</role-principal-class-name>
