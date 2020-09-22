@@ -3,28 +3,28 @@ The HTTP Consumer provides an HTTP endpoint with an optional basic authenticatio
 
 ##Configuration example
 ````json
-        {
-            "consumerType": "http",
-            "http": {
-                "etc": {
-                    "fileCreateFlag": true,
-                    "filePrefix": "org.ops4j.pax.web.context-admin",
-                    "basicAuthentication": {
-                        "credentials": [
-                            {
-                                "rolename": "role1"
-                            },
-                            {
-                                "rolename": "role2"
-                            }
-                        ]
+{
+    "consumerType": "http",
+    "http": {
+        "etc": {
+            "fileCreateFlag": true,
+            "filePrefix": "org.ops4j.pax.web.context-admin",
+            "basicAuthentication": {
+                "credentials": [
+                    {
+                        "rolename": "role1"
+                    },
+                    {
+                        "rolename": "role2"
                     }
-                },
-                "blueprint": {},
-                "contextPath": "context",
-                "relativePath": "path"
+                ]
             }
-        }
+        },
+        "blueprint": {},
+        "contextPath": "context",
+        "relativePath": "path"
+    }
+}
 ````
 ##Configuration parameters
 |Parameter|Mandatory|Description|
@@ -32,7 +32,7 @@ The HTTP Consumer provides an HTTP endpoint with an optional basic authenticatio
 |etc/fileCreateFlag| |constant value "true", will be used for authentication file configuration|
 |etc/fielPrefix| |constant value "org.ops4j.pax.web.context-admin", will be used for authentication file configuration|
 |basicAuthentication/credentials/rolename| |rolename from `users.properties` file|
-|blueprint|X|empty but must be there for configuration on blueprint level|
+|blueprint|X|empty but must be set for configuration on blueprint level|
 |contextPath|X|URL context path|
 |relativePath|X|URL relative path|
 

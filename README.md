@@ -119,6 +119,7 @@ For reference please check the following pages:
 ## Component configuration
 ### Consumer
 
+[File](doc/consumer.file.md)
 [HTTP](doc/consumer.http.md)
 
 ### Processors
