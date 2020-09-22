@@ -115,13 +115,19 @@ The response of the Integration Service looks like:
 ````
 Hello World!
 ````
-For reference please check the following pages:
+## Standard user
+The standard user is
+````
+admin
+passw0rd
+````
+To change it please edit the etc/users.properties file. Please take care that the admin user is being used for the deployment API.
 ## Component configuration
+For the component references please check the following pages:
 ### Consumer
 
-[File](doc/consumer.file.md)
-
-[HTTP](doc/consumer.http.md)
+- [File](doc/consumer.file.md)
+- [HTTP](doc/consumer.http.md)
 
 ### Processors
 
