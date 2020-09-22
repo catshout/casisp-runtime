@@ -1,7 +1,7 @@
-#Consumer HTTP
+# Consumer HTTP
 The HTTP Consumer provides an HTTP endpoint with an optional basic authentication. It runs on the same port as the HTTP server, basically configured with port 8443.
 
-##Configuration example
+## Configuration example
 ````json
 {
     "consumerType": "http",
@@ -26,7 +26,7 @@ The HTTP Consumer provides an HTTP endpoint with an optional basic authenticatio
     }
 }
 ````
-##Configuration parameters
+## Configuration parameters
 |Parameter|Mandatory|Description|
 |:---|:---:|:---|
 |etc/fileCreateFlag| |constant value "true", will be used for authentication file configuration|
@@ -37,11 +37,11 @@ The HTTP Consumer provides an HTTP endpoint with an optional basic authenticatio
 |relativePath|X|URL relative path|
 
 The configuration above will be provide an HTTP endpoint like
-````
+````bash
 https://{servername}:8443/context/path
 ````
 with the allowed access for all users that have either `role1` or `role2` assigend in `etc/users.properties` like:
-````
+````bash
 user1 = passw0rd:role1
 user2 = passw0rd:role2
 ````
