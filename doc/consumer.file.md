@@ -1,7 +1,7 @@
-#Consumer File
+# Consumer File
 The HTTP Consumer provides an HTTP endpoint with an optional basic authentication. It runs on the same port as the HTTP server, basically configured with port 8443.
 
-##Configuration example
+## Configuration example
 ````json
 {
     "consumerType": "file",
@@ -21,7 +21,7 @@ The HTTP Consumer provides an HTTP endpoint with an optional basic authenticatio
     }
 }
 ````
-##Configuration parameters
+## Configuration parameters
 |Parameter|Mandatory|Description|
 |:---|:---:|:---|
 |directoryName|X|read directory, must begin be a subdirectory under `var/casisp/files`|
