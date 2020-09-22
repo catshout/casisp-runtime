@@ -116,5 +116,14 @@ The response of the Integration Service looks like:
 Hello World!
 ````
 For reference please check the following pages:
-##Consumer
+##Component configuration
+###Consumer
+
 [HTTP](doc/consumer.http.md)
+
+###Processors
+
+
+
+###Producers
+
