@@ -27,7 +27,7 @@ Following pre-requisites are required to run the casisp-runtime
 
 ## Setup the Apache Camel runtime
 
-The foundation is a ready-to-run docker container. Once the pre-requisites are given you can move into the folder `docker` and start the container with
+The foundation is a ready-to-run docker container based on [Apache Karaf 4.2.9](https://karaf.apache.org/) and [Apache Camel 3.4.3](https://camel.apache.org/). Once the pre-requisites are given you can move into the folder `docker` and start the container with
 
 ````
 start-casisp.bat
@@ -36,7 +36,7 @@ or
 ````
 start-casisp.sh
 ````
-The Docker container ist based on following artefacts:
+The Docker container contains the following artefacts:
 
 ````
 feature:repo-add hawtio 2.10.1
@@ -115,3 +115,6 @@ The response of the Integration Service looks like:
 ````
 Hello World!
 ````
+For reference please check the following pages:
+##Consumer
+[HTTP](doc/consumer.http.md)
