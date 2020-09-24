@@ -116,17 +116,18 @@ The response of the Integration Service looks like:
 Hello World!
 ````
 ## Standard user
-The standard user is
+The Apache Karaf standard user is
 ````
 admin
 passw0rd
 ````
-To change it please edit the etc/users.properties file. Please take care that the admin user is being used for the deployment API.
+To modify this user you must edit the etc/users.properties file. The admin user is also securing the deployment API.
 ## Component configuration
 For the component references please check the following pages:
 ### Consumer
 
 - [File](doc/consumer.file.md)
+- [SFTP](doc/consumer.sftp.md)
 - [HTTP](doc/consumer.http.md)
 
 ### Processors

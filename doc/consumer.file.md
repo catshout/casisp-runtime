@@ -1,5 +1,5 @@
 # Consumer File
-The HTTP Consumer provides an HTTP endpoint with an optional basic authentication. It runs on the same port as the HTTP server, basically configured with port 8443.
+The File Consumer provides a file polling component. The basic directory of the File Consumer must be `/var/casisp/files`. Mounted directories are not supported as the docker container runs in non-privileged mode.
 
 ## Configuration example
 ````json
@@ -36,7 +36,7 @@ The HTTP Consumer provides an HTTP endpoint with an optional basic authenticatio
 |exception|X|empty but must be set for exception handling|
 
 The configuration above will be
-- consuming all file in the directory `/var/casisp/files/in`
+- consuming all files in the directory `/var/casisp/files/in`
 - validating every second the changed file size before reading
 - deleting the file after processing
 - processing a file with the same name only once
