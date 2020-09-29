@@ -1,7 +1,4 @@
-<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
-		   xmlns:ext="http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.0.0"
-		   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		   xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 https://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 
 	<reference id="httpService" interface="org.osgi.service.http.HttpService" />
 
@@ -40,14 +37,72 @@
         <rest path="/deploy">
 			<post uri="/api" id="isp.route.system.deployment.api">
 				<route>
-					<!-- send the chunk to direct -->
-					<to uri="direct-vm:isp.route.system.deployment.api" />
+
+					<doTry>
+						<!-- validate against the JSON schema -->
+						<to uri="json-validator:file:templates/integrationapi.schema.json" />
+
+						<!-- send the chunk to direct -->
+						<to uri="direct-vm:isp.route.system.deployment.api" />
+
+						<doCatch>
+							<!-- catch JsonValidationException -->
+							<exception>org.apache.camel.component.jsonvalidator.JsonValidationException</exception>
+
+							<log message="JSON validation error: ${exception.message}" />
+							<setHeader name="CamelHttpResponseCode"><constant>400</constant></setHeader>
+							<setBody><simple>${exception.getErrors()}</simple></setBody>
+
+							<!-- if no error set found use the error message -->
+							<choice>
+								<when>
+									<simple>${exception.getErrors()} == null</simple>
+									<setBody><simple>${exception.cause}</simple></setBody>
+								</when>
+							</choice>
+
+						</doCatch>
+
+						<!-- execute in any case -->
+						<doFinally>
+						</doFinally>
+					</doTry>
+
 				</route>
 			</post>
 			<post uri="/service" id="isp.route.system.deployment.service">
 				<route>
-					<!-- send the chunk to direct -->
-					<to uri="direct-vm:isp.route.system.deployment.service" />
+
+					<doTry>
+						<!-- validate against the JSON schema -->
+						<to uri="json-validator:file:templates/integrationservice.schema.json" />
+
+						<!-- send the chunk to direct -->
+						<to uri="direct-vm:isp.route.system.deployment.service" />
+
+						<doCatch>
+							<!-- catch JsonValidationException -->
+							<exception>org.apache.camel.component.jsonvalidator.JsonValidationException</exception>
+
+							<log message="JSON validation error: ${exception.message}" />
+							<setHeader name="CamelHttpResponseCode"><constant>400</constant></setHeader>
+							<setBody><simple>${exception.getErrors()}</simple></setBody>
+
+							<!-- if no error set found use the error message -->
+							<choice>
+								<when>
+									<simple>${exception.getErrors()} == null</simple>
+									<setBody><simple>${exception.cause}</simple></setBody>
+								</when>
+							</choice>
+
+						</doCatch>
+
+						<!-- execute in any case -->
+						<doFinally>
+						</doFinally>
+					</doTry>
+
 				</route>
 			</post>
 		</rest>

@@ -1,4 +1,4 @@
-# Consumer File
+# Consumer SFTP
 The File Consumer provides a SFTP polling component.
 
 ## Configuration example

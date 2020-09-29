@@ -7,7 +7,7 @@ The purpose of the casisp-runtime is to setup, configure and run Apache Camel ba
 It comes first with a set of Apache Velocity Templates that contain a ready to run DSL snippets for the mostly used Apache Camel components. Two frame Apache Velocity Templates contain further the skeleton for an Integration Service and an Integration API.
 Finally an Integration Service and an Integration API will be running as an Apache Camel Route on the Docker based Runtime.
 
-The second important parts are the JSON Schemas [integrationservice.schema.json](model/integrationservice.schema.json) and [integrationapi.schema.json](model/integrationapi.schema.json). These JSON Schemas define the JSON model for the Apache Camel Components configuration.
+The second important parts are the JSON Schemas [integrationservice.schema.json](var/casisp/templates/integrationservice.schema.json) and [integrationapi.schema.json](var/casisp/templates/integrationapi.schema.json). These JSON Schemas define the JSON model for the Apache Camel Components configuration.
 
 ## Pre-requisites
 
@@ -23,27 +23,28 @@ Following pre-requisites are required to run the casisp-runtime
 
 - [Docker Engine for Linux](https://docs.docker.com/engine/install/)
 - User account casisp:casisp with the uid:gid 2000
+- `create-casisp.sh`, `start-casisp.sh` and `stop-casisp.sh` must be executable
 - Base directory `/var/casisp` with the copy of [var/casisp](var/casisp)
 
 ## Setup the Apache Camel runtime
 
-The foundation is a ready-to-run docker container based on [Apache Karaf 4.2.9](https://karaf.apache.org/) and [Apache Camel 3.4.3](https://camel.apache.org/). Once the pre-requisites are given you can move into the folder `docker` and start the container with
+The foundation is a ready-to-run docker container based on [Apache Karaf 4.2.9](https://karaf.apache.org/) and [Apache Camel 3.4.4](https://camel.apache.org/). Once the pre-requisites are given you can move into the folder `docker` and start the container with
 
 ````
-start-casisp.bat
+create-casisp.bat
 ````
 or
 ````
-start-casisp.sh
+create-casisp.sh
 ````
 The Docker container contains the following artefacts:
 
 ````
 feature:repo-add hawtio 2.10.1
 feature:repo-add activemq 5.16.0
-feature:repo-add camel 3.4.3
+feature:repo-add camel 3.4.4
 feature:install pax-http-undertow
-feature:install hawtio activemq-broker-noweb camel camel-jms jms camel-http camel-servlet camel-swagger-java camel-ftp camel-jackson camel-jsonpath camel-zipfile camel-velocity camel-groovy camel-salesforce camel-kafka
+feature:install hawtio activemq-broker-noweb camel camel-jms jms camel-http camel-servlet camel-swagger-java camel-ftp camel-jackson camel-jsonpath camel-validate-json camel-zipfile camel-velocity camel-groovy camel-salesforce camel-kafka
 ````
 ## Creating the first Integration Service
 
@@ -128,6 +129,7 @@ For the component references please check the following pages:
 
 - [File](doc/consumer.file.md)
 - [SFTP](doc/consumer.sftp.md)
+- [JMS](doc/consumer.jms.md)
 - [HTTP](doc/consumer.http.md)
 
 ### Processors
