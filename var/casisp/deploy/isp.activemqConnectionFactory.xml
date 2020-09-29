@@ -4,7 +4,7 @@
 	<bean id="activemqDeployment" class="org.apache.activemq.ActiveMQConnectionFactory">
 		<property name="brokerURL" value="tcp://localhost:61616" />
 		<property name="userName" value="admin" />
-		<property name="password" value="CAS_ag_2020" />
+		<property name="password" value="passw0rd" />
 	</bean>
 
 	<service interface="javax.jms.ConnectionFactory" ref="activemqDeployment"/>
@@ -13,7 +13,7 @@
 	<bean id="activemqEvent" class="org.apache.activemq.ActiveMQConnectionFactory">
 		<property name="brokerURL" value="tcp://localhost:61616" />
 		<property name="userName" value="admin" />
-		<property name="password" value="CAS_ag_2020" />
+		<property name="password" value="passw0rd" />
 	</bean>
 
 	<service interface="javax.jms.ConnectionFactory" ref="activemqEvent"/>
@@ -22,7 +22,7 @@
 	<bean id="activemqConsumer" class="org.apache.activemq.ActiveMQConnectionFactory">
 		<property name="brokerURL" value="tcp://localhost:61616" />
 		<property name="userName" value="admin" />
-		<property name="password" value="CAS_ag_2020" />
+		<property name="password" value="passw0rd" />
 	</bean>
 
 	<service interface="javax.jms.ConnectionFactory" ref="activemqConsumer"/>
@@ -31,7 +31,7 @@
 	<bean id="activemqProducer" class="org.apache.activemq.ActiveMQConnectionFactory">
 		<property name="brokerURL" value="tcp://localhost:61616" />
 		<property name="userName" value="admin" />
-		<property name="password" value="CAS_ag_2020" />
+		<property name="password" value="passw0rd" />
 	</bean>
 
 	<service interface="javax.jms.ConnectionFactory" ref="activemqProducer"/>
