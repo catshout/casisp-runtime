@@ -55,10 +55,10 @@ The first service is a HTTP based "Hello World!" Integration Service. The JSON M
     "deployDev": true,
     "deployTest": false,
     "deployProd": false,
-    "serviceId": "TSTISP001",
-    "serviceName": "Testservice HTTP 1",
+    "serviceId": "hello",
+    "serviceName": "Hello World",
     "process": {
-        "processId": "TSTISP001"
+        "processId": "hello"
     },
     "consumer": [
         {
@@ -76,7 +76,7 @@ The first service is a HTTP based "Hello World!" Integration Service. The JSON M
                     }
                 },
                 "blueprint": {},
-                "contextPath": "tstisp001",
+                "contextPath": "hello",
                 "relativePath": "get"
             }
         }
