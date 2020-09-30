@@ -1,0 +1,42 @@
+{
+    "version": "1.0.0",
+    "deployDev": true,
+    "deployTest": false,
+    "deployProd": false,
+    "serviceId": "hello",
+    "serviceName": "Hello World",
+    "process": {
+        "processId": "hello"
+    },
+    "consumer": [
+        {
+            "consumerType": "http",
+            "http": {
+                "etc": {
+                    "fileCreateFlag": true,
+                    "filePrefix": "org.ops4j.pax.web.context-admin",
+                    "basicAuthentication": {
+                        "credentials": [
+                            {
+                                "rolename": "admin"
+                            }
+                        ]
+                    }
+                },
+                "blueprint": {},
+                "contextPath": "hello",
+                "relativePath": "get"
+            }
+        }
+    ],
+    "processor": [
+        {
+            "processorType": "setBody",
+            "setBody": {
+                "language": "constant",
+                "expression": "Hello World!"
+            }
+        }
+    ],
+    "producer": []
+}

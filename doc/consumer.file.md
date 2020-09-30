@@ -25,7 +25,7 @@ The File Consumer provides a file polling component. The basic directory of the 
 |Parameter|Mandatory|Description|
 |:---|:---:|:---|
 |directoryName|X|read directory, must begin be a subdirectory under `var/casisp/files`|
-|options/include| |include file pattern (regex)|
+|options/include|X|include file pattern (regex)|
 |options/readLock| |read lock validation, values can be `none`, `markerFile`, `changed`, `fileLock`, `rename`, `idempotent`, `idempotent-changed`, `idempotent-rename`|
 |options/moveFailed| |subdirectory where the file will be moved in case of an error|
 |options/delete| |true, if the file should be deleted after the file processing|

@@ -5,6 +5,11 @@
 		"consumer": {
 			"file": {
 				"type": "object",
+				"required": [
+					"directoryName",
+					"options.include",
+					"exception"
+				],
 				"properties": {
 					"directoryName": {
 						"type": "string"
@@ -45,11 +50,18 @@
 							}
 						}
 					},
-					"exception": {}
+					"exception": {
+						"type": "object"
+					}
 				}
 			},
 			"sftp": {
 				"type": "object",
+				"required": [
+					"host",
+					"directoryName",
+					"options.include"
+				],
 				"properties": {
 					"host": {
 						"type": "string"
@@ -132,6 +144,11 @@
 			},
 			"jms": {
 				"type": "object",
+				"required": [
+					"type",
+					"destinationName",
+					"blueprint"
+				],
 				"properties": {
 					"type": {
 						"type": "string",

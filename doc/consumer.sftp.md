@@ -35,8 +35,8 @@ The File Consumer provides a SFTP polling component.
 |:---|:---:|:---|
 |host|X|SFTP host|
 |port| |SFTP port (standard port is 22)|
-|directory|X|SFTP directory|
-|options/include| |include file pattern (regex)|
+|directoryName|X|SFTP directory|
+|options/include|X|include file pattern (regex)|
 |options/delete| |true, if the file should be deleted after the file processing|
 |options/idempotent| |true, if a file with the same name will be read once only|
 |options/autoCreate| |true, if the read directory should be created if not available|

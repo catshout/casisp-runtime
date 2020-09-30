@@ -16,26 +16,26 @@ Following pre-requisites are required to run the casisp-runtime
 ### Windows
 
 - [Docker Desktop for Windows](https://hub.docker.com/editions/community/docker-ce-desktop-windows)
-- Drive E: (can be changed within the file [docker-compose_Windows.yml](docker/docker-compose_Windows.yml))
+- Drive E: (can be changed within the file [docker-compose_Windows.yml](bin/docker/docker-compose_Windows.yml))
 - Base directory `E:\var\casisp` with the copy of [var/casisp](var/casisp)
 
 ### Linux
 
 - [Docker Engine for Linux](https://docs.docker.com/engine/install/)
 - User account casisp:casisp with the uid:gid 2000
-- `create-casisp.sh`, `start-casisp.sh` and `stop-casisp.sh` must be executable
+- `create-casisp.sh`, `start-casisp.sh`, `stop-casisp.sh` and `deploy-service.sh` must be executable
 - Base directory `/var/casisp` with the copy of [var/casisp](var/casisp)
 
 ## Setup the Apache Camel runtime
 
-The foundation is a ready-to-run docker container based on [Apache Karaf 4.2.9](https://karaf.apache.org/) and [Apache Camel 3.4.4](https://camel.apache.org/). Once the pre-requisites are given you can move into the folder `docker` and start the container with
+The foundation is a ready-to-run docker container based on [Apache Karaf 4.2.9](https://karaf.apache.org/) and [Apache Camel 3.4.4](https://camel.apache.org/). Once the pre-requisites are given you can move into the folder `docker` and start the container with (Windows):
 
 ````
 create-casisp.bat
 ````
-or
+or (Linux):
 ````
-create-casisp.sh
+./create-casisp.sh
 ````
 The Docker container contains the following artefacts:
 
@@ -93,26 +93,32 @@ The first service is a HTTP based "Hello World!" Integration Service. The JSON M
     "producer": []
 }
 ````
-The casisp does have a deployment API that expects the JSON Model within a POST request. The "Hello World!" Integration Service can be deployed as following:
+The casisp does have a deployment API that expects the JSON Model within a POST request. For the first start the casisp-runtime is being delivered with deployment scripts for Windows and Linux. These expect a parameter for a file containing the JSON model for an Integration Service or Integration API.
+
+The "Hello World!" Integration Service can be deployed as following (Windows):
 ````
-curl --location --request POST 'https://localhost:8443/casisp/deploy/service' \
---header 'Authorization: Basic YWRtaW46cGFzc3cwcmQ=' \
---header 'Content-Type: application/json' \
---data-raw '{}'
+deploy-service.bat samples/hello.json
 ````
-The `--data-raw` parameter needs to be filled with the JSON Model shown above. If the request has been successfully the response looks like:
+or (Linux):
+````
+./deploy-service.sh samples/hello.json
+````
+If the request has been successfully the response looks like:
 ````json
 {
     "responseCode": 200,
     "responseMessage": "Service model 'TSTISP001' succesfully parsed and deployment initiated."
 }
 ````
-The Integration Service can be called with:
+The Integration Service can be called with (Windows):
 ````
-curl --location --request GET 'https://localhost:8443/tstisp001/get' \
---header 'Authorization: Basic YWRtaW46cGFzc3cwcmQ='
+curl --insecure --request GET "https://localhost:8443/hello/get" -u admin:passw0rd
 ````
-The response of the Integration Service looks like:
+or (Linux):
+````
+curl --insecure --request GET 'https://localhost:8443/hello/get' -u admin:passw0rd
+````
+The response of the "Hello World!" Integration Service looks like:
 ````
 Hello World!
 ````
