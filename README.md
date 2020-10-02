@@ -137,7 +137,10 @@ For the component references please check the following pages:
 - [File](doc/consumer.file.md)
 - [SFTP](doc/consumer.sftp.md)
 - [JMS](doc/consumer.jms.md)
+- [Timer](doc/consumer.timer.md)
 - [HTTP](doc/consumer.http.md)
+- [Directvm](doc/consumer.directvm.md)
+- [SalesforceCdc](doc/consumer.salesforceCdc.md)
 
 ### Processors
 
