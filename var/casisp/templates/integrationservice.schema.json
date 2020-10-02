@@ -167,6 +167,10 @@
 			},
 			"timer": {
 				"type": "object",
+				"required": [
+					"period",
+					"repeatCount"
+				],
 				"properties": {
 					"options": {
 						"type": "object",
@@ -232,6 +236,9 @@
 			},
 			"directvm": {
 				"type": "object",
+				"required": [
+					"someName"
+				],
 				"properties": {
 					"someName": {
 						"type": "string"
@@ -240,6 +247,10 @@
 			},
 			"salesforceCdc": {
 				"type": "object",
+				"required": [
+					"changeEvents",
+					"blueprint.apiVersion"
+				],
 				"properties": {
 					"changeEvents": {
 						"type": "string",
