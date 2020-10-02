@@ -42,5 +42,5 @@ salesforce.password=
 ````
 
 The configuration above will be
-- consume Salesforce data based on the standard event `Task`
-- the API version is `48.0`
+- consuming Salesforce data based on the standard event `Task`
+- based on the API version is `48.0`
