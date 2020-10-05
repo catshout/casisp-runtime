@@ -144,7 +144,15 @@ For the component references please check the following pages:
 
 ### Processors
 
-
+- [zipFileDataFormat](doc/processor.zipFileDataFormat.md)
+- [jsonDataFormat](doc/processor.jsonDataFormat.md)
+- [log](doc/processor.log.md)
+- [convertBodyTo](doc/processor.convertBodyTo.md)
+- [setBody](doc/processor.setBody.md)
+- [setHeader](doc/processor.setHeader.md)
+- [setProperty](doc/processor.setProperty.md)
+- [enrich](doc/processor.enrich.md)
+- [process](doc/processor.process.md)
 
 ### Producers
 

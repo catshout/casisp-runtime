@@ -359,6 +359,9 @@
 		"processor": {
 			"zipFileDataFormat": {
 				"type": "object",
+				"required": [
+					"marshal"
+				],
 				"properties": {
 					"marshal": {
 						"type": "string",
@@ -371,6 +374,9 @@
 			},
 			"jsonDataFormat": {
 				"type": "object",
+				"required": [
+					"marshal"
+				],
 				"properties": {
 					"marshal": {
 						"type": "string",
@@ -383,6 +389,9 @@
 			},
 			"log": {
 				"type": "object",
+				"required": [
+					"message"
+				],
 				"properties": {
 					"message": {
 						"type": "string"
@@ -391,6 +400,9 @@
 			},
 			"convertBodyTo": {
 				"type": "object",
+				"required": [
+					"language"
+				],
 				"properties": {
 					"language": {
 						"type": "string"
@@ -402,6 +414,10 @@
 			},
 			"setBody": {
 				"type": "object",
+				"required": [
+					"language",
+					"expression"
+				],
 				"properties": {
 					"language": {
 						"type": "string",
@@ -423,6 +439,11 @@
 			},
 			"setHeader": {
 				"type": "object",
+				"required": [
+					"language",
+					"name",
+					"expression"
+				],
 				"properties": {
 					"language": {
 						"type": "string",
@@ -447,6 +468,11 @@
 			},
 			"setProperty": {
 				"type": "object",
+				"required": [
+					"language",
+					"name",
+					"expression"
+				],
 				"properties": {
 					"language": {
 						"type": "string",
@@ -471,6 +497,9 @@
 			},
 			"enrich": {
 				"type": "object",
+				"required": [
+					"uri"
+				],
 				"properties": {
 					"uri": {
 						"type": "string"
@@ -490,6 +519,10 @@
 			},
 			"process": {
 				"type": "object",
+				"required": [
+					"processPackage",
+					"processClass"
+				],
 				"properties": {
 					"blueprint": {
 						"type": "object",
