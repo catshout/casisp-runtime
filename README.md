@@ -4,8 +4,8 @@ The purpose of the casisp-runtime is to setup, configure and run Apache Camel ba
 
 ![alt text](casisp-runtime.png "Component overview")
 
-It comes first with a set of Apache Velocity Templates that contain a ready to run DSL snippets for the mostly used Apache Camel components. Two frame Apache Velocity Templates contain further the skeleton for an Integration Service and an Integration API.
-Finally an Integration Service and an Integration API will be running as an Apache Camel Route on the Docker based Runtime.
+It comes as first important part with a set of Apache Velocity Templates that contain ready-to-run DSL snippets for the mostly used Apache Camel components. Two master Apache Velocity Templates contain further the skeleton for an Integration Service and an Integration API.
+The deployed Integration Services and Integration APIs will be running as Apache Camel Routes within the Docker based Runtime.
 
 The second important parts are the JSON Schemas [integrationservice.schema.json](var/casisp/templates/integrationservice.schema.json) and [integrationapi.schema.json](var/casisp/templates/integrationapi.schema.json). These JSON Schemas define the JSON model for the Apache Camel Components configuration.
 
