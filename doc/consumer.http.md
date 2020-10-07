@@ -29,9 +29,10 @@ The HTTP Consumer provides an HTTP endpoint with an optional basic authenticatio
 ## Configuration parameters
 |Parameter|Mandatory|Description|
 |:---|:---:|:---|
-|etc/fileCreateFlag| |constant value "true", will be used for authentication file configuration|
-|etc/fielPrefix| |constant value "org.ops4j.pax.web.context-admin", will be used for authentication file configuration|
-|basicAuthentication/credentials/rolename| |rolename from `users.properties` file|
+|etc| |creates the authentication file|
+|etc.fileCreateFlag| |constant value "true", will be used for authentication file configuration|
+|etc.filePrefix| |constant value "org.ops4j.pax.web.context-admin", will be used for authentication file configuration|
+|etc.basicAuthentication.credentials.rolename| |rolename from `users.properties` file|
 |blueprint|X|empty but must be set for configuration on blueprint level|
 |contextPath|X|URL context path|
 |relativePath|X|URL relative path|

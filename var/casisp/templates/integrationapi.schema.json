@@ -6,7 +6,8 @@
 		"apiId",
 		"apiName",
 		"contextPath",
-		"basePath"
+		"basePath",
+		"etc"
 	],
 	"properties": {
 		"apiId": {
@@ -45,6 +46,10 @@
 		},
 		"etc": {
 			"type": "object",
+			"required": [
+				"fileCreateFlag",
+				"filePrefix"
+			],
 			"default": {
 				"fileCreateFlag": false,
 				"filePrefix": "org.ops4j.pax.web.context-admin"
@@ -61,6 +66,7 @@
 					"properties": {
 						"credentials": {
 							"type": "array",
+							"minItems": 1,
 							"items": {
 								"type": "object",
 								"properties": {
@@ -76,11 +82,12 @@
 		},
 		"endpoint": {
 			"type": "array",
+			"minItems": 1,
 			"items": {
 				"type": "object",
 				"required": [
-					"method",
-					"uri"
+					"uri",
+					"method"
 				],
 				"properties": {
 					"uri": {
@@ -100,6 +107,7 @@
 					},
 					"serviceEndpoint": {
 						"type": "array",
+						"minItems": 1,
 						"items": {
 							"type": "object",
 							"properties": {
@@ -112,6 +120,10 @@
 								},
 								"jms": {
 									"type": "object",
+									"required": [
+										"type",
+										"destinationName"
+									],
 									"properties": {
 										"type": {
 											"type": "string",

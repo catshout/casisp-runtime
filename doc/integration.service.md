@@ -49,7 +49,7 @@ The request will be validated against the JSON Schema first before processing an
     "responseMessage": "Service model '<serviceId>' successfully parsed and deployment initiated."
 }
 ````
-Please check the Apache Camel log for the asynchronous deployment success. The Apache Camel log insode the Docker container can be checked either through the `hawtio` UI with
+Please check the Apache Camel log for the asynchronous deployment success. The Apache Camel log inside the Docker container can be checked either through the `hawtio` UI with
 ````
 https://localhost:8443/hawtio
 ````
