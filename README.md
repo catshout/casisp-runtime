@@ -92,7 +92,6 @@ The first service is a HTTP based "Hello World!" Integration Service. The JSON M
     ],
     "producer": []
 }
-
 ````
 The casisp does have a deployment API that expects the JSON Model within a POST request. For the first start the casisp-runtime is being delivered with deployment scripts for Windows and Linux. These expect a parameter for a file containing the JSON model for an Integration Service or Integration API.
 
@@ -108,7 +107,7 @@ If the request has been successfully the response looks like:
 ````json
 {
     "responseCode": 200,
-    "responseMessage": "Service model 'TSTISP001' succesfully parsed and deployment initiated."
+    "responseMessage": "Service model 'hello' successfully parsed and deployment initiated."
 }
 ````
 The Integration Service can be called with (Windows):
@@ -123,36 +122,20 @@ The response of the "Hello World!" Integration Service looks like:
 ````
 Hello World!
 ````
+
 ## Standard user
+
 The Apache Karaf standard user is
 ````
 admin
 passw0rd
 ````
 To modify this user you must edit the etc/users.properties file. The admin user is also securing the deployment API.
-## Component configuration
-For the component references please check the following pages:
-### Consumer
 
-- [File](doc/consumer.file.md)
-- [SFTP](doc/consumer.sftp.md)
-- [JMS](doc/consumer.jms.md)
-- [Timer](doc/consumer.timer.md)
-- [HTTP](doc/consumer.http.md)
-- [Directvm](doc/consumer.directvm.md)
-- [SalesforceCdc](doc/consumer.salesforceCdc.md)
+## Integration Services
 
-### Processors
+- [Integration Service deployment](doc/integration.service.md)
 
-- [zipFileDataFormat](doc/processor.zipFileDataFormat.md)
-- [jsonDataFormat](doc/processor.jsonDataFormat.md)
-- [log](doc/processor.log.md)
-- [convertBodyTo](doc/processor.convertBodyTo.md)
-- [setBody](doc/processor.setBody.md)
-- [setHeader](doc/processor.setHeader.md)
-- [setProperty](doc/processor.setProperty.md)
-- [enrich](doc/processor.enrich.md)
-- [process](doc/processor.process.md)
+## Integration APIs
 
-### Producers
-
+- [Integration API deployment](doc/integration.api.md)

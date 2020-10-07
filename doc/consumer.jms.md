@@ -1,5 +1,5 @@
 # Consumer JMS
-The File Consumer provides a JMS component. The basic basic configuration is contained in the file `deploy/isp.activemqConnectionFactory.xml`
+The File Consumer provides a JMS component. The basic configuration is contained in the file `deploy/isp.activemqConnectionFactory.xml`
 
 ## Configuration example
 ````json

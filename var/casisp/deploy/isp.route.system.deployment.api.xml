@@ -56,7 +56,7 @@
 			</split>
 
 			<setProperty name="apiId"><jsonpath>$.apiId</jsonpath></setProperty>
-			<setBody><simple>{"responseCode": 200, "responseMessage": "API model '${exchangeProperty.apiId}' succesfully parsed and deployment initiated."}</simple></setBody>
+			<setBody><simple>{"responseCode": 200, "responseMessage": "API model '${exchangeProperty.apiId}' successfully parsed and deployment initiated."}</simple></setBody>
 			<log message="isp.route.system.deployment.api - Route finished"/>
 		</route>
 

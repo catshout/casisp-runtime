@@ -1,5 +1,5 @@
-# Processor ConvertBodyTo
-The ConvertBodyTo Processor converts the message body to another format. 
+# Processor Convert Body
+The Convert Body Processor converts the message body to another format. 
 
 ## Configuration example
 ````json

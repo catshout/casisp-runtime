@@ -1,5 +1,5 @@
-# Processor Enrich
-The Enrich Processor enriches the message body with external content from an URI. The aggregation strategy can be defined to combine the existing message body with the content from the enrich URI. 
+# Processor Enrich from URI
+The Enrich from URI Processor enriches the message body with external content from an URI. The aggregation strategy can be defined to combine the existing message body with the content from the enrich URI. 
 
 ## Configuration example
 ````json

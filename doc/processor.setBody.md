@@ -1,5 +1,5 @@
-# Processor SetBody
-The SetBody Processor sets the message body. 
+# Processor Set Body
+The Set Body Processor sets the message body. 
 
 ## Configuration example
 ````json

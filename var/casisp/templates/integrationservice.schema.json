@@ -7,7 +7,7 @@
 				"type": "object",
 				"required": [
 					"directoryName",
-					"options.include",
+					"options",
 					"exception"
 				],
 				"properties": {
@@ -16,6 +16,9 @@
 					},
 					"options": {
 						"type": "object",
+						"required": [
+							"include"
+						],
 						"properties": {
 							"include": {
 								"type": "string"
@@ -60,7 +63,7 @@
 				"required": [
 					"host",
 					"directoryName",
-					"options.include"
+					"options"
 				],
 				"properties": {
 					"host": {
@@ -76,6 +79,9 @@
 					},
 					"options": {
 						"type": "object",
+						"required": [
+							"include"
+						],
 						"properties": {
 							"include": {
 								"type": "string"
@@ -249,7 +255,7 @@
 				"type": "object",
 				"required": [
 					"changeEvents",
-					"blueprint.apiVersion"
+					"blueprint"
 				],
 				"properties": {
 					"changeEvents": {
@@ -347,6 +353,9 @@
 					},
 					"blueprint": {
 						"type": "object",
+						"required": [
+							"apiVersion"
+						],
 						"properties": {
 							"apiVersion": {
 								"type": "string"
@@ -541,6 +550,9 @@
 		"producer": {
 			"file": {
 				"type": "object",
+				"required": [
+					"fileName"
+				],
 				"properties": {
 					"directoryName": {
 						"type": "string"
@@ -557,6 +569,11 @@
 			},
 			"jms": {
 				"type": "object",
+				"required": [
+					"type",
+					"destinationName",
+					"blueprint"
+				],
 				"properties": {
 					"type": {
 						"type": "string",
@@ -575,12 +592,20 @@
 			},
 			"kafka": {
 				"type": "object",
+				"required": [
+					"topic",
+					"headers",
+					"options"
+				],
 				"properties": {
 					"topic": {
 						"type": "string"
 					},
 					"headers": {
 						"type": "object",
+						"required": [
+							"kafka_KEY"
+						],
 						"properties": {
 							"kafka_KEY": {
 								"type": "string"
@@ -589,6 +614,9 @@
 					},
 					"options": {
 						"type": "object",
+						"required": [
+							"brokers"
+						],
 						"properties": {
 							"brokers": {
 								"type": "string"
@@ -599,6 +627,13 @@
 			},
 			"http": {
 				"type": "object",
+				"required": [
+					"scheme",
+					"hostname",
+					"port",
+					"resourceUri",
+					"headers"
+				],
 				"properties": {
 					"scheme": {
 						"type": "string",
@@ -635,6 +670,9 @@
 					},
 					"headers": {
 						"type": "object",
+						"required": [
+							"CamelHttpMethod"
+						],
 						"properties": {
 							"CamelHttpMethod": {
 								"type": "string",
@@ -720,6 +758,11 @@
 			},
 			"csvSplitter": {
 				"type": "object",
+				"required": [
+					"splitSize",
+					"endpoint",
+					"blueprint"
+				],
 				"properties": {
 					"splitSize": {
 						"type": "integer",
@@ -727,8 +770,12 @@
 					},
 					"endpoint": {
 						"type": "array",
+						"minItems": 1,
 						"items": {
 							"type": "object",
+							"required": [
+								"type"
+							],
 							"properties": {
 								"type": {
 									"type": "string",
@@ -739,6 +786,10 @@
 								},
 								"jms": {
 									"type": "object",
+									"required": [
+										"type",
+										"destinationName"
+									],
 									"properties": {
 										"type": {
 											"type": "string",
@@ -765,6 +816,12 @@
 			},
 			"jsonArraySplitter": {
 				"type": "object",
+				"required": [
+					"splitSize",
+					"endpoint",
+					"blueprint",
+					"context"
+				],
 				"properties": {
 					"arrayName": {
 						"type": "string"
@@ -776,8 +833,12 @@
 					},
 					"endpoint": {
 						"type": "array",
+						"minItems": 1,
 						"items": {
 							"type": "object",
+							"required": [
+								"type"
+							],
 							"properties": {
 								"type": {
 									"type": "string",
@@ -788,6 +849,10 @@
 								},
 								"jms": {
 									"type": "object",
+									"required": [
+										"type",
+										"destinationName"
+									],
 									"properties": {
 										"type": {
 											"type": "string",
@@ -817,12 +882,18 @@
 			},
 			"jsonPathSplitter": {
 				"type": "object",
+				"required": [
+					"jsonPath",
+					"endpoint",
+					"blueprint"
+				],
 				"properties": {
 					"jsonPath": {
 						"type": "string"
 					},
 					"endpoint": {
 						"type": "array",
+						"minItems": 1,
 						"items": {
 							"type": "object",
 							"properties": {
@@ -835,6 +906,10 @@
 								},
 								"jms": {
 									"type": "object",
+									"required": [
+										"type",
+										"destinationName"
+									],
 									"properties": {
 										"type": {
 											"type": "string",
@@ -861,6 +936,11 @@
 			},
 			"jsonPathFilter": {
 				"type": "object",
+				"required": [
+					"jsonPath",
+					"endpoint",
+					"blueprint"
+				],
 				"properties": {
 					"jsonPath": {
 						"type": "string"
@@ -870,6 +950,7 @@
 					},
 					"endpoint": {
 						"type": "array",
+						"minItems": 1,
 						"items": {
 							"type": "object",
 							"properties": {
@@ -882,6 +963,10 @@
 								},
 								"jms": {
 									"type": "object",
+									"required": [
+										"type",
+										"destinationName"
+									],
 									"properties": {
 										"type": {
 											"type": "string",
@@ -908,6 +993,9 @@
 			},
 			"directvm": {
 				"type": "object",
+				"required": [
+					"someName"
+				],
 				"properties": {
 					"someName": {
 						"type": "string"
@@ -916,17 +1004,25 @@
 			},
 			"choice": {
 				"type": "object",
+				"required": [
+					"blueprint"
+				],
 				"properties": {
 					"when": {
 						"type": "array",
+						"minItems": 1,
 						"items": {
 							"type": "object",
+							"required": [
+								"expression"
+							],
 							"properties": {
 								"expression": {
 									"type": "string"
 								},
 								"endpoint": {
 									"type": "array",
+									"minItems": 1,
 									"items": {
 										"type": "object",
 										"properties": {
@@ -939,6 +1035,10 @@
 											},
 											"jms": {
 												"type": "object",
+												"required": [
+													"type",
+													"destinationName"
+												],
 												"properties": {
 													"type": {
 														"type": "string",
@@ -963,6 +1063,7 @@
 					},
 					"otherwise": {
 						"type": "array",
+						"minItems": 1,
 						"items": {
 							"type": "object",
 							"properties": {
@@ -975,6 +1076,10 @@
 								},
 								"jms": {
 									"type": "object",
+									"required": [
+										"type",
+										"destinationName"
+									],
 									"properties": {
 										"type": {
 											"type": "string",
@@ -1001,6 +1106,11 @@
 			},
 			"salesforceRestApi": {
 				"type": "object",
+				"required": [
+					"operationName",
+					"options",
+					"blueprint"
+				],
 				"properties": {
 					"operationName": {
 						"type": "string",
@@ -1020,6 +1130,10 @@
 					},
 					"options": {
 						"type": "object",
+						"required": [
+							"apiVersion",
+							"format"
+						],
 						"properties": {
 							"apiVersion": {
 								"type": "string"
@@ -1056,6 +1170,7 @@
 					},
 					"endpoint": {
 						"type": "array",
+						"minItems": 1,
 						"items": {
 							"type": "object",
 							"properties": {
@@ -1068,6 +1183,10 @@
 								},
 								"jms": {
 									"type": "object",
+									"required": [
+										"type",
+										"destinationName"
+									],
 									"properties": {
 										"type": {
 											"type": "string",
@@ -1094,6 +1213,12 @@
 			},
 			"salesforceApexCall": {
 				"type": "object",
+				"required": [
+					"apiVersion",
+					"method",
+					"url",
+					"blueprint"
+				],
 				"properties": {
 					"apiVersion": {
 						"type": "string"
@@ -1140,6 +1265,7 @@
 	"required": [
 		"serviceId",
 		"serviceName",
+		"process",
 		"consumer"
 	],
 	"properties": {

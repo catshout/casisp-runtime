@@ -360,7 +360,7 @@
 			</split>
 
 			<setProperty name="serviceId"><jsonpath>$.serviceId</jsonpath></setProperty>
-			<setBody><simple>{"responseCode": 200, "responseMessage": "Service model '${exchangeProperty.serviceId}' succesfully parsed and deployment initiated."}</simple></setBody>
+			<setBody><simple>{"responseCode": 200, "responseMessage": "Service model '${exchangeProperty.serviceId}' successfully parsed and deployment initiated."}</simple></setBody>
 			<log message="isp.route.system.deployment.service - Route finished" />
 		</route>
 

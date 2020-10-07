@@ -1,5 +1,5 @@
-# Processor ZipFileDataFormat
-The zipFileDataFormat Processor provides a component to zip or unzip the message content. 
+# Processor zip/unzip
+The zip/unzip Processor provides a component to zip or unzip the message content. 
 
 ## Configuration example
 ````json

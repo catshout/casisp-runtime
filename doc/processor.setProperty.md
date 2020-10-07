@@ -1,5 +1,5 @@
-# Processor SetProperty
-The SetProperty Processor sets an exchange property. 
+# Processor Set Property
+The Set Property Processor sets an exchange property. 
 
 ## Configuration example
 ````json

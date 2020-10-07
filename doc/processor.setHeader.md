@@ -1,5 +1,5 @@
-# Processor SetHeader
-The SetHeader Processor sets a message header. 
+# Processor Set Header
+The Set Header Processor sets a message header. 
 
 ## Configuration example
 ````json
