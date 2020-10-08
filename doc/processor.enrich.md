@@ -6,11 +6,11 @@ The Enrich from URI Processor enriches the message body with external content fr
 {
     "processorType": "enrich",
     "enrich": {
+        "uri": "http://enrich.com",
         "blueprint": {
             "enrichPackage": "com.package",
             "enrichClass": "MyAggregation"
-        },
-        "uri": "http://enrich.com"
+        }
     }
 }
 ````
@@ -18,8 +18,8 @@ The Enrich from URI Processor enriches the message body with external content fr
 |Parameter|Mandatory|Description|
 |:---|:---:|:---|
 |uri|X|uri for the endpoint where the enrich content will be read from|
-|enrichPackage| |name of the aggregation package|
-|enrichClass| |name of the aggregation class|
+|blueprint.enrichPackage|(X)|name of the aggregation package|
+|blueprint.enrichClass|(X)|name of the aggregation class|
 
 The configuration above will be
 - enriching the message body with the content from the URI `http://enrich.com` and aggregates it based on the class `com.package.MyAggregation`

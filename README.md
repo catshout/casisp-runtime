@@ -139,7 +139,7 @@ The Apache Karaf standard user is
 admin
 passw0rd
 ````
-To modify this user you must edit the etc/users.properties file. The admin user is also securing the deployment API. When changing the standard user and password the file `var/casisp/deploy/isp.activemqConnectionFactory.xml` needs to be changed as well.
+To modify this user you must edit the `etc/users.properties` file. The admin user is also securing the deployment API. When changing the standard user and password the file `var/casisp/deploy/isp.activemqConnectionFactory.xml` needs to be changed as well. It contains the access data for the built-in ActiveMQ broker.
 
 For further details and component references follow the documentation links below.
 

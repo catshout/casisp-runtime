@@ -36,21 +36,21 @@ The File Consumer provides a SFTP polling component.
 |host|X|SFTP host|
 |port| |SFTP port (standard port is 22)|
 |directoryName|X|SFTP directory|
-|options/include|X|include file pattern (regex)|
-|options/delete| |true, if the file should be deleted after the file processing|
-|options/idempotent| |true, if a file with the same name will be read once only|
-|options/autoCreate| |true, if the read directory should be created if not available|
-|options/binary| |true, if the transfer happens in binary mode|
-|options/disconnect| |true, if disconnect after file processing|
-|options/readLock| |read lock validation, values can be `none`, `markerFile`, `changed`, `fileLock`, `rename`, `idempotent`, `idempotent-changed`, `idempotent-rename`|
-|options/moveFailed| |subdirectory where the file will be moved in case of an error|
-|options/maximumReconnectAttempts| |number of reconnect attempts|
-|options/delay| |milliseconds before the next poll|
-|options/localWorkDirectory| |local work directory to store file instead of memory|
-|options/username| |username for SFTP connection|
-|options/password| |password for SFTP connection|
-|options/privateKeyFile| |key file for SFTP connection|
-|options/privateKeyPassphrase| |key passphrase for SFTP connection|
+|options.include|X|include file pattern (regex)|
+|options.delete| |`true`, if the file should be deleted after the file processing|
+|options.idempotent| |`true`, if a file with the same name will be read once only|
+|options.autoCreate| |`true`, if the read directory should be created if not available|
+|options.binary| |`true`, if the transfer happens in binary mode|
+|options.disconnect| |`true`, if disconnect after file processing|
+|options.readLock| |read lock validation, values can be `none`, `markerFile`, `changed`, `fileLock`, `rename`, `idempotent`, `idempotent-changed`, `idempotent-rename`|
+|options.moveFailed| |subdirectory where the file will be moved in case of an error|
+|options.maximumReconnectAttempts| |number of reconnect attempts|
+|options.delay| |milliseconds before the next poll|
+|options.localWorkDirectory| |local work directory to store file instead of memory|
+|options.username| |username for SFTP connection|
+|options.password| |password for SFTP connection|
+|options.privateKeyFile| |key file for SFTP connection|
+|options.privateKeyPassphrase| |key passphrase for SFTP connection|
 
 The configuration above will be
 - consuming all files from the host `host:22/infiles` in binary mode

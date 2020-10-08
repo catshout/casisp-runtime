@@ -19,7 +19,7 @@ The Timer Consumer provides a timer component.
 |:---|:---:|:---|
 |delay| |time (in milliseconds) before the route starts the first time|
 |period|X|period (in milliseconds) between route executions|
-|repeatCount|X|number of route executions (0 - infinite)|
+|repeatCount|X|number of route executions (`0` - infinite)|
 
 The configuration above will be
-- start the route after 1 sec every second for an infinite time
+- starting the route after 1 sec every second for an infinite time

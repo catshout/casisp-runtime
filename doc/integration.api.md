@@ -69,8 +69,8 @@ An Integration API does contain the following parameters:
 |contextPath|X|context path of the API|
 |basePath|X|base path of the API|
 |etc| |creates the authentication file|
-|etc.fileCreateFlag| |constant value "true", will be used for authentication file configuration|
-|etc.filePrefix| |constant value "org.ops4j.pax.web.context-admin", will be used for authentication file configuration|
+|etc.fileCreateFlag| |constant value `true`, will be used for authentication file configuration|
+|etc.filePrefix| |constant value `org.ops4j.pax.web.context-admin`, will be used for authentication file configuration|
 |etc.basicAuthentication.credentials.rolename| |rolename from `users.properties` file|
 |cors| |CORS parameters|
 |cors.enable| |`true` (if CORS enabled) or `false` (if CORS disabled)|

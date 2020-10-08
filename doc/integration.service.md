@@ -42,7 +42,7 @@ or (Linux):
 ````
 ./deploy-service.sh <service.model.json>
 ````
-The request will be validated against the JSON Schema first before processing and deploying. If the request has been successfully parsed the response looks like:
+The request will be validated against the JSON Schema first before being processed and deployed. If the request has been successfully parsed the response looks like:
 ````json
 {
     "responseCode": 200,

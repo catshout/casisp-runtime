@@ -21,4 +21,4 @@ The Set Property Processor sets an exchange property.
 |expression|X|expression|
 
 The configuration above will be
-- setting the exchange property `message` with a constant value `Hello World!`
+- setting the exchange property `message` to a constant value `Hello World!`

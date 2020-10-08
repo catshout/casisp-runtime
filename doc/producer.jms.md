@@ -1,23 +1,23 @@
 # Producer JMS
-The JMS Producer provides a JMS component. The basic configuration is contained in the file `deploy/isp.activemqConnectionFactory.xml`
+The JMS Producer provides a JMS component. The file `deploy/isp.activemqConnectionFactory.xml` contains the basic configuration.
 
 ## Configuration example
 ````json
 {
     "producerType": "jms",
     "jms": {
-        "blueprint": {},
         "type": "queue",
-        "destinationName": "OUT"
+        "destinationName": "OUT",
+        "blueprint": {}
     }
 }
 ````
 ## Configuration parameters
 |Parameter|Mandatory|Description|
 |:---|:---:|:---|
-|blueprint|X|empty but must be set for blueprint configuration|
 |type|X|either `queue` or `topic`|
 |destinationName|X|the name of the queue or topic where messages should be sent to|
+|blueprint|X|empty but must be set for blueprint configuration|
 
 The configuration above will be
 - sending a message to the queue `OUT`

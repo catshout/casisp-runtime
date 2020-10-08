@@ -19,4 +19,4 @@ The Set Body Processor sets the message body.
 |expression|X|expression|
 
 The configuration above will be
-- setting the message body with a constant value `Hello World!`
+- setting the message body to a constant value `Hello World!`

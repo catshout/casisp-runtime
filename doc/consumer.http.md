@@ -20,9 +20,9 @@ The HTTP Consumer provides an HTTP endpoint with an optional basic authenticatio
                 ]
             }
         },
-        "blueprint": {},
         "contextPath": "context",
-        "relativePath": "path"
+        "relativePath": "path",
+        "blueprint": {}
     }
 }
 ````
@@ -30,14 +30,14 @@ The HTTP Consumer provides an HTTP endpoint with an optional basic authenticatio
 |Parameter|Mandatory|Description|
 |:---|:---:|:---|
 |etc| |creates the authentication file|
-|etc.fileCreateFlag| |constant value "true", will be used for authentication file configuration|
-|etc.filePrefix| |constant value "org.ops4j.pax.web.context-admin", will be used for authentication file configuration|
+|etc.fileCreateFlag| |constant value `true`, will be used for authentication file configuration|
+|etc.filePrefix| |constant value `org.ops4j.pax.web.context-admin`, will be used for authentication file configuration|
 |etc.basicAuthentication.credentials.rolename| |rolename from `users.properties` file|
-|blueprint|X|empty but must be set for configuration on blueprint level|
 |contextPath|X|URL context path|
 |relativePath|X|URL relative path|
+|blueprint|X|empty but must be set for configuration on blueprint level|
 
-The configuration above will be provide an HTTP endpoint like
+The configuration above provides an HTTP endpoint like
 ````bash
 https://{servername}:8443/context/path
 ````

@@ -522,6 +522,10 @@
 					},
 					"blueprint": {
 						"type": "object",
+						"required": [
+							"enrichPackage",
+							"enrichClass"
+						],
 						"properties": {
 							"enrichPackage": {
 								"type": "string"

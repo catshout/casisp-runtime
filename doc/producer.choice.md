@@ -31,7 +31,7 @@ The Choice Producer provides the option to select different outputs based on con
 |Parameter|Mandatory|Description|
 |:---|:---:|:---|
 |when.expression|X|evaluation expression (simple language)|
-|endpoint|(X)|multiple endpoints|
+|endpoint|X|multiple endpoints|
 |endpoint.type|(X)|endpoint type, either `direct-vm` or `jms`|
 |endpoint.someName| |name of the `direct-vm` endpoint (label)|
 |endpoint.jms.type|(X)|type of the JMS endpoint, either `queue` or `topic`|

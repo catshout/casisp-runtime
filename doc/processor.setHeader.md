@@ -21,4 +21,4 @@ The Set Header Processor sets a message header.
 |expression|X|expression|
 
 The configuration above will be
-- setting the message header `message` with a constant value `Hello World!`
+- setting the message header `message` to a constant value `Hello World!`
