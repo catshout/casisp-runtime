@@ -173,13 +173,13 @@
 			},
 			"timer": {
 				"type": "object",
-				"required": [
-					"period",
-					"repeatCount"
-				],
 				"properties": {
 					"options": {
 						"type": "object",
+						"required": [
+							"period",
+							"repeatCount"
+						],
 						"properties": {
 							"delay": {
 								"type": "integer"
@@ -254,102 +254,109 @@
 			"salesforceCdc": {
 				"type": "object",
 				"required": [
-					"changeEvents",
 					"blueprint"
 				],
 				"properties": {
-					"changeEvents": {
-						"type": "string",
-						"enum": [
-							"all",
-							"standard",
-							"custom"
-						]
-					},
-					"standardObject": {
-						"type": "string",
-						"enum": [
-							"Account",
-							"AccountContactRole",
-							"ActionCadence",
-							"ActionCadenceStep",
-							"ActionCadenceStepTracker",
-							"ActionCadenceTracker",
-							"Asset",
-							"AssignedResource",
-							"AuthorizationFormConsent",
-							"CallTemplate",
-							"Campaign",
-							"CampaignMember",
-							"CampaignMemberStatus",
-							"Case",
-							"Contact",
-							"ContactPointConsent",
-							"ContactPointEmail",
-							"ContactPointPhone",
-							"ContactPointTypeConsent",
-							"Contract",
-							"ContractLineItem",
-							"EmailMessage",
-							"EmailTemplate",
-							"Entitlement",
-							"Event",
-							"EventRelation",
-							"Individual",
-							"LandingPage",
-							"Lead",
-							"ListEmail",
-							"LiveChatTranscript",
-							"Location",
-							"Macro",
-							"MacroInstruction",
-							"MaintenanceAsset",
-							"MaintenancePlan",
-							"MarketingForm",
-							"MarketingLink",
-							"Opportunity",
-							"OpportunityContactRole",
-							"OpportunitySplit",
-							"Order",
-							"OrderItem",
-							"PartyConsent",
-							"Pricebook2",
-							"Product2",
-							"ProductConsumed",
-							"ProductItem",
-							"ProductRequest",
-							"ProductRequestLineItem",
-							"ProductTransfer",
-							"QuickText",
-							"Recommendation",
-							"ResourceAbsence",
-							"ReturnOrder",
-							"ReturnOrderLineItem",
-							"ServiceAppointment",
-							"ServiceCrew",
-							"ServiceCrewMember",
-							"ServiceResource",
-							"ServiceTerritory",
-							"ServiceTerritoryMember",
-							"Shipment",
-							"SocialPost",
-							"TimeSheet",
-							"TimeSheetEntry",
-							"Quote",
-							"QuoteLineItem",
-							"ServiceContract",
-							"Task",
-							"TaskRelation",
-							"User",
-							"VoiceCall",
-							"VoiceCallRecording",
-							"WorkOrder",
-							"WorkOrderLineItem",
-							"WorkType"
-						]
-					},
-					"customObject": {
-						"type": "string"
+					"changeDataCaptureEvents": {
+						"type": "object",
+						"required": [
+							"changeEvents"
+						],
+						"properties": {
+							"changeEvents": {
+								"type": "string",
+								"enum": [
+									"all",
+									"standard",
+									"custom"
+								]
+							},
+							"standardObject": {
+								"type": "string",
+								"enum": [
+									"Account",
+									"AccountContactRole",
+									"ActionCadence",
+									"ActionCadenceStep",
+									"ActionCadenceStepTracker",
+									"ActionCadenceTracker",
+									"Asset",
+									"AssignedResource",
+									"AuthorizationFormConsent",
+									"CallTemplate",
+									"Campaign",
+									"CampaignMember",
+									"CampaignMemberStatus",
+									"Case",
+									"Contact",
+									"ContactPointConsent",
+									"ContactPointEmail",
+									"ContactPointPhone",
+									"ContactPointTypeConsent",
+									"Contract",
+									"ContractLineItem",
+									"EmailMessage",
+									"EmailTemplate",
+									"Entitlement",
+									"Event",
+									"EventRelation",
+									"Individual",
+									"LandingPage",
+									"Lead",
+									"ListEmail",
+									"LiveChatTranscript",
+									"Location",
+									"Macro",
+									"MacroInstruction",
+									"MaintenanceAsset",
+									"MaintenancePlan",
+									"MarketingForm",
+									"MarketingLink",
+									"Opportunity",
+									"OpportunityContactRole",
+									"OpportunitySplit",
+									"Order",
+									"OrderItem",
+									"PartyConsent",
+									"Pricebook2",
+									"Product2",
+									"ProductConsumed",
+									"ProductItem",
+									"ProductRequest",
+									"ProductRequestLineItem",
+									"ProductTransfer",
+									"QuickText",
+									"Recommendation",
+									"ResourceAbsence",
+									"ReturnOrder",
+									"ReturnOrderLineItem",
+									"ServiceAppointment",
+									"ServiceCrew",
+									"ServiceCrewMember",
+									"ServiceResource",
+									"ServiceTerritory",
+									"ServiceTerritoryMember",
+									"Shipment",
+									"SocialPost",
+									"TimeSheet",
+									"TimeSheetEntry",
+									"Quote",
+									"QuoteLineItem",
+									"ServiceContract",
+									"Task",
+									"TaskRelation",
+									"User",
+									"VoiceCall",
+									"VoiceCallRecording",
+									"WorkOrder",
+									"WorkOrderLineItem",
+									"WorkType"
+								]
+							},
+							"customObject": {
+								"type": "string"
+							}
+						}
 					},
 					"blueprint": {
 						"type": "object",
@@ -545,13 +552,33 @@
 						}
 					}
 				}
+			},
+			"mappingService": {
+				"type": "object",
+				"properties": {
+					"blueprint": {
+						"type": "object",
+						"required": [
+							"mappingPackage",
+							"mappingClass"
+						],
+						"properties": {
+							"mappingPackage": {
+								"type": "string"
+							},
+							"mappingClass": {
+								"type": "string"
+							}
+						}
+					}
+				}
 			}
 		},
 		"producer": {
 			"file": {
 				"type": "object",
 				"required": [
-					"fileName"
+					"directoryName"
 				],
 				"properties": {
 					"directoryName": {
@@ -1377,6 +1404,9 @@
 					},
 					"process": {
 						"$ref": "#/definitions/processor/process"
+					},
+					"mappingService": {
+						"$ref": "#/definitions/processor/mappingService"
 					}
 				}
 			}
