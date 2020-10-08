@@ -1,7 +1,7 @@
 # casisp-runtime
 
-The `casisp-runtime` is an Open Source integration runtime container with following properties
-- based on a Docker image that needs less than 5 minutes setup
+The `casisp-runtime` is an Open Source integration runtime container that:
+- is based on a Docker image that needs less than 5 minutes setup
 - uses Apache Karaf runtime and Apache Camel components
 - supports a model driven approach for Integration Service and API deployment
 
@@ -20,7 +20,7 @@ The `casisp-runtime` can be extended with a graphic UI for the Integration Servi
 
 ## Pre-requisites
 
-Following pre-requisites are required to run the casisp-runtime
+The following pre-requisites are required to run the casisp-runtime
 
 ### Windows
 
@@ -31,8 +31,8 @@ Following pre-requisites are required to run the casisp-runtime
 ### Linux
 
 - [Docker Engine for Linux](https://docs.docker.com/engine/install/)
-- User account casisp:casisp with the uid:gid 2000
-- `create-casisp.sh`, `start-casisp.sh`, `stop-casisp.sh` and `deploy-service.sh` must be executable
+- User account casisp:casisp with the uid:gid 2000:2000
+- all `*.sh` scripts must be executable
 - Base directory `/var/casisp` with the copy of [var/casisp](var/casisp)
 
 ## Setup the Apache Camel runtime
@@ -102,7 +102,7 @@ The first service is a HTTP based "Hello World!" Integration Service. The JSON M
     "producer": []
 }
 ````
-The casisp does have a deployment API that expects the JSON Model within a POST request. For the first start the casisp-runtime is being delivered with deployment scripts for Windows and Linux. These expect a parameter for a file containing the JSON model for an Integration Service or Integration API.
+The `casisp-runtime` does have a deployment API that expects the JSON Model in a POST request body. For the first start the `casisp-runtime` is being delivered with deployment scripts for Windows and Linux. These expect a parameter for a file containing the JSON model for an Integration Service or Integration API.
 
 The "Hello World!" Integration Service can be deployed as following (Windows):
 ````
@@ -139,7 +139,9 @@ The Apache Karaf standard user is
 admin
 passw0rd
 ````
-To modify this user you must edit the etc/users.properties file. The admin user is also securing the deployment API.
+To modify this user you must edit the etc/users.properties file. The admin user is also securing the deployment API. When changing the standard user and password the file `var/casisp/deploy/isp.activemqConnectionFactory.xml` needs to be changed as well.
+
+For further details and component references follow the documentation links below.
 
 ## Integration Services
 
