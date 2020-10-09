@@ -23,7 +23,7 @@ The JSON Path Splitter Producer provides a JSON Path Splitter component. It spli
 |jsonPath|X|name of the JSON Path expression|
 |endpoint|X|multiple endpoints|
 |endpoint.type|X|endpoint type, either `direct-vm` or `jms`|
-|endpoint.someName| |name of the `direct-vm` endpoint (label)|
+|endpoint.someName|(X)|name of the `direct-vm` endpoint (label)|
 |endpoint.jms.type|(X)|type of the JMS endpoint, either `queue` or `topic`|
 |endpoint.jms.destinationName|(X)|name of the JMS endpoint|
 |blueprint|X|empty but must be set for blueprint configuration|

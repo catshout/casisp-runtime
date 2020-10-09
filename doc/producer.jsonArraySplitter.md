@@ -26,7 +26,7 @@ The JSON Array Splitter Producer provides a JSON Array Splitter component. It sp
 |splitSize|X|number of elements per splitted array chunk|
 |endpoint|X|multiple endpoints|
 |endpoint.type|X|endpoint type, either `direct-vm` or `jms`|
-|endpoint.someName| |name of the `direct-vm` endpoint (label)|
+|endpoint.someName|(X)|name of the `direct-vm` endpoint (label)|
 |endpoint.jms.type|(X)|type of the JMS endpoint, either `queue` or `topic`|
 |endpoint.jms.destinationName|(X)|name of the JMS endpoint|
 |blueprint|X|empty but must be set for blueprint configuration|

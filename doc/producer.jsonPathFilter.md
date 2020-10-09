@@ -24,7 +24,7 @@ The JSON Path Splitter Filter provides a JSON Path Filter component. It filters 
 |jsonPath|X|name of the JSON Path expression|
 |endpoint|X|multiple endpoints|
 |endpoint.type|X|endpoint type, either `direct-vm` or `jms`|
-|endpoint.someName| |name of the `direct-vm` endpoint (label)|
+|endpoint.someName|(X)|name of the `direct-vm` endpoint (label)|
 |endpoint.jms.type|(X)|type of the JMS endpoint, either `queue` or `topic`|
 |endpoint.jms.destinationName|(X)|name of the JMS endpoint|
 |suppressExceptions| |if set to `true` exceptions will be suppressed|

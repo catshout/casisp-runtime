@@ -36,9 +36,9 @@ The Salesforce API Producer calls a Salesforce REST API. The response will be se
 |options.sObjectBlobFieldName| |Salesforce `sObjectBlobFieldName`|
 |options.sObjectQuery| |Salesforce `sObjectQuery`|
 |options.sObjectSearch| |Salesforce `sObjectSearch`|
-|endpoint|X|multiple endpoints|
+|endpoint| |multiple endpoints|
 |endpoint.type|(X)|endpoint type, either `direct-vm` or `jms`|
-|endpoint.someName| |name of the `direct-vm` endpoint (label)|
+|endpoint.someName|(X)|name of the `direct-vm` endpoint (label)|
 |endpoint.jms.type|(X)|type of the JMS endpoint, either `queue` or `topic`|
 |endpoint.jms.destinationName|(X)|name of the JMS endpoint|
 |blueprint|X|empty but must be set for blueprint handling|
