@@ -106,11 +106,11 @@ The `casisp-runtime` does have a deployment API that expects the JSON Model in a
 
 The "Hello World!" Integration Service can be deployed as following (Windows):
 ````
-deploy-service.bat samples/hello.json
+deploy-service.bat ..\samples\hello.json
 ````
 or (Linux):
 ````
-./deploy-service.sh samples/hello.json
+./deploy-service.sh ../samples/hello.json
 ````
 If the request has been successfully the response looks like:
 ````json

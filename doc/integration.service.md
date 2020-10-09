@@ -42,6 +42,17 @@ or (Linux):
 ````
 ./deploy-service.sh <service.model.json>
 ````
+The deployment API URL is:
+````
+https://localhost:8443/casisp/deploy/service
+````
+The username and password for the deployment are:
+````
+admin
+passw0rd
+````
+The JSON model can be sent as a POST request against the API with the given credentials, e.g. with Postman or an CI/CD tool.
+
 The request will be validated against the JSON Schema first before being processed and deployed. If the request has been successfully parsed the response looks like:
 ````json
 {

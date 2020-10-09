@@ -17,7 +17,7 @@ The File Producer writes a file to a specified directory.
 |Parameter|Mandatory|Description|
 |:---|:---:|:---|
 |directoryName|X|write directory, must begin be a subdirectory under `var/casisp/files`|
-|options/fileName| |fileName, supports simple language|
+|options.fileName| |fileName, supports simple language|
 
 The configuration above will be
 - writing a file `file.csv` to the directory `/var/casisp/files/out`

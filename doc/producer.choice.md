@@ -30,6 +30,7 @@ The Choice Producer provides the option to select different outputs based on con
 # Configuration parameters
 |Parameter|Mandatory|Description|
 |:---|:---:|:---|
+|when|X|evaluation(s)|
 |when.expression|X|evaluation expression (simple language)|
 |endpoint|X|multiple endpoints|
 |endpoint.type|(X)|endpoint type, either `direct-vm` or `jms`|

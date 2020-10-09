@@ -26,6 +26,7 @@ The Salesforce API Producer calls a Salesforce REST API. The response will be se
 ## Configuration parameters
 |Parameter|Mandatory|Description|
 |:---|:---:|:---|
+|operationsName|X|Salesforce operation name|
 |options.apiVersion|X|Salesforce API version|
 |options.format|X|either `JSON` or `XML`|
 |options.sObjectName| |Salesforce `sObjectName`|

@@ -16,8 +16,8 @@ The Process Processor executes a Java class.
 ## Configuration parameters
 |Parameter|Mandatory|Description|
 |:---|:---:|:---|
-|processPackage| |name of the process package|
-|processClass| |name of the process class|
+|blueprint.processPackage|X|name of the process package|
+|blueprint.processClass|X|name of the process class|
 
 The configuration above will be
 - processing the message body with the class `com.package.MyProcessor`

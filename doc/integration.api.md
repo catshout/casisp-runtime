@@ -100,11 +100,22 @@ or (Linux):
 ````
 ./deploy-api.sh <api.model.json>
 ````
+The deployment API URL is:
+````
+https://localhost:8443/casisp/deploy/api
+````
+The username and password for the deployment are:
+````
+admin
+passw0rd
+````
+The JSON model can be sent as a POST request against the API with the given credentials, e.g. with Postman or an CI/CD tool.
+
 The request will be validated against the JSON Schema first before processing and deploying. If the request has been successfully parsed the response looks like:
 ````json
 {
     "responseCode": 200,
-    "responseMessage": "API model 'greetings' succesfully parsed and deployment initiated."
+    "responseMessage": "API model 'greetings' successfully parsed and deployment initiated."
 }
 ````
 Please check the Apache Camel log for the asynchronous deployment success. The Apache Camel log inside the Docker container can be checked either through the `hawtio` UI with
