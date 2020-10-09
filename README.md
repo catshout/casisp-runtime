@@ -1,5 +1,7 @@
 # casisp-runtime
 
+[![Release 0.9.1](https://img.shields.io/badge/release-0.9.1-brightgreen.svg?style=flat)](https://github.com/catshout/casisp-runtime/archive/v0.9.1.zip "casisp-runtime 0.9.1")
+
 The `casisp-runtime` is an Open Source integration runtime container that:
 - is based on a Docker image that needs less than 5 minutes setup
 - uses Apache Karaf runtime and Apache Camel components
