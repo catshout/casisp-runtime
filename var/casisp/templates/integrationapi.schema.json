@@ -87,7 +87,8 @@
 				"type": "object",
 				"required": [
 					"uri",
-					"method"
+					"method",
+					"serviceEndpoint"
 				],
 				"properties": {
 					"uri": {
@@ -110,6 +111,9 @@
 						"minItems": 1,
 						"items": {
 							"type": "object",
+							"required": [
+								"type"
+							],
 							"properties": {
 								"type": {
 									"type": "string",

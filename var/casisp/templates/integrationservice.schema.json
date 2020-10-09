@@ -199,7 +199,8 @@
 				"type": "object",
 				"required": [
 					"contextPath",
-					"relativePath"
+					"relativePath",
+					"blueprint"
 				],
 				"properties": {
 					"contextPath": {
@@ -417,10 +418,10 @@
 			"convertBodyTo": {
 				"type": "object",
 				"required": [
-					"language"
+					"type"
 				],
 				"properties": {
-					"language": {
+					"type": {
 						"type": "string"
 					},
 					"charset": {
@@ -540,12 +541,15 @@
 			"process": {
 				"type": "object",
 				"required": [
-					"processPackage",
-					"processClass"
+					"blueprint"
 				],
 				"properties": {
 					"blueprint": {
 						"type": "object",
+						"required": [
+							"processPackage",
+							"processClass"
+						],
 						"properties": {
 							"processPackage": {
 								"type": "string"
@@ -837,7 +841,33 @@
 								"someName": {
 									"type": "string"
 								}
-							}
+							},
+							"oneOf": [
+								{
+									"properties": {
+										"type": {
+											"enum": [
+												"jms"
+											]
+										}
+									},
+									"required": [
+										"jms"
+									]
+								},
+								{
+									"properties": {
+										"type": {
+											"enum": [
+												"direct-vm"
+											]
+										}
+									},
+									"required": [
+										"someName"
+									]
+								}
+							]
 						}
 					},
 					"blueprint": {
@@ -848,6 +878,7 @@
 			"jsonArraySplitter": {
 				"type": "object",
 				"required": [
+					"arrayName",
 					"splitSize",
 					"endpoint",
 					"blueprint",
@@ -900,7 +931,33 @@
 								"someName": {
 									"type": "string"
 								}
-							}
+							},
+							"oneOf": [
+								{
+									"properties": {
+										"type": {
+											"enum": [
+												"jms"
+											]
+										}
+									},
+									"required": [
+										"jms"
+									]
+								},
+								{
+									"properties": {
+										"type": {
+											"enum": [
+												"direct-vm"
+											]
+										}
+									},
+									"required": [
+										"someName"
+									]
+								}
+							]
 						}
 					},
 					"blueprint": {
@@ -957,7 +1014,33 @@
 								"someName": {
 									"type": "string"
 								}
-							}
+							},
+							"oneOf": [
+								{
+									"properties": {
+										"type": {
+											"enum": [
+												"jms"
+											]
+										}
+									},
+									"required": [
+										"jms"
+									]
+								},
+								{
+									"properties": {
+										"type": {
+											"enum": [
+												"direct-vm"
+											]
+										}
+									},
+									"required": [
+										"someName"
+									]
+								}
+							]
 						}
 					},
 					"blueprint": {
@@ -1014,7 +1097,33 @@
 								"someName": {
 									"type": "string"
 								}
-							}
+							},
+							"oneOf": [
+								{
+									"properties": {
+										"type": {
+											"enum": [
+												"jms"
+											]
+										}
+									},
+									"required": [
+										"jms"
+									]
+								},
+								{
+									"properties": {
+										"type": {
+											"enum": [
+												"direct-vm"
+											]
+										}
+									},
+									"required": [
+										"someName"
+									]
+								}
+							]
 						}
 					},
 					"blueprint": {
@@ -1036,6 +1145,7 @@
 			"choice": {
 				"type": "object",
 				"required": [
+					"when",
 					"blueprint"
 				],
 				"properties": {
@@ -1045,7 +1155,8 @@
 						"items": {
 							"type": "object",
 							"required": [
-								"expression"
+								"expression",
+								"endpoint"
 							],
 							"properties": {
 								"expression": {
@@ -1056,6 +1167,9 @@
 									"minItems": 1,
 									"items": {
 										"type": "object",
+										"required": [
+											"type"
+										],
 										"properties": {
 											"type": {
 												"type": "string",
@@ -1086,7 +1200,33 @@
 											"someName": {
 												"type": "string"
 											}
-										}
+										},
+										"oneOf": [
+											{
+												"properties": {
+													"type": {
+														"enum": [
+															"jms"
+														]
+													}
+												},
+												"required": [
+													"jms"
+												]
+											},
+											{
+												"properties": {
+													"type": {
+														"enum": [
+															"direct-vm"
+														]
+													}
+												},
+												"required": [
+													"someName"
+												]
+											}
+										]
 									}
 								}
 							}
@@ -1097,6 +1237,9 @@
 						"minItems": 1,
 						"items": {
 							"type": "object",
+							"required": [
+								"type"
+							],
 							"properties": {
 								"type": {
 									"type": "string",
@@ -1127,7 +1270,33 @@
 								"someName": {
 									"type": "string"
 								}
-							}
+							},
+							"oneOf": [
+								{
+									"properties": {
+										"type": {
+											"enum": [
+												"jms"
+											]
+										}
+									},
+									"required": [
+										"jms"
+									]
+								},
+								{
+									"properties": {
+										"type": {
+											"enum": [
+												"direct-vm"
+											]
+										}
+									},
+									"required": [
+										"someName"
+									]
+								}
+							]
 						}
 					},
 					"blueprint": {
@@ -1234,7 +1403,33 @@
 								"someName": {
 									"type": "string"
 								}
-							}
+							},
+							"oneOf": [
+								{
+									"properties": {
+										"type": {
+											"enum": [
+												"jms"
+											]
+										}
+									},
+									"required": [
+										"jms"
+									]
+								},
+								{
+									"properties": {
+										"type": {
+											"enum": [
+												"direct-vm"
+											]
+										}
+									},
+									"required": [
+										"someName"
+									]
+								}
+							]
 						}
 					},
 					"blueprint": {
@@ -1362,7 +1557,7 @@
 					"http": {
 						"$ref": "#/definitions/consumer/http"
 					},
-					"direct-vm": {
+					"directvm": {
 						"$ref": "#/definitions/consumer/directvm"
 					},
 					"salesforceCdc": {
@@ -1450,7 +1645,7 @@
 					"jsonPathFilter": {
 						"$ref": "#/definitions/producer/jsonPathFilter"
 					},
-					"direct-vm": {
+					"directvm": {
 						"$ref": "#/definitions/producer/directvm"
 					},
 					"choice": {
