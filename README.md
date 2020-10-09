@@ -39,7 +39,7 @@ The following pre-requisites are required to run the casisp-runtime
 
 ## Setup the Apache Camel runtime
 
-The foundation is a ready-to-run docker container based on [Apache Karaf 4.2.9](https://karaf.apache.org/) and [Apache Camel 3.4.4](https://camel.apache.org/). Once the pre-requisites are given you can move into the folder `docker` and start the container with (Windows):
+The foundation is a ready-to-run docker container based on [Apache Karaf 4.2.9](https://karaf.apache.org/) and [Apache Camel 3.4.4](https://camel.apache.org/). Once the pre-requisites are given you can move into the folder `bin` and start the container with (Windows):
 
 ````
 create-casisp.bat
