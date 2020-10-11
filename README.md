@@ -16,13 +16,13 @@ The deployed Integration Services and Integration APIs will be running as Apache
 
 The JSON Schemas [integrationservice.schema.json](var/casisp/templates/integrationservice.schema.json) and [integrationapi.schema.json](var/casisp/templates/integrationapi.schema.json) define the JSON model for the Apache Camel Components configuration.
 
-Both the Apache Velocity Templates and JSON Schemas can be extended to included other required Apache Camel components into the `casisp-runtime`.
+Additional Apache Camel components can be included into the `casisp-runtime` based on JSON schema extensions and additional Apache Velocity templates.
 
-The `casisp-runtime` can be extended with a graphic UI for the Integration Service and API design and with an Integration Process Monitor. Both are commercial products of the [CAS AG](https://www.c-a-s.de). The `casisp-runtime` will remain Open Source under the Apache 2.0 license.
+The `casisp-runtime` can be supplemented with a graphic UI for the Integration Service and API design and with an Integration Process Monitor. Both are commercial products of the [CAS AG](https://www.c-a-s.de). The `casisp-runtime` will remain Open Source under the Apache 2.0 license.
 
 ## Pre-requisites
 
-The following pre-requisites are required to run the casisp-runtime
+The following pre-requisites are required to run the `casisp-runtime`
 
 ### Windows
 
