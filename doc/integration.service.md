@@ -110,3 +110,4 @@ For the component references please check the following pages:
 - [Choice](producer.choice.md)
 - [Salesforce REST API](producer.salesforceRestApi.md)
 - [Salesforce APEX Call](producer.salesforceApexCall.md)
+- [XPath Splitter](producer.xPathSplitter.md)

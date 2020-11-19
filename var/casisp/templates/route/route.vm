@@ -4,10 +4,7 @@
 		   xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
 		   xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 https://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
 
-	<!-- reference to PropertiesComponent -->
-	<bean id="properties" class="org.apache.camel.component.properties.PropertiesComponent">
-		<property name="location" value="file:${karaf.home}/etc/casisp.cfg" />
-	</bean>
+	<cm:property-placeholder persistent-id="casisp" />
 
 	<!-- reference to JMS connection factory event -->
 	<reference id="activemqEvent" interface="javax.jms.ConnectionFactory" />
@@ -66,7 +63,7 @@
 				<setHeader name="event.message"><constant>${body.serviceId} - Integration Service gestartet.</constant></setHeader>
 
 				<!-- set service header -->
-				<setHeader name="event.service.mandator"><simple>{{casisp.env}}</simple></setHeader>
+				<setHeader name="event.service.mandator"><simple>${body.environment}</simple></setHeader>
 				<setHeader name="event.service.application"><constant>CAS ISP</constant></setHeader>
 				<setHeader name="event.service.function"><constant>${body.serviceName}</constant></setHeader>
 
@@ -107,7 +104,7 @@
 					<setHeader name="event.message"><constant>${body.serviceId} - Integration Service erfolgreich beendet.</constant></setHeader>
 
 					<!-- set service header -->
-					<setHeader name="event.service.mandator"><simple>{{casisp.env}}</simple></setHeader>
+					<setHeader name="event.service.mandator"><simple>${body.environment}</simple></setHeader>
 					<setHeader name="event.service.application"><constant>CAS ISP</constant></setHeader>
 					<setHeader name="event.service.function"><constant>${body.serviceName}</constant></setHeader>
 
@@ -139,7 +136,7 @@
 						<setHeader name="event.message"><simple>${body.serviceId} - #[[${exception.message}]]#</simple></setHeader>
 
 						<!-- set service header -->
-						<setHeader name="event.service.mandator"><simple>{{casisp.env}}</simple></setHeader>
+						<setHeader name="event.service.mandator"><simple>${body.environment}</simple></setHeader>
 						<setHeader name="event.service.application"><constant>CAS ISP</constant></setHeader>
 						<setHeader name="event.service.function"><constant>${body.serviceName}</constant></setHeader>
 

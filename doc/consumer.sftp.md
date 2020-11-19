@@ -47,6 +47,7 @@ The File Consumer provides a SFTP polling component.
 |options.maximumReconnectAttempts| |number of reconnect attempts|
 |options.delay| |milliseconds before the next poll|
 |options.localWorkDirectory| |local work directory to store file instead of memory|
+|options.knownHostsFile| |Sets the known_hosts file, so that the SFTP endpoint can do host key verification.|
 |options.username| |username for SFTP connection|
 |options.password| |password for SFTP connection|
 |options.privateKeyFile| |key file for SFTP connection|

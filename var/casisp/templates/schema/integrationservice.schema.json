@@ -1321,11 +1321,11 @@
 							"deleteSObject",
 							"upsertSObject",
 							"getSObjectWithId",
-							"upsertSObject",
 							"deleteSObjectWithId",
 							"query",
 							"queryAll",
-							"search"
+							"search",
+							"getBlobField"
 						]
 					},
 					"options": {
@@ -1435,7 +1435,103 @@
 					"blueprint": {
 						"type": "object"
 					}
-				}
+				},
+				"oneOf": [
+					{
+						"properties": {
+							"operationName": {
+								"enum": [
+									"getSObject",
+									"updateSObject",
+									"deleteSObject"
+								]
+							},
+							"options": {
+								"required": [
+									"sObjectName",
+									"sObjectId"
+								]
+							}
+						}
+					},
+					{
+						"properties": {
+							"operationName": {
+								"enum": [
+									"createSObject"
+								]
+							},
+							"options": {
+								"required": [
+									"sObjectName"
+								]
+							}
+						}
+					},
+					{
+						"properties": {
+							"operationName": {
+								"enum": [
+									"getSObjectWithId",
+									"upsertSObject",
+									"deleteSObjectWithId"
+								]
+							},
+							"options": {
+								"required": [
+									"sObjectName",
+									"sObjectIdName",
+									"sObjectIdValue"
+								]
+							}
+						}
+					},
+					{
+						"properties": {
+							"operationName": {
+								"enum": [
+									"query",
+									"queryAll"
+								]
+							},
+							"options": {
+								"required": [
+									"sObjectQuery"
+								]
+							}
+						}
+					},
+					{
+						"properties": {
+							"operationName": {
+								"enum": [
+									"search"
+								]
+							},
+							"options": {
+								"required": [
+									"sObjectSearch"
+								]
+							}
+						}
+					},
+					{
+						"properties": {
+							"operationName": {
+								"enum": [
+									"getBlobField"
+								]
+							},
+							"options": {
+								"required": [
+									"sObjectBlobFieldName",
+									"sObjectName",
+									"sObjectId"
+								]
+							}
+						}
+					}
+				]
 			},
 			"salesforceApexCall": {
 				"type": "object",
@@ -1447,7 +1543,8 @@
 				],
 				"properties": {
 					"apiVersion": {
-						"type": "string"
+						"type": "string",
+						"default": "43.0"
 					},
 					"method": {
 						"type": "string",
@@ -1484,6 +1581,86 @@
 						}
 					}
 				}
+			},
+			"xPathSplitter": {
+				"type": "object",
+				"required": [
+					"xPath",
+					"endpoint",
+					"blueprint"
+				],
+				"properties": {
+					"xPath": {
+						"type": "string"
+					},
+					"endpoint": {
+						"type": "array",
+						"minItems": 1,
+						"items": {
+							"type": "object",
+							"properties": {
+								"type": {
+									"type": "string",
+									"enum": [
+										"jms",
+										"direct-vm"
+									]
+								},
+								"jms": {
+									"type": "object",
+									"required": [
+										"type",
+										"destinationName"
+									],
+									"properties": {
+										"type": {
+											"type": "string",
+											"enum": [
+												"queue",
+												"topic"
+											]
+										},
+										"destinationName": {
+											"type": "string"
+										}
+									}
+								},
+								"someName": {
+									"type": "string"
+								}
+							},
+							"oneOf": [
+								{
+									"properties": {
+										"type": {
+											"enum": [
+												"jms"
+											]
+										}
+									},
+									"required": [
+										"jms"
+									]
+								},
+								{
+									"properties": {
+										"type": {
+											"enum": [
+												"direct-vm"
+											]
+										}
+									},
+									"required": [
+										"someName"
+									]
+								}
+							]
+						}
+					},
+					"blueprint": {
+						"type": "object"
+					}
+				}
 			}
 		}
 	},
@@ -1506,15 +1683,15 @@
 			"pattern": "^\\d\\.\\d\\.\\d$",
 			"default": "1.0.0"
 		},
-		"deployDev": {
+		"deployDEV": {
 			"type": "boolean",
 			"default": false
 		},
-		"deployTest": {
+		"deployTEST": {
 			"type": "boolean",
 			"default": false
 		},
-		"deployProd": {
+		"deployPROD": {
 			"type": "boolean",
 			"default": false
 		},
@@ -1656,6 +1833,9 @@
 					},
 					"salesforceApexCall": {
 						"$ref": "#/definitions/producer/salesforceApexCall"
+					},
+					"xPathSplitter": {
+						"$ref": "#/definitions/producer/xPathSplitter"
 					}
 				}
 			}

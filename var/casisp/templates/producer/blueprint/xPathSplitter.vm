@@ -1,14 +1,14 @@
 
-#foreach($endpoint in $body.csvSplitter.endpoint)
+#foreach($endpoint in $body.xPathSplitter.endpoint)
 #if($endpoint.type == 'jms')
 #set($jms = true)
 #end
 #end
 #if($jms)
 	<!--********************************************************************************-->
-	<!-- JSONPath Splitter Producer Blueprint                                           -->
+	<!-- XPath Splitter Producer Blueprint                                              -->
 	<!--********************************************************************************-->
 
 	<!-- set reference to the ActiveMQ JMS connection factory -->
-	<reference id="activemqProducerJsonPathSplitter${exchange.properties.CamelSplitIndex}" interface="javax.jms.ConnectionFactory" />
+	<reference id="activemqProducerXPathSplitter${exchange.properties.CamelSplitIndex}" interface="javax.jms.ConnectionFactory" />
 #end

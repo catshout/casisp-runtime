@@ -21,7 +21,7 @@
 				<claimCheck operation="Set" key="inBody"/>
 
 				<!-- process the API velocity template -->
-				<toD uri="velocity:file:{{karaf.home}}/templates/api.vm?contentCache=false&amp;allowContextMapAll=true" />
+				<toD uri="velocity:file:{{karaf.home}}/templates/api/api.vm?contentCache=false&amp;allowContextMapAll=true" />
 
 				<!-- write the API to the deploy folder -->
 				<to uri="file:{{karaf.home}}/deploy?fileName=isp.api.${exchangeProperty.apiId}.xml"/>
@@ -39,7 +39,7 @@
 					<when>
 						<simple>${exchangeProperty.fileCreateFlag?.toString()} == 'true'</simple>
 
-						<toD uri="velocity:file:{{karaf.home}}/templates/api.etc.vm?contentCache=false&amp;allowContextMapAll=true" />
+						<toD uri="velocity:file:{{karaf.home}}/templates/api/api.etc.vm?contentCache=false&amp;allowContextMapAll=true" />
 
 						<choice>
 							<when>

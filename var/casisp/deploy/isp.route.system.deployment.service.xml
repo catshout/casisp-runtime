@@ -7,9 +7,9 @@
 	<!-- reference to ExchangeListProcessor -->
 	<bean id="exchangeListProcessor" class="de.ag.cas.casisp.exchangelistprocessor.ExchangeListProcessor" />
 
-	<camelContext id="isp.routes.system.deployment.service" xmlns="http://camel.apache.org/schema/blueprint" streamCache="true">
+	<camelContext id="isp.route.system.deployment.service" xmlns="http://camel.apache.org/schema/blueprint" streamCache="true">
 
-		<route id="isp.routes.system.deployment.service">
+		<route id="isp.route.system.deployment.service">
 
 			<from uri="direct-vm:isp.route.system.deployment.service" />
 			<log message="isp.route.system.deployment.service - Route started"/>
@@ -30,7 +30,7 @@
 					<log message="consumerType: ${header.consumerType}" />
 
 					<!-- process the consumer velocity template -->
-					<toD uri="velocity:file:{{karaf.home}}/templates/consumer.${header.consumerType}.vm?contentCache=false&amp;allowContextMapAll=true" />
+					<toD uri="velocity:file:{{karaf.home}}/templates/consumer/${header.consumerType}.vm?contentCache=false&amp;allowContextMapAll=true" />
 				</split>
 
 				<!-- set consumerComponents property -->
@@ -58,7 +58,7 @@
 						<when>
 							<simple>${exchangeProperty.contextObject?.toString()} != '[]'</simple>
 
-							<toD uri="velocity:file:{{karaf.home}}/templates/consumer.context.${header.consumerType}.vm?contentCache=false&amp;allowContextMapAll=true" />
+							<toD uri="velocity:file:{{karaf.home}}/templates/consumer/context/${header.consumerType}.vm?contentCache=false&amp;allowContextMapAll=true" />
 						</when>
 					</choice>
 				</split>
@@ -88,7 +88,7 @@
 						<when>
 							<simple>${exchangeProperty.blueprintObject?.toString()} != '[]'</simple>
 
-							<toD uri="velocity:file:{{karaf.home}}/templates/consumer.blueprint.${header.consumerType}.vm?contentCache=false&amp;allowContextMapAll=true" />
+							<toD uri="velocity:file:{{karaf.home}}/templates/consumer/blueprint/${header.consumerType}.vm?contentCache=false&amp;allowContextMapAll=true" />
 						</when>
 					</choice>
 				</split>
@@ -118,7 +118,7 @@
 						<when>
 							<simple>${exchangeProperty.exceptionObject?.toString()} != '[]'</simple>
 
-							<toD uri="velocity:file:{{karaf.home}}/templates/consumer.exception.${header.consumerType}.vm?contentCache=false&amp;allowContextMapAll=true" />
+							<toD uri="velocity:file:{{karaf.home}}/templates/consumer/exception/${header.consumerType}.vm?contentCache=false&amp;allowContextMapAll=true" />
 						</when>
 					</choice>
 				</split>
@@ -159,7 +159,7 @@
 								<log message="header.consumerType: ${header.consumerType}" />
 
 								<setBody><simple>${exchangeProperty.etcBody}</simple></setBody>
-								<toD uri="velocity:file:{{karaf.home}}/templates/consumer.etc.${header.consumerType}.vm?contentCache=false&amp;allowContextMapAll=true" />
+								<toD uri="velocity:file:{{karaf.home}}/templates/consumer/etc/${header.consumerType}.vm?contentCache=false&amp;allowContextMapAll=true" />
 
 								<choice>
 									<when>
@@ -188,7 +188,7 @@
 					<log message="processorType: ${header.processorType}" />
 
 					<!-- process the processor velocity template -->
-					<toD uri="velocity:file:{{karaf.home}}/templates/processor.${header.processorType}.vm?contentCache=false&amp;allowContextMapAll=true" />
+					<toD uri="velocity:file:{{karaf.home}}/templates/processor/${header.processorType}.vm?contentCache=false&amp;allowContextMapAll=true" />
 				</split>
 
 				<!-- set processorComponents property -->
@@ -217,7 +217,7 @@
 						<when>
 							<simple>${exchangeProperty.contextObject?.toString()} != '[]'</simple>
 
-							<toD uri="velocity:file:{{karaf.home}}/templates/processor.context.${header.processorType}.vm?contentCache=false&amp;allowContextMapAll=true" />
+							<toD uri="velocity:file:{{karaf.home}}/templates/processor/context/${header.processorType}.vm?contentCache=false&amp;allowContextMapAll=true" />
 						</when>
 					</choice>
 				</split>
@@ -248,7 +248,7 @@
 						<when>
 							<simple>${exchangeProperty.blueprintObject?.toString()} != '[]'</simple>
 
-							<toD uri="velocity:file:{{karaf.home}}/templates/processor.blueprint.${header.processorType}.vm?contentCache=false&amp;allowContextMapAll=true" />
+							<toD uri="velocity:file:{{karaf.home}}/templates/processor/blueprint/${header.processorType}.vm?contentCache=false&amp;allowContextMapAll=true" />
 						</when>
 					</choice>
 				</split>
@@ -274,7 +274,7 @@
 					<log message="producerType: ${header.producerType}" />
 
 					<!-- process the producer velocity template -->
-					<toD uri="velocity:file:{{karaf.home}}/templates/producer.${header.producerType}.vm?contentCache=false&amp;allowContextMapAll=true" />
+					<toD uri="velocity:file:{{karaf.home}}/templates/producer/${header.producerType}.vm?contentCache=false&amp;allowContextMapAll=true" />
 				</split>
 
 				<!-- set producerComponents property -->
@@ -303,7 +303,7 @@
 						<when>
 							<simple>${exchangeProperty.contextObject?.toString()} != '[]'</simple>
 
-							<toD uri="velocity:file:{{karaf.home}}/templates/producer.context.${header.producerType}.vm?contentCache=false&amp;allowContextMapAll=true" />
+							<toD uri="velocity:file:{{karaf.home}}/templates/producer/context/${header.producerType}.vm?contentCache=false&amp;allowContextMapAll=true" />
 						</when>
 					</choice>
 				</split>
@@ -334,7 +334,7 @@
 						<when>
 							<simple>${exchangeProperty.blueprintObject?.toString()} != '[]'</simple>
 
-							<toD uri="velocity:file:{{karaf.home}}/templates/producer.blueprint.${header.producerType}.vm?contentCache=false&amp;allowContextMapAll=true" />
+							<toD uri="velocity:file:{{karaf.home}}/templates/producer/blueprint/${header.producerType}.vm?contentCache=false&amp;allowContextMapAll=true" />
 						</when>
 					</choice>
 				</split>
@@ -353,7 +353,7 @@
 				<claimCheck operation="Get" key="inBody" />
 
 				<!-- process the route velocity template -->
-				<toD uri="velocity:file:{{karaf.home}}/templates/route.vm?contentCache=false&amp;allowContextMapAll=true" />
+				<toD uri="velocity:file:{{karaf.home}}/templates/route/route.vm?contentCache=false&amp;allowContextMapAll=true" />
 
 				<!-- write the route to the deploy folder -->
 				<to uri="file:{{karaf.home}}/deploy?fileName=isp.route.${exchangeProperty.serviceId}.xml" />
