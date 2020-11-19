@@ -40,7 +40,7 @@
 
 					<doTry>
 						<!-- validate against the JSON schema -->
-						<to uri="json-validator:file:templates/integrationapi.schema.json" />
+						<to uri="json-validator:file:templates/schema/integrationapi.schema.json" />
 
 						<!-- send the chunk to direct -->
 						<to uri="direct-vm:isp.route.system.deployment.api" />
@@ -75,7 +75,7 @@
 
 					<doTry>
 						<!-- validate against the JSON schema -->
-						<to uri="json-validator:file:templates/integrationservice.schema.json" />
+						<to uri="json-validator:file:templates/schema/integrationservice.schema.json" />
 
 						<!-- send the chunk to direct -->
 						<to uri="direct-vm:isp.route.system.deployment.service" />

@@ -2,8 +2,6 @@
     <!-- Salesforce Blueprint                                                           -->
     <!--********************************************************************************-->
 
-    <cm:property-placeholder persistent-id="casisp" />
-
     <bean id="salesforce" class="org.apache.camel.component.salesforce.SalesforceComponent">
         <property name="loginUrl" value="${salesforce.loginUrl}" />
         <property name="clientId" value="${salesforce.clientId}" />

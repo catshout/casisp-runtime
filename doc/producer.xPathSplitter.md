@@ -1,16 +1,16 @@
-# Producer JSON Path Splitter
-The JSON Path Splitter Producer provides a JSON Path Splitter component. It splits a given JSON message body in multiple JSON chunks. The chunks will be sending to multiple either Direct VM or JMS endpoints.
+# Producer XPath Splitter
+The XPath Splitter Producer provides a XPath Splitter component. It splits a given XML message body in multiple XML chunks. The chunks will be sending to multiple either Direct VM or JMS endpoints.
 
 ## Configuration example
 ````json
 {
-    "producerType": "jsonPathSplitter",
-    "jsonPathSplitter": {
-        "jsonPath": "$.json.path",
+    "producerType": "xPathSplitter",
+    "xPathSplitter": {
+        "xPath": "/x/path",
         "endpoint": [
             {
                 "type": "direct-vm",
-                "someName": "outJsonPath"
+                "someName": "outXPath"
             }
         ],
         "blueprint": {}
@@ -20,7 +20,7 @@ The JSON Path Splitter Producer provides a JSON Path Splitter component. It spli
 ## Configuration parameters
 |Parameter|Mandatory|Description|
 |:---|:---:|:---|
-|jsonPath|X|name of the JSON Path expression|
+|xPath|X|the XPath expression|
 |endpoint|X|multiple endpoints|
 |endpoint.type|X|endpoint type, either `direct-vm` or `jms`|
 |endpoint.someName|(X)|name of the `direct-vm` endpoint (label)|
@@ -29,5 +29,5 @@ The JSON Path Splitter Producer provides a JSON Path Splitter component. It spli
 |blueprint|X|empty but must be set for blueprint configuration|
 
 The configuration above will be
-- splitting a JSON message to chunks by the JSON path `$.json.path`
-- sending every chunk to the `direct-vm` endpoint `outJsonPath`
+- splitting a XML message to chunks by the XPath `/x/path`
+- sending every chunk to the `direct-vm` endpoint `outXPath`
