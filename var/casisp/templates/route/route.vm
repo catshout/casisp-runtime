@@ -17,7 +17,7 @@
 	#if(${exchange.properties.producerBlueprintElements})${exchange.properties.producerBlueprintElements}#end
 
 
-	<camelContext id="isp.context.user.${body.serviceId}" xmlns="http://camel.apache.org/schema/blueprint" streamCache="true" useBreadcrumb="true">
+	<camelContext id="isp.route.${body.serviceId}" xmlns="http://camel.apache.org/schema/blueprint" streamCache="true" useBreadcrumb="true">
 
 		<!--********************************************************************************-->
 		<!-- Context Elements                                                               -->
@@ -30,7 +30,7 @@
 		<!--********************************************************************************-->
 		<!-- Camel Route                                                                    -->
 		<!--********************************************************************************-->
-		<route id="isp.route.user.${body.serviceId}">
+		<route id="isp.route.${body.serviceId}">
 
 			<!--********************************************************************************-->
 			<!-- Consumer Components                                                            -->
@@ -63,7 +63,7 @@
 				<setHeader name="event.message"><constant>${body.serviceId} - Integration Service gestartet.</constant></setHeader>
 
 				<!-- set service header -->
-				<setHeader name="event.service.mandator"><simple>${body.environment}</simple></setHeader>
+				<setHeader name="event.service.mandator"><simple>{{casisp.env}}</simple></setHeader>
 				<setHeader name="event.service.application"><constant>CAS ISP</constant></setHeader>
 				<setHeader name="event.service.function"><constant>${body.serviceName}</constant></setHeader>
 
@@ -104,7 +104,7 @@
 					<setHeader name="event.message"><constant>${body.serviceId} - Integration Service erfolgreich beendet.</constant></setHeader>
 
 					<!-- set service header -->
-					<setHeader name="event.service.mandator"><simple>${body.environment}</simple></setHeader>
+					<setHeader name="event.service.mandator"><simple>{{casisp.env}}</simple></setHeader>
 					<setHeader name="event.service.application"><constant>CAS ISP</constant></setHeader>
 					<setHeader name="event.service.function"><constant>${body.serviceName}</constant></setHeader>
 
@@ -136,7 +136,7 @@
 						<setHeader name="event.message"><simple>${body.serviceId} - #[[${exception.message}]]#</simple></setHeader>
 
 						<!-- set service header -->
-						<setHeader name="event.service.mandator"><simple>${body.environment}</simple></setHeader>
+						<setHeader name="event.service.mandator"><simple>{{casisp.env}}</simple></setHeader>
 						<setHeader name="event.service.application"><constant>CAS ISP</constant></setHeader>
 						<setHeader name="event.service.function"><constant>${body.serviceName}</constant></setHeader>
 
