@@ -1,9 +1,0 @@
-
-
-				<!--********************************************************************************-->
-				<!-- Set Body Processor                                                             -->
-				<!--********************************************************************************-->
-
-				<setBody>
-					<${body.setBody.language}#if(${body.setBody.language} == 'simple' && ${body.setBody.resultType}) resultType="${body.setBody.resultType}"#end>${body.setBody.expression}</${body.setBody.language}>
-				</setBody>

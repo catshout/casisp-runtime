@@ -1,8 +1,0 @@
-
-
-	<!--********************************************************************************-->
-	<!-- JMS Consumer Blueprint                                                         -->
-	<!--********************************************************************************-->
-
-	<!-- set reference to the ActiveMQ JMS connection factory -->
-	<reference id="activemqConsumer" interface="javax.jms.ConnectionFactory" />

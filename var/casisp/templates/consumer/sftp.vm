@@ -1,7 +1,0 @@
-
-
-			<!--********************************************************************************-->
-			<!-- SFTP Consumer                                                                  -->
-			<!--********************************************************************************-->
-
-			<from uri="sftp:${body.sftp.host}:${body.sftp.port}${body.sftp.directoryName}?#foreach($mapEntry in $body.sftp.options.entrySet())$mapEntry.key=$mapEntry.value#if($foreach.hasNext)&amp;#end#end" />
