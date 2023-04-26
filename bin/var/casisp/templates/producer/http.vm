@@ -1,0 +1,67 @@
+
+
+				<!--********************************************************************************-->
+				<!-- HTTP Producer                                                                  -->
+				<!--********************************************************************************-->
+
+				<!-- set HTTP header values -->
+#foreach($mapEntry in $body.http.headers.entrySet())
+				<setHeader name="$mapEntry.key"><constant>$mapEntry.value</constant></setHeader>
+#end
+
+				<!-- set query string parameter HTTP header -->
+				<setHeader name="httpQuery"><simple>#foreach($queryStringParameter in $body.http.queryStringParameters)&amp;$queryStringParameter.name=$queryStringParameter.value#end</simple></setHeader>
+				<setHeader name="httpQueryEncoded"><groovy>URLEncoder.encode(request.headers.get(&#39;httpQuery&#39;))</groovy></setHeader>
+## remove trailing slash from the resourceUri
+#set ($resourceUri = ${body.http.resourceUri})
+#if ($resourceUri.indexOf('/') == 0)
+#set ($resourceUri = $resourceUri.substring(1))
+#end
+
+#set ($authType = ${body.http.authentication[0].type})
+## Basic authentication
+#if ($authType == "Basic")
+## validate username for authentication definition
+#set ($username = ${body.http.authentication[0].Basic.username})
+#if ($username && $username.length() > 0)
+				<!-- set Authorization HTTP header -->
+				<setHeader name="username"><constant>${body.http.authentication[0].Basic.username}</constant></setHeader>
+				<setHeader name="password"><constant>${body.http.authentication[0].Basic.password}</constant></setHeader>
+
+				<setHeader name="Authorization">
+					<groovy>
+						def userPass = exchange.getIn().getHeader("username") + ":" + exchange.getIn().getHeader("password")
+						response = "Basic " + userPass.bytes.encodeBase64().toString()
+					</groovy>
+				</setHeader>
+#end
+				<!-- call HTTP endpoint -->
+				<toD uri="${body.http.scheme}://${body.http.hostname}:${body.http.port}/$resourceUri?bridgeEndpoint=true&amp;x509HostnameVerifier=noopHostnameVerifierProducer${exchange.properties.CamelSplitIndex}&amp;authMethod=Basic#foreach($mapEntry in $body.http.options.entrySet())&amp;$mapEntry.key=$mapEntry.value#end#[[${in.header.httpQueryEncoded}]]#" />
+## NTLM authentication
+#elseif ($authType == "NTLM")
+				<!-- call HTTP endpoint -->
+				<removeHeaders pattern="Authorization" />
+				<toD uri="${body.http.scheme}://${body.http.hostname}:${body.http.port}/$resourceUri?bridgeEndpoint=true&amp;x509HostnameVerifier=noopHostnameVerifierProducer${exchange.properties.CamelSplitIndex}&amp;authMethod=NTLM&amp;authUsername=${body.http.authentication[0].NTLM.authUsername}&amp;authPassword=${body.http.authentication[0].NTLM.authPassword}&amp;authDomain=${body.http.authentication[0].NTLM.authDomain}&amp;authHost=${body.http.authentication[0].NTLM.authHost}#foreach($mapEntry in $body.http.options.entrySet())&amp;$mapEntry.key=$mapEntry.value#end" />
+## No authentication
+#else
+				<!-- call HTTP endpoint -->
+				<toD uri="${body.http.scheme}://${body.http.hostname}:${body.http.port}/$resourceUri?bridgeEndpoint=true&amp;x509HostnameVerifier=noopHostnameVerifierProducer${exchange.properties.CamelSplitIndex}#foreach($mapEntry in $body.http.options.entrySet())&amp;$mapEntry.key=$mapEntry.value#end" />
+#end
+
+				<!-- check HTTP response code and throw an error -->
+				<choice>
+					<when>
+						<simple>#[[${header.CamelHttpResponseCode} > 299]]#</simple>
+
+						<choice>
+							<when>
+								<simple>${header.CamelHttpResponseText.length()} > 0</simple>
+
+								<throwException exceptionType="java.lang.Exception" message="HTTP response code: #[[${header.CamelHttpResponseCode}]]#, HTTP response text: #[[${header.CamelHttpResponseText}]]#"/>
+							</when>
+							<otherwise>
+								<throwException exceptionType="java.lang.Exception" message="HTTP response code: #[[${header.CamelHttpResponseCode}]]#"/>
+							</otherwise>
+						</choice>
+					</when>
+				</choice>

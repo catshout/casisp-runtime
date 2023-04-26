@@ -1,0 +1,12 @@
+## remove trailing slash from the contextPath
+#set ($contextPath = ${body.http.contextPath})
+#if ($contextPath.indexOf('/') == 0)
+#set ($contextPath = $contextPath.substring(1))
+#end
+bundle.symbolicName=isp.route.${exchange.properties.serviceId}.xml
+login.config.authMethod=BASIC
+login.config.realmName=karaf
+context.id=default
+
+security.constraint.1.url = /$contextPath/*
+security.constraint.1.roles = #foreach($mapEntry in $body.http.etc.basicAuthentication.credentials)$mapEntry.rolename#if($foreach.hasNext),#end#end

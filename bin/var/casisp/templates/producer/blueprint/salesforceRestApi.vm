@@ -1,0 +1,27 @@
+
+	<!--********************************************************************************-->
+	<!-- Salesforce Blueprint                                                           -->
+	<!--********************************************************************************-->
+
+	<bean id="salesforce" class="org.apache.camel.component.salesforce.SalesforceComponent">
+		<property name="loginConfig">
+			<bean class="org.apache.camel.component.salesforce.SalesforceLoginConfig">
+				<property name="loginUrl" value="${salesforce.loginUrl}" />
+				<property name="clientId" value="${salesforce.clientId}" />
+				<property name="clientSecret" value="${salesforce.clientSecret}" />
+				<property name="userName" value="${salesforce.userName}" />
+				<property name="password" value="${salesforce.password}" />
+				<property name="lazyLogin" value="true" />
+			</bean>
+		</property>
+	</bean>
+
+#foreach($endpoint in $body.csvSplitter.endpoint)
+#if($endpoint.type == 'jms')
+#set($jms = true)
+#end
+#end
+#if($jms)
+	<!-- set reference to the ActiveMQ JMS connection factory -->
+	<reference id="activemqProducerSalesforceRestApi${exchange.properties.CamelSplitIndex}" interface="javax.jms.ConnectionFactory" />
+#end

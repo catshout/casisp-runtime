@@ -1,0 +1,1844 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"$id": "http://c-a-s.de/casisp/integrationservice.json",
+	"definitions": {
+		"consumer": {
+			"file": {
+				"type": "object",
+				"required": [
+					"directoryName",
+					"options",
+					"exception"
+				],
+				"properties": {
+					"directoryName": {
+						"type": "string"
+					},
+					"options": {
+						"type": "object",
+						"required": [
+							"include"
+						],
+						"properties": {
+							"include": {
+								"type": "string"
+							},
+							"readLock": {
+								"type": "string",
+								"enum": [
+									"none",
+									"markerFile",
+									"changed",
+									"fileLock",
+									"rename",
+									"idempotent",
+									"idempotent-changed",
+									"idempotent-rename"
+								]
+							},
+							"readLockCheckInterval": {
+								"type": "integer"
+							},
+							"moveFailed": {
+								"type": "string"
+							},
+							"delete": {
+								"type": "boolean"
+							},
+							"idempotent": {
+								"type": "boolean"
+							},
+							"autoCreate": {
+								"type": "boolean"
+							}
+						}
+					},
+					"exception": {
+						"type": "object"
+					}
+				}
+			},
+			"sftp": {
+				"type": "object",
+				"required": [
+					"host",
+					"directoryName",
+					"options"
+				],
+				"properties": {
+					"host": {
+						"type": "string"
+					},
+					"port": {
+						"type": "integer",
+						"minimum": 0,
+						"maximum": 65535
+					},
+					"directoryName": {
+						"type": "string"
+					},
+					"options": {
+						"type": "object",
+						"required": [
+							"include"
+						],
+						"properties": {
+							"include": {
+								"type": "string"
+							},
+							"readLock": {
+								"type": "string",
+								"enum": [
+									"none",
+									"markerFile",
+									"changed",
+									"fileLock",
+									"rename",
+									"idempotent",
+									"idempotent-changed",
+									"idempotent-rename"
+								]
+							},
+							"readLockCheckInterval": {
+								"type": "integer"
+							},
+							"moveFailed": {
+								"type": "string"
+							},
+							"delete": {
+								"type": "boolean"
+							},
+							"idempotent": {
+								"type": "boolean"
+							},
+							"autoCreate": {
+								"type": "boolean"
+							},
+							"binary": {
+								"type": "boolean"
+							},
+							"disconnect": {
+								"type": "boolean"
+							},
+							"maximumReconnectAttempts": {
+								"type": "integer"
+							},
+							"delay": {
+								"type": "integer"
+							},
+							"localWorkDirectory": {
+								"type": "string"
+							},
+							"knownHostsFile": {
+								"type": "string"
+							},
+							"username": {
+								"type": "string"
+							},
+							"password": {
+								"type": "string"
+							},
+							"privateKeyFile": {
+								"type": "string"
+							},
+							"privateKeyPassphrase": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"jms": {
+				"type": "object",
+				"required": [
+					"type",
+					"destinationName",
+					"blueprint"
+				],
+				"properties": {
+					"type": {
+						"type": "string",
+						"enum": [
+							"queue",
+							"topic"
+						]
+					},
+					"destinationName": {
+						"type": "string"
+					},
+					"blueprint": {
+						"type": "object"
+					}
+				}
+			},
+			"timer": {
+				"type": "object",
+				"properties": {
+					"options": {
+						"type": "object",
+						"required": [
+							"period",
+							"repeatCount"
+						],
+						"properties": {
+							"delay": {
+								"type": "integer"
+							},
+							"period": {
+								"type": "integer"
+							},
+							"repeatCount": {
+								"type": "integer",
+								"minimum": 0
+							}
+						}
+					}
+				}
+			},
+			"http": {
+				"type": "object",
+				"required": [
+					"contextPath",
+					"relativePath",
+					"blueprint"
+				],
+				"properties": {
+					"contextPath": {
+						"type": "string"
+					},
+					"relativePath": {
+						"type": "string"
+					},
+					"etc": {
+						"type": "object",
+						"properties": {
+							"fileCreateFlag": {
+								"type": "boolean"
+							},
+							"filePrefix": {
+								"type": "string"
+							},
+							"basicAuthentication": {
+								"type": "object",
+								"properties": {
+									"credentials": {
+										"type": "array",
+										"items": {
+											"type": "object",
+											"properties": {
+												"rolename": {
+													"type": "string"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"blueprint": {
+						"type": "object"
+					}
+				}
+			},
+			"directvm": {
+				"type": "object",
+				"required": [
+					"someName"
+				],
+				"properties": {
+					"someName": {
+						"type": "string"
+					}
+				}
+			},
+			"salesforceCdc": {
+				"type": "object",
+				"required": [
+					"blueprint"
+				],
+				"properties": {
+					"changeDataCaptureEvents": {
+						"type": "object",
+						"required": [
+							"changeEvents"
+						],
+						"properties": {
+							"changeEvents": {
+								"type": "string",
+								"enum": [
+									"all",
+									"standard",
+									"custom"
+								]
+							},
+							"standardObject": {
+								"type": "string",
+								"enum": [
+									"Account",
+									"AccountContactRole",
+									"ActionCadence",
+									"ActionCadenceStep",
+									"ActionCadenceStepTracker",
+									"ActionCadenceTracker",
+									"Asset",
+									"AssignedResource",
+									"AuthorizationFormConsent",
+									"CallTemplate",
+									"Campaign",
+									"CampaignMember",
+									"CampaignMemberStatus",
+									"Case",
+									"Contact",
+									"ContactPointConsent",
+									"ContactPointEmail",
+									"ContactPointPhone",
+									"ContactPointTypeConsent",
+									"Contract",
+									"ContractLineItem",
+									"EmailMessage",
+									"EmailTemplate",
+									"Entitlement",
+									"Event",
+									"EventRelation",
+									"Individual",
+									"LandingPage",
+									"Lead",
+									"ListEmail",
+									"LiveChatTranscript",
+									"Location",
+									"Macro",
+									"MacroInstruction",
+									"MaintenanceAsset",
+									"MaintenancePlan",
+									"MarketingForm",
+									"MarketingLink",
+									"Opportunity",
+									"OpportunityContactRole",
+									"OpportunitySplit",
+									"Order",
+									"OrderItem",
+									"PartyConsent",
+									"Pricebook2",
+									"Product2",
+									"ProductConsumed",
+									"ProductItem",
+									"ProductRequest",
+									"ProductRequestLineItem",
+									"ProductTransfer",
+									"QuickText",
+									"Recommendation",
+									"ResourceAbsence",
+									"ReturnOrder",
+									"ReturnOrderLineItem",
+									"ServiceAppointment",
+									"ServiceCrew",
+									"ServiceCrewMember",
+									"ServiceResource",
+									"ServiceTerritory",
+									"ServiceTerritoryMember",
+									"Shipment",
+									"SocialPost",
+									"TimeSheet",
+									"TimeSheetEntry",
+									"Quote",
+									"QuoteLineItem",
+									"ServiceContract",
+									"Task",
+									"TaskRelation",
+									"User",
+									"VoiceCall",
+									"VoiceCallRecording",
+									"WorkOrder",
+									"WorkOrderLineItem",
+									"WorkType"
+								]
+							},
+							"customObject": {
+								"type": "string"
+							}
+						}
+					},
+					"blueprint": {
+						"type": "object",
+						"required": [
+							"apiVersion"
+						],
+						"properties": {
+							"apiVersion": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			}
+		},
+		"processor": {
+			"zipFileDataFormat": {
+				"type": "object",
+				"required": [
+					"marshal"
+				],
+				"properties": {
+					"marshal": {
+						"type": "string",
+						"enum": [
+							"marshal",
+							"unmarshal"
+						]
+					}
+				}
+			},
+			"jsonDataFormat": {
+				"type": "object",
+				"required": [
+					"marshal"
+				],
+				"properties": {
+					"marshal": {
+						"type": "string",
+						"enum": [
+							"marshal",
+							"unmarshal"
+						]
+					}
+				}
+			},
+			"log": {
+				"type": "object",
+				"required": [
+					"message"
+				],
+				"properties": {
+					"message": {
+						"type": "string"
+					}
+				}
+			},
+			"convertBodyTo": {
+				"type": "object",
+				"required": [
+					"type"
+				],
+				"properties": {
+					"type": {
+						"type": "string"
+					},
+					"charset": {
+						"type": "string"
+					}
+				}
+			},
+			"setBody": {
+				"type": "object",
+				"required": [
+					"language",
+					"expression"
+				],
+				"properties": {
+					"language": {
+						"type": "string",
+						"enum": [
+							"constant",
+							"simple",
+							"jsonpath",
+							"xpath",
+							"groovy"
+						]
+					},
+					"resultType": {
+						"type": "string"
+					},
+					"expression": {
+						"type": "string"
+					}
+				}
+			},
+			"setHeader": {
+				"type": "object",
+				"required": [
+					"language",
+					"name",
+					"expression"
+				],
+				"properties": {
+					"language": {
+						"type": "string",
+						"enum": [
+							"constant",
+							"simple",
+							"jsonpath",
+							"xpath",
+							"groovy"
+						]
+					},
+					"name": {
+						"type": "string"
+					},
+					"resultType": {
+						"type": "string"
+					},
+					"expression": {
+						"type": "string"
+					}
+				}
+			},
+			"setProperty": {
+				"type": "object",
+				"required": [
+					"language",
+					"name",
+					"expression"
+				],
+				"properties": {
+					"language": {
+						"type": "string",
+						"enum": [
+							"constant",
+							"simple",
+							"jsonpath",
+							"xpath",
+							"groovy"
+						]
+					},
+					"name": {
+						"type": "string"
+					},
+					"resultType": {
+						"type": "string"
+					},
+					"expression": {
+						"type": "string"
+					}
+				}
+			},
+			"enrich": {
+				"type": "object",
+				"required": [
+					"uri"
+				],
+				"properties": {
+					"uri": {
+						"type": "string"
+					},
+					"blueprint": {
+						"type": "object",
+						"required": [
+							"enrichPackage",
+							"enrichClass"
+						],
+						"properties": {
+							"enrichPackage": {
+								"type": "string"
+							},
+							"enrichClass": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"process": {
+				"type": "object",
+				"required": [
+					"blueprint"
+				],
+				"properties": {
+					"blueprint": {
+						"type": "object",
+						"required": [
+							"processPackage",
+							"processClass"
+						],
+						"properties": {
+							"processPackage": {
+								"type": "string"
+							},
+							"processClass": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"mappingService": {
+				"type": "object",
+				"properties": {
+					"blueprint": {
+						"type": "object",
+						"required": [
+							"mappingPackage",
+							"mappingClass"
+						],
+						"properties": {
+							"mappingPackage": {
+								"type": "string"
+							},
+							"mappingClass": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			}
+		},
+		"producer": {
+			"file": {
+				"type": "object",
+				"required": [
+					"directoryName"
+				],
+				"properties": {
+					"directoryName": {
+						"type": "string"
+					},
+					"options": {
+						"type": "object",
+						"properties": {
+							"fileName": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"jms": {
+				"type": "object",
+				"required": [
+					"type",
+					"destinationName",
+					"blueprint"
+				],
+				"properties": {
+					"type": {
+						"type": "string",
+						"enum": [
+							"queue",
+							"topic"
+						]
+					},
+					"destinationName": {
+						"type": "string"
+					},
+					"blueprint": {
+						"type": "object"
+					}
+				}
+			},
+			"kafka": {
+				"type": "object",
+				"required": [
+					"topic",
+					"headers",
+					"options"
+				],
+				"properties": {
+					"topic": {
+						"type": "string"
+					},
+					"headers": {
+						"type": "object",
+						"required": [
+							"kafka_KEY"
+						],
+						"properties": {
+							"kafka_KEY": {
+								"type": "string"
+							}
+						}
+					},
+					"options": {
+						"type": "object",
+						"required": [
+							"brokers"
+						],
+						"properties": {
+							"brokers": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"http": {
+				"type": "object",
+				"required": [
+					"scheme",
+					"hostname",
+					"port",
+					"resourceUri",
+					"headers"
+				],
+				"properties": {
+					"scheme": {
+						"type": "string",
+						"enum": [
+							"http",
+							"https"
+						]
+					},
+					"hostname": {
+						"type": "string"
+					},
+					"port": {
+						"type": "integer",
+						"minimum": 0,
+						"maximum": 65535
+					},
+					"resourceUri": {
+						"type": "string",
+						"minLength": 1
+					},
+					"queryStringParameters": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string"
+								},
+								"value": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"headers": {
+						"type": "object",
+						"required": [
+							"CamelHttpMethod"
+						],
+						"properties": {
+							"CamelHttpMethod": {
+								"type": "string",
+								"enum": [
+									"GET",
+									"POST",
+									"PUT",
+									"DELETE",
+									"PATCH"
+								]
+							},
+							"Content-Type": {
+								"type": "string",
+								"enum": [
+									"text/plain",
+									"text/xml",
+									"application/json",
+									"application/x-www-form-urlencoded",
+									"*/*"
+								]
+							}
+						}
+					},
+					"authentication": {
+						"type": "array",
+						"maxItems": 1,
+						"items": {
+							"type": "object",
+							"required": [
+								"type"
+							],
+							"properties": {
+								"type": {
+									"type": "string",
+									"enum": [
+										"Basic",
+										"NTLM"
+									]
+								},
+								"Basic": {
+									"type": "object",
+									"properties": {
+										"username": {
+											"type": "string"
+										},
+										"password": {
+											"type": "string"
+										}
+									}
+								},
+								"NTLM": {
+									"type": "object",
+									"properties": {
+										"authUsername": {
+											"type": "string"
+										},
+										"authPassword": {
+											"type": "string"
+										},
+										"authDomain": {
+											"type": "string"
+										},
+										"authHost": {
+											"type": "string"
+										}
+									}
+								}
+							}
+						}
+					},
+					"options": {
+						"type": "object",
+						"properties": {
+							"throwExceptionOnFailure": {
+								"type": "boolean"
+							}
+						}
+					},
+					"blueprint": {
+						"type": "object"
+					}
+				}
+			},
+			"csvSplitter": {
+				"type": "object",
+				"required": [
+					"splitSize",
+					"endpoint",
+					"blueprint"
+				],
+				"properties": {
+					"splitSize": {
+						"type": "integer",
+						"minimum": 0
+					},
+					"endpoint": {
+						"type": "array",
+						"minItems": 1,
+						"items": {
+							"type": "object",
+							"required": [
+								"type"
+							],
+							"properties": {
+								"type": {
+									"type": "string",
+									"enum": [
+										"jms",
+										"direct-vm"
+									]
+								},
+								"jms": {
+									"type": "object",
+									"required": [
+										"type",
+										"destinationName"
+									],
+									"properties": {
+										"type": {
+											"type": "string",
+											"enum": [
+												"queue",
+												"topic"
+											]
+										},
+										"destinationName": {
+											"type": "string"
+										}
+									}
+								},
+								"someName": {
+									"type": "string"
+								}
+							},
+							"oneOf": [
+								{
+									"properties": {
+										"type": {
+											"enum": [
+												"jms"
+											]
+										}
+									},
+									"required": [
+										"jms"
+									]
+								},
+								{
+									"properties": {
+										"type": {
+											"enum": [
+												"direct-vm"
+											]
+										}
+									},
+									"required": [
+										"someName"
+									]
+								}
+							]
+						}
+					},
+					"blueprint": {
+						"type": "object"
+					}
+				}
+			},
+			"jsonArraySplitter": {
+				"type": "object",
+				"required": [
+					"arrayName",
+					"splitSize",
+					"endpoint",
+					"blueprint",
+					"context"
+				],
+				"properties": {
+					"arrayName": {
+						"type": "string"
+					},
+					"splitSize": {
+						"type": "integer",
+						"minimum": 0,
+						"maximum": 8192
+					},
+					"endpoint": {
+						"type": "array",
+						"minItems": 1,
+						"items": {
+							"type": "object",
+							"required": [
+								"type"
+							],
+							"properties": {
+								"type": {
+									"type": "string",
+									"enum": [
+										"jms",
+										"direct-vm"
+									]
+								},
+								"jms": {
+									"type": "object",
+									"required": [
+										"type",
+										"destinationName"
+									],
+									"properties": {
+										"type": {
+											"type": "string",
+											"enum": [
+												"queue",
+												"topic"
+											]
+										},
+										"destinationName": {
+											"type": "string"
+										}
+									}
+								},
+								"someName": {
+									"type": "string"
+								}
+							},
+							"oneOf": [
+								{
+									"properties": {
+										"type": {
+											"enum": [
+												"jms"
+											]
+										}
+									},
+									"required": [
+										"jms"
+									]
+								},
+								{
+									"properties": {
+										"type": {
+											"enum": [
+												"direct-vm"
+											]
+										}
+									},
+									"required": [
+										"someName"
+									]
+								}
+							]
+						}
+					},
+					"blueprint": {
+						"type": "object"
+					},
+					"context": {
+						"type": "object"
+					}
+				}
+			},
+			"jsonPathSplitter": {
+				"type": "object",
+				"required": [
+					"jsonPath",
+					"endpoint",
+					"blueprint"
+				],
+				"properties": {
+					"jsonPath": {
+						"type": "string"
+					},
+					"endpoint": {
+						"type": "array",
+						"minItems": 1,
+						"items": {
+							"type": "object",
+							"properties": {
+								"type": {
+									"type": "string",
+									"enum": [
+										"jms",
+										"direct-vm"
+									]
+								},
+								"jms": {
+									"type": "object",
+									"required": [
+										"type",
+										"destinationName"
+									],
+									"properties": {
+										"type": {
+											"type": "string",
+											"enum": [
+												"queue",
+												"topic"
+											]
+										},
+										"destinationName": {
+											"type": "string"
+										}
+									}
+								},
+								"someName": {
+									"type": "string"
+								}
+							},
+							"oneOf": [
+								{
+									"properties": {
+										"type": {
+											"enum": [
+												"jms"
+											]
+										}
+									},
+									"required": [
+										"jms"
+									]
+								},
+								{
+									"properties": {
+										"type": {
+											"enum": [
+												"direct-vm"
+											]
+										}
+									},
+									"required": [
+										"someName"
+									]
+								}
+							]
+						}
+					},
+					"blueprint": {
+						"type": "object"
+					}
+				}
+			},
+			"jsonPathFilter": {
+				"type": "object",
+				"required": [
+					"jsonPath",
+					"endpoint",
+					"blueprint"
+				],
+				"properties": {
+					"jsonPath": {
+						"type": "string"
+					},
+					"suppressExceptions": {
+						"type": "boolean"
+					},
+					"endpoint": {
+						"type": "array",
+						"minItems": 1,
+						"items": {
+							"type": "object",
+							"properties": {
+								"type": {
+									"type": "string",
+									"enum": [
+										"jms",
+										"direct-vm"
+									]
+								},
+								"jms": {
+									"type": "object",
+									"required": [
+										"type",
+										"destinationName"
+									],
+									"properties": {
+										"type": {
+											"type": "string",
+											"enum": [
+												"queue",
+												"topic"
+											]
+										},
+										"destinationName": {
+											"type": "string"
+										}
+									}
+								},
+								"someName": {
+									"type": "string"
+								}
+							},
+							"oneOf": [
+								{
+									"properties": {
+										"type": {
+											"enum": [
+												"jms"
+											]
+										}
+									},
+									"required": [
+										"jms"
+									]
+								},
+								{
+									"properties": {
+										"type": {
+											"enum": [
+												"direct-vm"
+											]
+										}
+									},
+									"required": [
+										"someName"
+									]
+								}
+							]
+						}
+					},
+					"blueprint": {
+						"type": "object"
+					}
+				}
+			},
+			"directvm": {
+				"type": "object",
+				"required": [
+					"someName"
+				],
+				"properties": {
+					"someName": {
+						"type": "string"
+					}
+				}
+			},
+			"choice": {
+				"type": "object",
+				"required": [
+					"when",
+					"blueprint"
+				],
+				"properties": {
+					"when": {
+						"type": "array",
+						"minItems": 1,
+						"items": {
+							"type": "object",
+							"required": [
+								"expression",
+								"endpoint"
+							],
+							"properties": {
+								"expression": {
+									"type": "string"
+								},
+								"endpoint": {
+									"type": "array",
+									"minItems": 1,
+									"items": {
+										"type": "object",
+										"required": [
+											"type"
+										],
+										"properties": {
+											"type": {
+												"type": "string",
+												"enum": [
+													"jms",
+													"direct-vm"
+												]
+											},
+											"jms": {
+												"type": "object",
+												"required": [
+													"type",
+													"destinationName"
+												],
+												"properties": {
+													"type": {
+														"type": "string",
+														"enum": [
+															"queue",
+															"topic"
+														]
+													},
+													"destinationName": {
+														"type": "string"
+													}
+												}
+											},
+											"someName": {
+												"type": "string"
+											}
+										},
+										"oneOf": [
+											{
+												"properties": {
+													"type": {
+														"enum": [
+															"jms"
+														]
+													}
+												},
+												"required": [
+													"jms"
+												]
+											},
+											{
+												"properties": {
+													"type": {
+														"enum": [
+															"direct-vm"
+														]
+													}
+												},
+												"required": [
+													"someName"
+												]
+											}
+										]
+									}
+								}
+							}
+						}
+					},
+					"otherwise": {
+						"type": "array",
+						"minItems": 1,
+						"items": {
+							"type": "object",
+							"required": [
+								"type"
+							],
+							"properties": {
+								"type": {
+									"type": "string",
+									"enum": [
+										"jms",
+										"direct-vm"
+									]
+								},
+								"jms": {
+									"type": "object",
+									"required": [
+										"type",
+										"destinationName"
+									],
+									"properties": {
+										"type": {
+											"type": "string",
+											"enum": [
+												"queue",
+												"topic"
+											]
+										},
+										"destinationName": {
+											"type": "string"
+										}
+									}
+								},
+								"someName": {
+									"type": "string"
+								}
+							},
+							"oneOf": [
+								{
+									"properties": {
+										"type": {
+											"enum": [
+												"jms"
+											]
+										}
+									},
+									"required": [
+										"jms"
+									]
+								},
+								{
+									"properties": {
+										"type": {
+											"enum": [
+												"direct-vm"
+											]
+										}
+									},
+									"required": [
+										"someName"
+									]
+								}
+							]
+						}
+					},
+					"blueprint": {
+						"type": "object"
+					}
+				}
+			},
+			"salesforceRestApi": {
+				"type": "object",
+				"required": [
+					"operationName",
+					"options",
+					"blueprint"
+				],
+				"properties": {
+					"operationName": {
+						"type": "string",
+						"enum": [
+							"getSObject",
+							"createSObject",
+							"updateSObject",
+							"deleteSObject",
+							"upsertSObject",
+							"getSObjectWithId",
+							"deleteSObjectWithId",
+							"query",
+							"queryAll",
+							"search",
+							"getBlobField"
+						]
+					},
+					"options": {
+						"type": "object",
+						"required": [
+							"apiVersion",
+							"format"
+						],
+						"properties": {
+							"apiVersion": {
+								"type": "string"
+							},
+							"format": {
+								"type": "string",
+								"enum": [
+									"JSON",
+									"XML"
+								]
+							},
+							"sObjectName": {
+								"type": "string"
+							},
+							"sObjectId": {
+								"type": "string"
+							},
+							"sObjectIdName": {
+								"type": "string"
+							},
+							"sObjectIdValue": {
+								"type": "string"
+							},
+							"sObjectQuery": {
+								"type": "string"
+							},
+							"sObjectSearch": {
+								"type": "string"
+							},
+							"sObjectBlobFieldName": {
+								"type": "string"
+							}
+						}
+					},
+					"endpoint": {
+						"type": "array",
+						"minItems": 1,
+						"items": {
+							"type": "object",
+							"properties": {
+								"type": {
+									"type": "string",
+									"enum": [
+										"jms",
+										"direct-vm"
+									]
+								},
+								"jms": {
+									"type": "object",
+									"required": [
+										"type",
+										"destinationName"
+									],
+									"properties": {
+										"type": {
+											"type": "string",
+											"enum": [
+												"queue",
+												"topic"
+											]
+										},
+										"destinationName": {
+											"type": "string"
+										}
+									}
+								},
+								"someName": {
+									"type": "string"
+								}
+							},
+							"oneOf": [
+								{
+									"properties": {
+										"type": {
+											"enum": [
+												"jms"
+											]
+										}
+									},
+									"required": [
+										"jms"
+									]
+								},
+								{
+									"properties": {
+										"type": {
+											"enum": [
+												"direct-vm"
+											]
+										}
+									},
+									"required": [
+										"someName"
+									]
+								}
+							]
+						}
+					},
+					"blueprint": {
+						"type": "object"
+					}
+				},
+				"oneOf": [
+					{
+						"properties": {
+							"operationName": {
+								"enum": [
+									"getSObject",
+									"updateSObject",
+									"deleteSObject"
+								]
+							},
+							"options": {
+								"required": [
+									"sObjectName",
+									"sObjectId"
+								]
+							}
+						}
+					},
+					{
+						"properties": {
+							"operationName": {
+								"enum": [
+									"createSObject"
+								]
+							},
+							"options": {
+								"required": [
+									"sObjectName"
+								]
+							}
+						}
+					},
+					{
+						"properties": {
+							"operationName": {
+								"enum": [
+									"getSObjectWithId",
+									"upsertSObject",
+									"deleteSObjectWithId"
+								]
+							},
+							"options": {
+								"required": [
+									"sObjectName",
+									"sObjectIdName",
+									"sObjectIdValue"
+								]
+							}
+						}
+					},
+					{
+						"properties": {
+							"operationName": {
+								"enum": [
+									"query",
+									"queryAll"
+								]
+							},
+							"options": {
+								"required": [
+									"sObjectQuery"
+								]
+							}
+						}
+					},
+					{
+						"properties": {
+							"operationName": {
+								"enum": [
+									"search"
+								]
+							},
+							"options": {
+								"required": [
+									"sObjectSearch"
+								]
+							}
+						}
+					},
+					{
+						"properties": {
+							"operationName": {
+								"enum": [
+									"getBlobField"
+								]
+							},
+							"options": {
+								"required": [
+									"sObjectBlobFieldName",
+									"sObjectName",
+									"sObjectId"
+								]
+							}
+						}
+					}
+				]
+			},
+			"salesforceApexCall": {
+				"type": "object",
+				"required": [
+					"apiVersion",
+					"method",
+					"url",
+					"blueprint"
+				],
+				"properties": {
+					"apiVersion": {
+						"type": "string",
+						"default": "43.0"
+					},
+					"method": {
+						"type": "string",
+						"enum": [
+							"GET",
+							"POST",
+							"PUT",
+							"DELETE",
+							"PATCH",
+							"HEAD",
+							"OPTIONS"
+						]
+					},
+					"url": {
+						"type": "string"
+					},
+					"blueprint": {
+						"type": "object",
+						"properties": {
+							"queryParams": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"parameter": {
+											"type": "string"
+										},
+										"value": {
+											"type": "string"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"xPathSplitter": {
+				"type": "object",
+				"required": [
+					"xPath",
+					"endpoint",
+					"blueprint"
+				],
+				"properties": {
+					"xPath": {
+						"type": "string"
+					},
+					"endpoint": {
+						"type": "array",
+						"minItems": 1,
+						"items": {
+							"type": "object",
+							"properties": {
+								"type": {
+									"type": "string",
+									"enum": [
+										"jms",
+										"direct-vm"
+									]
+								},
+								"jms": {
+									"type": "object",
+									"required": [
+										"type",
+										"destinationName"
+									],
+									"properties": {
+										"type": {
+											"type": "string",
+											"enum": [
+												"queue",
+												"topic"
+											]
+										},
+										"destinationName": {
+											"type": "string"
+										}
+									}
+								},
+								"someName": {
+									"type": "string"
+								}
+							},
+							"oneOf": [
+								{
+									"properties": {
+										"type": {
+											"enum": [
+												"jms"
+											]
+										}
+									},
+									"required": [
+										"jms"
+									]
+								},
+								{
+									"properties": {
+										"type": {
+											"enum": [
+												"direct-vm"
+											]
+										}
+									},
+									"required": [
+										"someName"
+									]
+								}
+							]
+						}
+					},
+					"blueprint": {
+						"type": "object"
+					}
+				}
+			}
+		}
+	},
+	"type": "object",
+	"required": [
+		"serviceId",
+		"serviceName",
+		"process",
+		"consumer"
+	],
+	"properties": {
+		"serviceId": {
+			"type": "string"
+		},
+		"serviceName": {
+			"type": "string"
+		},
+		"version": {
+			"type": "string",
+			"pattern": "^\\d\\.\\d\\.\\d$",
+			"default": "1.0.0"
+		},
+		"deployDEV": {
+			"type": "boolean",
+			"default": false
+		},
+		"deployTEST": {
+			"type": "boolean",
+			"default": false
+		},
+		"deployPROD": {
+			"type": "boolean",
+			"default": false
+		},
+		"process": {
+			"type": "object",
+			"required": [
+				"processId"
+			],
+			"properties": {
+				"processId": {
+					"type": "string"
+				}
+			}
+		},
+		"consumer": {
+			"type": "array",
+			"minItems": 1,
+			"maxItems": 1,
+			"items": {
+				"type": "object",
+				"required": [
+					"consumerType"
+				],
+				"properties": {
+					"consumerType": {
+						"type": "string"
+					},
+					"file": {
+						"$ref": "#/definitions/consumer/file"
+					},
+					"sftp": {
+						"$ref": "#/definitions/consumer/sftp"
+					},
+					"jms": {
+						"$ref": "#/definitions/consumer/jms"
+					},
+					"timer": {
+						"$ref": "#/definitions/consumer/timer"
+					},
+					"http": {
+						"$ref": "#/definitions/consumer/http"
+					},
+					"directvm": {
+						"$ref": "#/definitions/consumer/directvm"
+					},
+					"salesforceCdc": {
+						"$ref": "#/definitions/consumer/salesforceCdc"
+					}
+				}
+			}
+		},
+		"processor": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"required": [
+					"processorType"
+				],
+				"properties": {
+					"processorType": {
+						"type": "string"
+					},
+					"zipFileDataFormat": {
+						"$ref": "#/definitions/processor/zipFileDataFormat"
+					},
+					"jsonDataFormat": {
+						"$ref": "#/definitions/processor/jsonDataFormat"
+					},
+					"convertBodyTo": {
+						"$ref": "#/definitions/processor/convertBodyTo"
+					},
+					"log": {
+						"$ref": "#/definitions/processor/log"
+					},
+					"setBody": {
+						"$ref": "#/definitions/processor/setBody"
+					},
+					"setHeader": {
+						"$ref": "#/definitions/processor/setHeader"
+					},
+					"setProperty": {
+						"$ref": "#/definitions/processor/setProperty"
+					},
+					"enrich": {
+						"$ref": "#/definitions/processor/enrich"
+					},
+					"process": {
+						"$ref": "#/definitions/processor/process"
+					},
+					"mappingService": {
+						"$ref": "#/definitions/processor/mappingService"
+					}
+				}
+			}
+		},
+		"producer": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"required": [
+					"producerType"
+				],
+				"properties": {
+					"producerType": {
+						"type": "string"
+					},
+					"file": {
+						"$ref": "#/definitions/producer/file"
+					},
+					"jms": {
+						"$ref": "#/definitions/producer/jms"
+					},
+					"kafka": {
+						"$ref": "#/definitions/producer/kafka"
+					},
+					"http": {
+						"$ref": "#/definitions/producer/http"
+					},
+					"csvSplitter": {
+						"$ref": "#/definitions/producer/csvSplitter"
+					},
+					"jsonArraySplitter": {
+						"$ref": "#/definitions/producer/jsonArraySplitter"
+					},
+					"jsonPathSplitter": {
+						"$ref": "#/definitions/producer/jsonPathSplitter"
+					},
+					"jsonPathFilter": {
+						"$ref": "#/definitions/producer/jsonPathFilter"
+					},
+					"directvm": {
+						"$ref": "#/definitions/producer/directvm"
+					},
+					"choice": {
+						"$ref": "#/definitions/producer/choice"
+					},
+					"salesforceRestApi": {
+						"$ref": "#/definitions/producer/salesforceRestApi"
+					},
+					"salesforceApexCall": {
+						"$ref": "#/definitions/producer/salesforceApexCall"
+					},
+					"xPathSplitter": {
+						"$ref": "#/definitions/producer/xPathSplitter"
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,19 @@
+    pax-web-jetty, \
+    hawtio, \
+    activemq-broker-noweb, \
+    camel, \
+    camel-jms, \
+    jms, \
+    camel-http, \
+    camel-servlet, \
+    camel-swagger-java, \
+    camel-ftp, \
+    camel-jackson, \
+    camel-jsonpath, \
+    camel-json-validator, \
+    camel-zipfile, \
+    camel-velocity, \
+    camel-groovy, \
+    camel-salesforce, \
+    camel-kafka
+

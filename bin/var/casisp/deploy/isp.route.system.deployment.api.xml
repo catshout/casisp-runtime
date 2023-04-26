@@ -1,0 +1,61 @@
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+
+        <camelContext id="isp.route.system.deployment.api" xmlns="http://camel.apache.org/schema/blueprint" streamCache="true">
+
+                <!-- define Jackson data format -->
+                <dataFormats>
+                        <json id="jackson" library="Jackson" useList="true" />
+                </dataFormats>
+
+                <route id="isp.api.route.system.deployment.api">
+
+                        <from uri="direct-vm:isp.route.system.deployment.api" />
+                        <log message="isp.route.system.deployment.api - Route started"/>
+
+                        <!-- convert the body into a Hashmap and add the body to the claim check stack for later use -->
+                        <setBody><jsonpath>$</jsonpath></setBody>
+                        <claimCheck operation="Set" key="inBody" />
+
+                        <setProperty name="apiId"><jsonpath>$.apiId</jsonpath></setProperty>
+
+                        <!-- process the API velocity template -->
+                        <toD uri="velocity:file:{{karaf.home}}/templates/api/api.vm?contentCache=false&amp;allowContextMapAll=true" />
+
+                        <!-- write the API to the deploy folder -->
+                        <to uri="file:{{karaf.home}}/deploy?fileName=isp.api.${exchangeProperty.apiId}.xml"/>
+
+                        <!-- get the body from the claim check stack -->
+                        <claimCheck operation="Get" key="inBody"/>
+
+                        <!-- process the API velocity template for etc configuration-->
+                        <setProperty name="etcObject"><jsonpath suppressExceptions="true">$.etc</jsonpath></setProperty>
+                        <setProperty name="fileCreateFlag"><jsonpath suppressExceptions="true">$.etc.fileCreateFlag</jsonpath></setProperty>
+                        <setProperty name="filePrefix"><jsonpath suppressExceptions="true">$.etc.filePrefix</jsonpath></setProperty>
+
+                        <!-- write API etc properties file -->
+                        <choice>
+                                <when>
+                                        <simple>${exchangeProperty.fileCreateFlag?.toString()} == 'true'</simple>
+
+                                        <toD uri="velocity:file:{{karaf.home}}/templates/api/api.etc.vm?contentCache=false&amp;allowContextMapAll=true" />
+                                        <choice>
+                                                <when>
+                                                        <simple>${exchangeProperty.filePrefix?.toString().length} > 0</simple>
+
+                                                        <to uri="file:{{karaf.home}}/etc?fileName=${exchangeProperty.filePrefix}.${exchangeProperty.apiId}.cfg" />
+                                                </when>
+                                                <otherwise>
+                                                        <to uri="file:{{karaf.home}}/etc?fileName=${exchangeProperty.apiId}.cfg" />
+                                                </otherwise>
+                                        </choice>
+                                </when>
+                        </choice>
+
+                        <!-- setProperty name="apiId"><jsonpath>$.apiId</jsonpath></setProperty -->
+                        <setBody><simple>{"responseCode": 200, "responseMessage": "API model '${exchangeProperty.apiId}' successfully parsed and deployment initiated."}\n\r</simple></setBody>
+                        <log message="isp.route.system.deployment.api - Route finished"/>
+                </route>
+
+        </camelContext>
+
+</blueprint>

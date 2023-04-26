@@ -1,0 +1,7 @@
+
+
+			<!--********************************************************************************-->
+			<!-- Timer Consumer                                                                 -->
+			<!--********************************************************************************-->
+
+			<from uri="timer:${exchange.properties.serviceId}?#foreach($mapEntry in $body.timer.options.entrySet())$mapEntry.key=$mapEntry.value#if($foreach.hasNext)&amp;#end#end" />

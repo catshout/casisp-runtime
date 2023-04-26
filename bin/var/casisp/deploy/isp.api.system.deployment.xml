@@ -1,0 +1,130 @@
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+
+	<reference id="httpService" interface="org.osgi.service.http.HttpService" />
+
+	<bean id="camelServlet" class="org.apache.camel.component.servlet.CamelHttpTransportServlet"/>
+
+	<bean class="org.apache.camel.component.servlet.osgi.OsgiServletRegisterer"
+	      init-method="register"
+	      destroy-method="unregister">
+		<property name="servletName" value="isp.api.route.system.deployment" />
+		<property name="alias" value="/casisp" />
+		<property name="httpService" ref="httpService" />
+		<property name="servlet" ref="camelServlet" />
+	</bean>
+
+	<camelContext id="isp.api.system.deployment" xmlns="http://camel.apache.org/schema/blueprint" streamCache="true" useBreadcrumb="true">
+
+		<!--********************************************************************************-->
+		<!-- REST API                                                                       -->
+		<!--********************************************************************************-->
+
+		<restConfiguration component="servlet" bindingMode="off"
+						   apiContextPath="/base/api-doc" enableCORS="true">
+			<endpointProperty key="servletName" value="isp.api.route.system.deployment" />
+			<dataFormatProperty key="prettyPrint" value="true" />
+			<apiProperty key="base.path" value="/base" />
+			<apiProperty key="api.description" value="CAS ISP - Deployment API" />
+			<apiProperty key="api.title" value="CAS ISP Deployment" />
+			<apiProperty key="api.version" value="1.0.0" />
+			<corsHeaders key="Access-Control-Allow-Origin" value="*" />
+			<corsHeaders key="Access-Control-Allow-Methods" value="GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, CONNECT, PATCH" />
+			<corsHeaders key="Access-Control-Allow-Headers" value="Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers" />
+			<corsHeaders key="Access-Control-Max-Age" value="3600" />
+		</restConfiguration>
+
+                <!-- REST endpoints -->
+                <rest path="/deploy">
+			<post path="/api" id="isp.api.system.deployment.api">
+                            <to uri="direct:isp.api.system.deployment.api" />
+                        </post>
+                        <post path="/service" id="isp.api.system.deployment.service">
+                            <to uri="direct:isp.api.system.deployment.service" />
+                        </post>
+                        <get path="/health" id="isp.api.system.health">
+                            <to uri="direct:isp.api.system.health" />
+                        </get>
+                </rest>
+
+		<route id="isp.api.system.deployment.api">
+                    <from uri="direct:isp.api.system.deployment.api" />
+
+                    <doTry>
+                            <!-- validate against the JSON schema -->
+                            <to uri="json-validator:file:templates/schema/integrationapi.schema.json" />
+
+                            <!-- send the chunk to direct -->
+                            <to uri="direct-vm:isp.route.system.deployment.api" />
+
+                            <doCatch>
+                                    <!-- catch JsonValidationException -->
+                                    <exception>org.apache.camel.component.jsonvalidator.JsonValidationException</exception>
+
+                                    <log message="JSON validation error: ${exception.message}" />
+                                    <setHeader name="CamelHttpResponseCode"><constant>400</constant></setHeader>
+                                    <setBody><simple>${exception.getErrors()}</simple></setBody>
+
+                                    <!-- if no error set found use the error message -->
+                                    <choice>
+                                            <when>
+                                                    <simple>${exception.getErrors()} == null</simple>
+                                                    <setBody><simple>${exception.cause}</simple></setBody>
+                                            </when>
+                                    </choice>
+
+                            </doCatch>
+
+                            <!-- execute in any case -->
+                            <doFinally>
+                            </doFinally>
+                    </doTry>
+
+                </route>
+
+                <route id="isp.api.system.deployment.service">
+                    <from uri="direct:isp.api.system.deployment.service" />
+
+                    <doTry>
+
+                            <!-- validate against the JSON schema -->
+                            <to uri="json-validator:file:templates/schema/integrationservice.schema.json" />
+
+                            <!-- send the chunk to direct -->
+                            <to uri="direct-vm:isp.route.system.deployment.service" />
+
+                            <doCatch>
+                                    <!-- catch JsonValidationException -->
+                                    <exception>org.apache.camel.component.jsonvalidator.JsonValidationException</exception>
+
+                                    <log message="JSON validation error: ${exception.message}" />
+                                    <setHeader name="CamelHttpResponseCode"><constant>400</constant></setHeader>
+                                    <setBody><simple>${exception.getErrors()}</simple></setBody>
+
+                                    <!-- if no error set found use the error message -->
+                                    <choice>
+                                            <when>
+                                                    <simple>${exception.getErrors()} == null</simple>
+                                                    <setBody><simple>${exception.cause}</simple></setBody>
+                                            </when>
+                                    </choice>
+
+                            </doCatch>
+
+                            <!-- execute in any case -->
+                            <doFinally>
+                            </doFinally>
+                    </doTry>
+
+                </route>
+
+                <route id="isp.api.system.health">
+                    <from uri="direct:isp.api.system.health" />
+
+                    <log message="isp.api.system.health - started"/>
+                    <setBody><simple>{"responseCode": 200, "responseMessage": "Health Check succesful'"}</simple></setBody>
+                    <log message="isp.api.system.health - Route finished"/>
+                </route>
+
+  	</camelContext>
+
+</blueprint>

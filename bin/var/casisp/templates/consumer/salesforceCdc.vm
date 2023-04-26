@@ -1,0 +1,7 @@
+
+
+			<!--********************************************************************************-->
+			<!-- Salesforce CDC Consumer                                                        -->
+			<!--********************************************************************************-->
+
+			<from uri="salesforce:data/#if ($body.salesforceCdc.changeDataCaptureEvents.changeEvents == "all")ChangeEvents#elseif ($body.salesforceCdc.changeDataCaptureEvents.changeEvents == "standard")${body.salesforceCdc.changeDataCaptureEvents.standardObject}ChangeEvent#elseif ($body.salesforceCdC.changeDataCaptureEvents.changeEvents == "custom")${body.salesforceCdc.changeDataCaptureEvents.customObject}__ChangeEvent#end?rawPayload=true&amp;replayId=-1" />

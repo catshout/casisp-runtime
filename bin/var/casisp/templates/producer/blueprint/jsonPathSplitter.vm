@@ -1,0 +1,14 @@
+
+#foreach($endpoint in $body.jsonPathSplitter.endpoint)
+#if($endpoint.type == 'jms')
+#set($jms = true)
+#end
+#end
+#if($jms)
+	<!--********************************************************************************-->
+	<!-- JSONPath Splitter Producer Blueprint                                           -->
+	<!--********************************************************************************-->
+
+	<!-- set reference to the ActiveMQ JMS connection factory -->
+	<reference id="activemqProducerJsonPathSplitter${exchange.properties.CamelSplitIndex}" interface="javax.jms.ConnectionFactory" />
+#end

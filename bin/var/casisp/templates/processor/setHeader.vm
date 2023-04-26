@@ -1,0 +1,9 @@
+
+
+				<!--********************************************************************************-->
+				<!-- Set Header Processor                                                           -->
+				<!--********************************************************************************-->
+
+                <setHeader name="${body.setHeader.name}">
+					<${body.setHeader.language}#if(${body.setHeader.language} == 'simple' && ${body.setHeader.resultType}) resultType="${body.setHeader.resultType}"#end>${body.setHeader.expression}</${body.setHeader.language}>
+				</setHeader>

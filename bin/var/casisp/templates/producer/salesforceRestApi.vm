@@ -1,0 +1,29 @@
+
+				<!--********************************************************************************-->
+				<!-- Salesforce Producer                                                            -->
+				<!--********************************************************************************-->
+
+#if (${body.salesforceRestApi.operationName} == "query")
+				<log message="Fetching first entries" />
+				<to uri="salesforce:${body.salesforceRestApi.operationName}?rawPayload=true&amp;notFoundBehaviour=EXCEPTION#foreach ($mapEntry in $body.salesforceRestApi.options.entrySet())#if ($mapEntry.value != "")&amp;$mapEntry.key=$mapEntry.value#end#end" />
+
+				<unmarshal><json /></unmarshal>
+				<setHeader name="totalSize"><jsonpath>$.totalSize</jsonpath></setHeader>
+				<log message="totalSize: ${header.totalSize}"/>
+				<setHeader name="nextRecordsUrl"><groovy>if (request.body.nextRecordsUrl != null) return request.body.nextRecordsUrl else return null</groovy></setHeader>
+				<setBody><jsonpath>$.records</jsonpath></setBody>
+				<to uri="direct-vm:${body.salesforceRestApi.someName}" />
+
+				<loop doWhile="true">
+					<simple>${header.nextRecordsUrl} != null</simple>
+
+					<log message="Fetching next entries from: ${header.nextRecordsUrl}" />
+					<toD uri="salesforce:queryMore?sObjectQuery=${header.nextRecordsUrl}&amp;rawPayload=true" />
+					<unmarshal><json /></unmarshal>
+					<setHeader name="nextRecordsUrl"><groovy>if (request.body.nextRecordsUrl != null) return request.body.nextRecordsUrl else return null</groovy></setHeader>
+					<setBody><jsonpath>$.records</jsonpath></setBody>
+					<to uri="direct-vm:${body.salesforceRestApi.someName}" />
+				</loop>
+#else
+				<to uri="salesforce:${body.salesforceRestApi.operationName}?rawPayload=true&amp;notFoundBehaviour=EXCEPTION#foreach ($mapEntry in $body.salesforceRestApi.options.entrySet())#if ($mapEntry.value != "")&amp;$mapEntry.key=$mapEntry.value#end#end"/>
+#end

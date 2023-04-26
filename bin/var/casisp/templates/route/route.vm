@@ -1,0 +1,176 @@
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+                   xmlns:ext="http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.0.0"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
+                   xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 https://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
+
+        <cm:property-placeholder persistent-id="casisp" />
+
+        <!-- reference to JMS connection factory event -->
+        <reference id="activemqEvent" interface="javax.jms.ConnectionFactory" />
+
+        <!--********************************************************************************-->
+        <!-- Blueprint Elements                                                             -->
+        <!--********************************************************************************-->
+        #if(${exchange.properties.consumerBlueprintElements})${exchange.properties.consumerBlueprintElements}#end
+        #if(${exchange.properties.processorBlueprintElements})${exchange.properties.processorBlueprintElements}#end
+        #if(${exchange.properties.producerBlueprintElements})${exchange.properties.producerBlueprintElements}#end
+
+
+        <camelContext id="isp.route.${body.serviceId}" xmlns="http://camel.apache.org/schema/blueprint" streamCache="true" useBreadcrumb="true">
+
+                <!--********************************************************************************-->
+                <!-- Context Elements                                                               -->
+                <!--********************************************************************************-->
+                #if(${exchange.properties.consumerContextElements})${exchange.properties.consumerContextElements}#end
+                #if(${exchange.properties.processorContextElements})${exchange.properties.processorContextElements}#end
+                #if(${exchange.properties.producerContextElements})${exchange.properties.producerContextElements}#end
+
+
+                <!--********************************************************************************-->
+                <!-- Camel Route                                                                    -->
+                <!--********************************************************************************-->
+                <route id="isp.route.${body.serviceId}">
+
+                        <!--********************************************************************************-->
+                        <!-- Consumer Components                                                            -->
+                        <!--********************************************************************************-->
+                        ${exchange.properties.consumerComponents}
+
+                        <!-- set processInstanceId -->
+                        <choice>
+                                <when>
+                                        <simple>#[[${in.header.processInstanceId}]]# == null</simple>
+
+                                        <setHeader name="processInstanceId"><simple>#[[${in.header.breadcrumbId}]]#</simple></setHeader>
+                                </when>
+                        </choice>
+
+                        <!-- Log EIP -->
+                        <setProperty name="dateNow"><simple>#[[${date:now:yyyy-MM-dd'T'HH:mm:ss.SSSZ}]]#</simple></setProperty>
+                        <log message="CASISP|${body.process.processId}|#[[${in.header.processInstanceId}]]#|${body.serviceId}|${body.serviceName}|#[[${in.header.processInstanceId}]]#.0|#[[${exchangeProperty.dateNow}]]#|SUCCESS|START|${body.serviceId} - Integration Service gestartet.|0" />
+
+                        <!-- Wire Tap EIP -->
+                        <wireTap uri="direct:isp.route.${body.serviceId}.eventStart" />
+
+                        <!-- processing with error handling -->
+                        <doTry>
+
+                                <!--********************************************************************************-->
+                                <!-- Processor Components                                                           -->
+                                <!--********************************************************************************-->
+                                #if(${exchange.properties.processorComponents})${exchange.properties.processorComponents}#end
+
+
+                                <!--********************************************************************************-->
+                                <!-- Producer Components                                                            -->
+                                <!--********************************************************************************-->
+                                #if(${exchange.properties.producerComponents})${exchange.properties.producerComponents}#end
+
+
+                                <!-- Log EIP -->
+                                <setProperty name="dateNow"><simple>#[[${date:now:yyyy-MM-dd'T'HH:mm:ss.SSSZ}]]#</simple></setProperty>
+                                <log message="CASISP|${body.process.processId}|#[[${in.header.processInstanceId}]]#|${body.serviceId}|${body.serviceName}|#[[${in.header.processInstanceId}]]#.1|#[[${exchangeProperty.dateNow}]]#|SUCCESS|END|${body.serviceId} - Integration Service erfolgreich beendet.|0" />
+
+                                <!-- Wire Tap EIP -->
+                                <wireTap uri="direct:isp.route.${body.serviceId}.eventSuccess" />
+
+                                <!-- catch any error -->
+                                <doCatch>
+
+                                        <!-- catch all exceptions -->
+                                        <exception>java.lang.Exception</exception>
+
+                                        <!-- Log EIP -->
+                                        <setProperty name="dateNow"><simple>#[[${date:now:yyyy-MM-dd'T'HH:mm:ss.SSSZ}]]#</simple></setProperty>
+                                        <log message="CASISP|${body.process.processId}|#[[${in.header.processInstanceId}]]#|${body.serviceId}|${body.serviceName}|#[[${in.header.processInstanceId}]]#.1|#[[${exchangeProperty.dateNow}]]#|FAILURE|END|${body.serviceId} - #[[${exception.message}]]#|8" />
+
+                                        <!-- Wire Tap EIP -->
+                                        <wireTap uri="direct:isp.route.${body.serviceId}.eventFailure" />
+
+                                        <!--********************************************************************************-->
+                                        <!-- Exception Elements                                                             -->
+                                        <!--********************************************************************************-->
+                                        #if(${exchange.properties.consumerExceptionElements})${exchange.properties.consumerExceptionElements}#end
+
+
+                                </doCatch>
+
+                                <!-- execute in any case -->
+                                <doFinally>
+                                </doFinally>
+                        </doTry>
+                </route>
+
+                <route id="isp.route.${body.serviceId}.eventStart">
+                        <from uri="direct:isp.route.${body.serviceId}.eventStart" />
+                        <setBody><constant></constant></setBody>
+
+                        <!-- set event header -->
+                        <setHeader name="event.eventCorrelationId"><simple>${body.serviceId}.#[[${in.header.breadcrumbId}]]#</simple></setHeader>
+                        <setHeader name="event.timeOfEvent"><simple>#[[${exchangeProperty.dateNow}]]#</simple></setHeader>
+                        <setHeader name="event.eventType"><constant>START</constant></setHeader>
+                        <setHeader name="event.eventState"><constant>SUCCESS</constant></setHeader>
+                        <setHeader name="event.messageCode"><constant>0</constant></setHeader>
+                        <setHeader name="event.message"><constant>${body.serviceId} - Integration Service gestartet.</constant></setHeader>
+
+                        <!-- set service header -->
+                        <setHeader name="event.service.mandator"><simple>{{casisp.env}}</simple></setHeader>
+                        <setHeader name="event.service.application"><constant>CAS ISP</constant></setHeader>
+                        <setHeader name="event.service.function"><constant>${body.serviceName}</constant></setHeader>
+
+                        <!-- set process header -->
+                        <setHeader name="event.process.id"><constant>${body.process.processId}</constant></setHeader>
+                        <setHeader name="event.process.processCorrelation.processId"><simple>#[[${in.header.processInstanceId}]]#</simple></setHeader>
+                        <to uri="jms:queue:EVENT?connectionFactory=activemqEvent" />
+                </route>
+
+                <route id="isp.route.${body.serviceId}.eventSuccess">
+                        <from uri="direct:isp.route.${body.serviceId}.eventSuccess" />
+                        <setBody><constant></constant></setBody>
+
+                        <!-- set event header -->
+                        <setHeader name="event.eventCorrelationId"><simple>${body.serviceId}.#[[${in.header.breadcrumbId}]]#</simple></setHeader>
+                        <setHeader name="event.timeOfEvent"><simple>#[[${exchangeProperty.dateNow}]]#</simple></setHeader>
+                        <setHeader name="event.eventType"><constant>END</constant></setHeader>
+                        <setHeader name="event.eventState"><constant>SUCCESS</constant></setHeader>
+                        <setHeader name="event.messageCode"><constant>0</constant></setHeader>
+                        <setHeader name="event.message"><constant>${body.serviceId} - Integration Service erfolgreich beendet.</constant></setHeader>
+
+                        <!-- set service header -->
+                        <setHeader name="event.service.mandator"><simple>{{casisp.env}}</simple></setHeader>
+                        <setHeader name="event.service.application"><constant>CAS ISP</constant></setHeader>
+                        <setHeader name="event.service.function"><constant>${body.serviceName}</constant></setHeader>
+
+                        <!-- set process header -->
+                        <setHeader name="event.process.id"><constant>${body.process.processId}</constant></setHeader>
+                        <setHeader name="event.process.processCorrelation.processId"><simple>#[[${in.header.processInstanceId}]]#</simple></setHeader>
+                        <to uri="jms:queue:EVENT?connectionFactory=activemqEvent" />
+                </route>
+
+                <route id="isp.route.${body.serviceId}.eventFailure">
+                        <from uri="direct:isp.route.${body.serviceId}.eventFailure" />
+                        <setBody><constant></constant></setBody>
+
+                        <!-- set event header -->
+                        <setHeader name="event.eventCorrelationId"><simple>${body.serviceId}.#[[${in.header.breadcrumbId}]]#</simple></setHeader>
+                        <setHeader name="event.timeOfEvent"><simple>#[[${exchangeProperty.dateNow}]]#</simple></setHeader>
+                        <setHeader name="event.eventType"><constant>END</constant></setHeader>
+                        <setHeader name="event.eventState"><constant>FAILURE</constant></setHeader>
+                        <setHeader name="event.messageCode"><constant>8</constant></setHeader>
+                        <setHeader name="event.message"><simple>${body.serviceId} - #[[${exception.message}]]#</simple></setHeader>
+
+                        <!-- set service header -->
+                        <setHeader name="event.service.mandator"><simple>{{casisp.env}}</simple></setHeader>
+                        <setHeader name="event.service.application"><constant>CAS ISP</constant></setHeader>
+                        <setHeader name="event.service.function"><constant>${body.serviceName}</constant></setHeader>
+
+                        <!-- set process header -->
+                        <setHeader name="event.process.id"><constant>${body.process.processId}</constant></setHeader>
+                        <setHeader name="event.process.processCorrelation.processId"><simple>#[[${in.header.processInstanceId}]]#</simple></setHeader>
+                        <to uri="jms:queue:EVENT?connectionFactory=activemqEvent" />
+                </route>
+
+        </camelContext>
+
+</blueprint>

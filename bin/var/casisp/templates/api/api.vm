@@ -1,0 +1,272 @@
+## initialize counter values
+#set ($counterget = 1)
+#set ($counterpost = 1)
+#set ($counterput = 1)
+#set ($counterdelete = 1)
+#define ($methodCounter)
+#evaluate ("$counter${endpoint.method}")
+#end
+## remove trailing slash from the contextPath
+#set ($contextPath = ${body.contextPath})
+#if ($contextPath.indexOf('/') == 0)
+#set ($contextPath = $contextPath.substring(1))
+#end
+## remove trailing slash from the basePath
+#set ($basePath = ${body.basePath})
+#if ($basePath.indexOf('/') == 0)
+#set ($basePath = $basePath.substring(1))
+#end
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xmlns:ext="http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.0.0"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
+           xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 https://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
+
+    <!-- reference to PropertiesComponent -->
+    <bean id="properties" class="org.apache.camel.component.properties.PropertiesComponent">
+        <property name="location" value="file:${karaf.home}/etc/casisp.cfg" />
+    </bean>
+
+    <cm:property-placeholder persistent-id="casisp" />
+
+    <!-- reference to JMS connection factory event -->
+    <reference id="activemqEvent" interface="javax.jms.ConnectionFactory" />
+
+    <reference id="httpService" interface="org.osgi.service.http.HttpService" />
+
+    <bean id="camelServlet" class="org.apache.camel.component.servlet.CamelHttpTransportServlet"/>
+
+    <bean class="org.apache.camel.component.servlet.osgi.OsgiServletRegisterer"
+          init-method="register"
+          destroy-method="unregister">
+        <property name="servletName" value="${body.apiId}" />
+        <property name="alias" value="/$contextPath" />
+        <property name="httpService" ref="httpService" />
+        <property name="servlet" ref="camelServlet" />
+    </bean>
+#foreach ($endpoint in $body.endpoint)
+#foreach ($serviceEndpoint in $endpoint.serviceEndpoint)
+#if ($serviceEndpoint.type == 'jms')
+#set ($jms = true)
+#end
+#end
+#end
+#if ($jms)
+    <!-- set reference to the ActiveMQ JMS connection factory -->
+    <reference id="activemqAPI${exchange.properties.CamelSplitIndex}" interface="javax.jms.ConnectionFactory" />
+#end
+
+    <camelContext id="isp.api.${body.apiId}" xmlns="http://camel.apache.org/schema/blueprint" streamCache="true" useBreadcrumb="true">
+
+        <!--********************************************************************************-->
+        <!-- REST API                                                                       -->
+        <!--********************************************************************************-->
+
+        <restConfiguration component="servlet" bindingMode="json"
+                           apiContextPath="/$basePath/api-doc" #if ($body.cors)enableCORS="${body.cors.enable}"#end>
+            <endpointProperty key="servletName" value="${body.apiId}" />
+            <dataFormatProperty key="prettyPrint" value="true" />
+            <apiProperty key="base.path" value="/$basePath" />
+#if ($body.description)
+            <apiProperty key="api.description" value="${body.description}" />
+#end
+            <apiProperty key="api.title" value="${body.apiId}" />
+            <apiProperty key="api.version" value="${body.version}" />
+#if ($body.cors.enable)
+            <corsHeaders key="Access-Control-Allow-Origin" value="${body.cors.corsHeaders[0].origin}" />
+            <corsHeaders key="Access-Control-Allow-Methods" value="${body.cors.corsHeaders[0].methods}" />
+            <corsHeaders key="Access-Control-Allow-Headers" value="${body.cors.corsHeaders[0].headers}" />
+            <corsHeaders key="Access-Control-Max-Age" value="${body.cors.corsHeaders[0].maxAge}" />
+#end
+        </restConfiguration>
+
+        <!-- REST endpoints -->
+        <rest path="/$basePath">
+## loop for endpoints
+#foreach ($endpoint in $body.endpoint)
+## remove trailing slash from the URI
+#set ($uri = ${endpoint.uri})
+#if ($uri.indexOf('/') == 0)
+#set ($uri = $uri.substring(1))
+#end
+            <${endpoint.method} path="/$uri" id="isp.api.${body.apiId}.${endpoint.method}.$methodCounter">
+#if ($endpoint.description)
+                <description>${endpoint.description}</description>
+#end
+                <to uri="direct:isp.api.${body.apiId}.${endpoint.method}.$methodCounter" />
+            </${endpoint.method}>
+#if (${endpoint.method} == "get")
+#set ($counterget = $counterget + 1)
+#elseif (${endpoint.method} == "post")
+#set ($counterpost = $counterpost + 1)
+#elseif (${endpoint.method} == "put")
+#set ($counterput = $counterput + 1)
+#elseif (${endpoint.method} == "delete")
+#set ($counterdelete = $counterdelete + 1)
+#end
+#end
+        </rest>
+
+        <!-- REST routes -->
+## initialize counter values
+#set ($counterget = 1)
+#set ($counterpost = 1)
+#set ($counterput = 1)
+#set ($counterdelete = 1)
+## loop for endpoints
+#foreach ($endpoint in $body.endpoint)
+        <route id="isp.api.${body.apiId}.${endpoint.method}.$methodCounter">
+            <from uri="direct:isp.api.${body.apiId}.${endpoint.method}.$methodCounter" />
+
+            <!-- set processInstanceId -->
+            <choice>
+                <when>
+                    <simple>#[[${in.header.processInstanceId}]]# == null</simple>
+
+                    <setHeader name="processInstanceId"><simple>#[[${in.header.breadcrumbId}]]#</simple></setHeader>
+                </when>
+            </choice>
+
+            <!-- Log EIP -->
+            <setProperty name="dateNow"><simple>#[[${date:now:yyyy-MM-dd'T'HH:mm:ss.SSSZ}]]#</simple></setProperty>
+            <log message="CASISP|${body.apiId}|#[[${in.header.processInstanceId}]]#|${body.apiId}|${body.apiName}|#[[${in.header.processInstanceId}]]#.0|#[[${exchangeProperty.dateNow}]]#|SUCCESS|START|${body.apiId} - Integration API aufgerufen.|0" />
+
+            <!-- Wire Tap EIP -->
+            <wireTap uri="direct:isp.route.${body.apiId}.eventStart" />
+
+            <!-- processing with error handling -->
+            <doTry>
+
+                #if ($endpoint.serviceEndpoint.size() > 1)
+                <!-- add the body to the claim check stack for later use -->
+                <claimCheck operation="Set" key="inBody" />
+                #end
+                #foreach ($serviceEndpoint in $endpoint.serviceEndpoint)
+                #if ($serviceEndpoint.type == 'jms')
+                <!-- send the chunk to the JMS endpoint -->
+                <inOnly uri="jms:${serviceEndpoint.jms.type}:${serviceEndpoint.jms.destinationName}?connectionFactory=activemqAPI${exchange.properties.CamelSplitIndex}" />
+                #elseif ($serviceEndpoint.type == 'direct-vm')
+                <!-- send the chunk to direct -->
+                <to uri="direct-vm:${serviceEndpoint.someName}"/>
+                #end
+                #if ($foreach.hasNext)
+                <!-- get the body from the claim check stack -->
+                <claimCheck operation="Get" key="inBody" />
+                #end
+                #end
+
+                <!-- Log EIP -->
+                <setProperty name="dateNow"><simple>#[[${date:now:yyyy-MM-dd'T'HH:mm:ss.SSSZ}]]#</simple></setProperty>
+                <log message="CASISP|${body.apiId}|#[[${in.header.processInstanceId}]]#|${body.apiId}|${body.apiName}|#[[${in.header.processInstanceId}]]#.1|#[[${exchangeProperty.dateNow}]]#|SUCCESS|END|${body.apiId} - Nachricht erfolgreich weitergeleitet.|0" />
+
+                <!-- Wire Tap EIP -->
+                <wireTap uri="direct:isp.route.${body.apiId}.eventSuccess" />
+
+                <setHeader name="CamelHttpResponseCode"><constant>200</constant></setHeader>
+                <setBody><constant>${body.apiId} - Nachricht erfolgreich weitergeleitet.</constant></setBody>
+
+                <!-- catch any error -->
+                <doCatch>
+
+                    <!-- catch all exceptions -->
+                    <exception>java.lang.Exception</exception>
+
+                    <!-- Log EIP -->
+                    <setProperty name="dateNow"><simple>#[[${date:now:yyyy-MM-dd'T'HH:mm:ss.SSSZ}]]#</simple></setProperty>
+                    <log message="CASISP|${body.apiId}|#[[${in.header.processInstanceId}]]#|${body.apiId}|${body.apiName}|#[[${in.header.processInstanceId}]]#.1|#[[${exchangeProperty.dateNow}]]#|FAILURE|END|${body.apiId} - #[[${exception.message}]]#|8" />
+
+                    <!-- Wire Tap EIP -->
+                    <wireTap uri="direct:isp.route.${body.apiId}.eventFailure" />
+
+                    <setHeader name="CamelHttpResponseCode"><constant>500</constant></setHeader>
+                    <setBody><simple>${body.apiId} - #[[${exception.message}]]#</simple></setBody>
+                </doCatch>
+
+                <!-- execute in any case -->
+                <doFinally>
+                </doFinally>
+            </doTry>
+        </route>
+
+#if (${endpoint.method} == "get")
+#set ($counterget = $counterget + 1)
+#elseif (${endpoint.method} == "post")
+#set ($counterpost = $counterpost + 1)
+#elseif (${endpoint.method} == "put")
+#set ($counterput = $counterput + 1)
+#elseif (${endpoint.method} == "delete")
+#set ($counterdelete = $counterdelete + 1)
+#end
+#end
+        <route id="isp.route.${body.apiId}.eventStart">
+                <from uri="direct:isp.route.${body.apiId}.eventStart" />
+                <setBody><constant></constant></setBody>
+
+                <!-- set event header -->
+                <setHeader name="event.eventCorrelationId"><simple>${body.apiId}.#[[${in.header.breadcrumbId}]]#</simple></setHeader>
+                <setHeader name="event.timeOfEvent"><simple>#[[${exchangeProperty.dateNow}]]#</simple></setHeader>
+                <setHeader name="event.eventType"><constant>START</constant></setHeader>
+                <setHeader name="event.eventState"><constant>SUCCESS</constant></setHeader>
+                <setHeader name="event.messageCode"><constant>0</constant></setHeader>
+                <setHeader name="event.message"><constant>${body.apiId} - Integration API aufgerufen.</constant></setHeader>
+
+                <!-- set service header -->
+                <setHeader name="event.service.mandator"><simple>${body.environment}</simple></setHeader>
+                <setHeader name="event.service.application"><constant>CAS ISP</constant></setHeader>
+                <setHeader name="event.service.function"><constant>${body.apiId} - ${body.apiName}</constant></setHeader>
+
+                <!-- set process header -->
+                <setHeader name="event.process.id"><constant>APIISP</constant></setHeader>
+                <setHeader name="event.process.processCorrelation.processId"><simple>#[[${in.header.processInstanceId}]]#</simple></setHeader>
+                <to uri="jms:queue:EVENT?connectionFactory=activemqEvent" />
+        </route>
+
+        <route id="isp.route.${body.apiId}.eventSuccess">
+                <from uri="direct:isp.route.${body.apiId}.eventSuccess" />
+                <setBody><constant></constant></setBody>
+
+                <!-- set event header -->
+                <setHeader name="event.eventCorrelationId"><simple>${body.apiId}.#[[${in.header.breadcrumbId}]]#</simple></setHeader>
+                <setHeader name="event.timeOfEvent"><simple>#[[${exchangeProperty.dateNow}]]#</simple></setHeader>
+                <setHeader name="event.eventType"><constant>END</constant></setHeader>
+                <setHeader name="event.eventState"><constant>SUCCESS</constant></setHeader>
+                <setHeader name="event.messageCode"><constant>0</constant></setHeader>
+                <setHeader name="event.message"><constant>${body.apiId} - Nachricht erfolgreich weitergeleitet.</constant></setHeader>
+
+                <!-- set service header -->
+                <setHeader name="event.service.mandator"><simple>${body.environment}</simple></setHeader>
+                <setHeader name="event.service.application"><constant>CAS ISP</constant></setHeader>
+                <setHeader name="event.service.function"><constant>${body.apiId} - ${body.apiName}</constant></setHeader>
+
+                <!-- set process header -->
+                <setHeader name="event.process.id"><constant>APIISP</constant></setHeader>
+                <setHeader name="event.process.processCorrelation.processId"><simple>#[[${in.header.processInstanceId}]]#</simple></setHeader>
+                <to uri="jms:queue:EVENT?connectionFactory=activemqEvent" />
+        </route>
+
+        <route id="isp.route.${body.apiId}.eventFailure">
+                <from uri="direct:isp.route.${body.apiId}.eventFailure" />
+                <setBody><constant></constant></setBody>
+
+                <!-- set event header -->
+                <setHeader name="event.eventCorrelationId"><simple>${body.apiId}.#[[${in.header.breadcrumbId}]]#</simple></setHeader>
+                <setHeader name="event.timeOfEvent"><simple>#[[${exchangeProperty.dateNow}]]#</simple></setHeader>
+                <setHeader name="event.eventType"><constant>END</constant></setHeader>
+                <setHeader name="event.eventState"><constant>FAILURE</constant></setHeader>
+                <setHeader name="event.messageCode"><constant>8</constant></setHeader>
+                <setHeader name="event.message"><simple>${body.apiId} - #[[${exception.message}]]#</simple></setHeader>
+
+                <!-- set service header -->
+                <setHeader name="event.service.mandator"><simple>${body.environment}</simple></setHeader>
+                <setHeader name="event.service.application"><constant>CAS ISP</constant></setHeader>
+                <setHeader name="event.service.function"><constant>${body.apiId} - ${body.apiName}</constant></setHeader>
+
+                <!-- set process header -->
+                <setHeader name="event.process.id"><constant>APIISP</constant></setHeader>
+                <setHeader name="event.process.processCorrelation.processId"><simple>#[[${in.header.processInstanceId}]]#</simple></setHeader>
+                <to uri="jms:queue:EVENT?connectionFactory=activemqEvent" />
+        </route>
+
+    </camelContext>
+
+</blueprint>
