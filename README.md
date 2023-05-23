@@ -44,9 +44,9 @@ The foundation is a ready-to-run docker container based on [Apache Karaf 4.4.2](
 The Docker container contains the following artefacts:
 
 ````
-feature:repo-add hawtio 2.17.0
-feature:repo-add activemq 5.17.4
-feature:repo-add camel 3.20.2
+feature hawtio 2.17.0
+feature activemq 5.17.4
+feature 3.20.2
 ````
 ## Creating the first Integration Service
 
