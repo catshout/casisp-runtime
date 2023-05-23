@@ -26,36 +26,27 @@ The following pre-requisites are required to run the `casisp-runtime`
 
 ### Windows
 
-- [Docker Desktop for Windows](https://hub.docker.com/editions/community/docker-ce-desktop-windows)
-- Drive E: (can be changed within the file [docker-compose_Windows.yml](bin/docker/docker-compose_Windows.yml))
-- Base directory `E:\var\casisp` with the copy of [var/casisp](var/casisp)
+- will follow
 
 ### Linux
 
 - [Docker Engine for Linux](https://docs.docker.com/engine/install/)
 - User account casisp:casisp with the uid:gid 2000:2000
 - all `*.sh` scripts must be executable
-- Base directory `/var/casisp` with the copy of [var/casisp](var/casisp)
+- Base directory `/var/casisp` with the casisp:casisp ownership
 
 ## Setup the Apache Camel runtime
 
-The foundation is a ready-to-run docker container based on [Apache Karaf 4.2.9](https://karaf.apache.org/) and [Apache Camel 3.4.4](https://camel.apache.org/). Once the pre-requisites are given you can move into the folder `bin` and start the container with (Windows):
-
-````
-create-casisp.bat
-````
-or (Linux):
+The foundation is a ready-to-run docker container based on [Apache Karaf 4.4.2](https://karaf.apache.org/) and [Apache Camel 3.20.2](https://camel.apache.org/). Once the pre-requisites are given you can move into the folder `bin` and start the container with (Linux):
 ````
 ./create-casisp.sh
 ````
 The Docker container contains the following artefacts:
 
 ````
-feature:repo-add hawtio 2.10.1
-feature:repo-add activemq 5.16.0
-feature:repo-add camel 3.4.4
-feature:install pax-http-undertow
-feature:install hawtio activemq-broker-noweb camel camel-jms jms camel-http camel-servlet camel-swagger-java camel-ftp camel-jackson camel-jsonpath camel-validate-json camel-zipfile camel-velocity camel-groovy camel-salesforce camel-kafka
+feature:repo-add hawtio 2.17.0
+feature:repo-add activemq 5.17.4
+feature:repo-add camel 3.20.2
 ````
 ## Creating the first Integration Service
 
@@ -104,13 +95,9 @@ The first service is a HTTP based "Hello World!" Integration Service. The JSON M
     "producer": []
 }
 ````
-The `casisp-runtime` does have a deployment API that expects the JSON Model in a POST request body. For the first start the `casisp-runtime` is being delivered with deployment scripts for Windows and Linux. These expect a parameter for a file containing the JSON model for an Integration Service or Integration API.
+The `casisp-runtime` does have a deployment API that expects the JSON Model in a POST request body. For the first start the `casisp-runtime` is being delivered with a deployment script for Linux. These expect a parameter for a file containing the JSON model for an Integration Service or Integration API.
 
-The "Hello World!" Integration Service can be deployed as following (Windows):
-````
-deploy-service.bat ..\samples\hello.json
-````
-or (Linux):
+The "Hello World!" Integration Service can be deployed as following (Linux):
 ````
 ./deploy-service.sh ../samples/hello.json
 ````
@@ -121,11 +108,7 @@ If the request has been successfully the response looks like:
     "responseMessage": "Service model 'hello' successfully parsed and deployment initiated."
 }
 ````
-The Integration Service can be called with (Windows):
-````
-curl --insecure --request GET "https://localhost:8443/hello/get" -u admin:passw0rd
-````
-or (Linux):
+The Integration Service can be called with (Linux):
 ````
 curl --insecure --request GET 'https://localhost:8443/hello/get' -u admin:passw0rd
 ````
