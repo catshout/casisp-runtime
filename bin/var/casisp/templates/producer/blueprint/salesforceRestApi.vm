@@ -23,5 +23,5 @@
 #end
 #if($jms)
 	<!-- set reference to the ActiveMQ JMS connection factory -->
-	<reference id="activemqProducerSalesforceRestApi${exchange.properties.CamelSplitIndex}" interface="javax.jms.ConnectionFactory" />
+	<reference id="activemqProducerSalesforceRestApi${exchange.properties.camelSplitIndex}" interface="javax.jms.ConnectionFactory" />
 #end

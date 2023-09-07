@@ -5,4 +5,4 @@
 	<!--********************************************************************************-->
 
 	<!-- reference to NoopHostnameVerifier -->
-    <bean id="noopHostnameVerifierProducer${exchange.properties.CamelSplitIndex}" class="org.apache.http.conn.ssl.NoopHostnameVerifier" />
+	<bean id="noopHostnameVerifierProducer${exchange.properties.camelSplitIndex}" class="org.apache.http.conn.ssl.NoopHostnameVerifier" />

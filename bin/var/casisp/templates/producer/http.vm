@@ -36,16 +36,16 @@
 				</setHeader>
 #end
 				<!-- call HTTP endpoint -->
-				<toD uri="${body.http.scheme}://${body.http.hostname}:${body.http.port}/$resourceUri?bridgeEndpoint=true&amp;x509HostnameVerifier=noopHostnameVerifierProducer${exchange.properties.CamelSplitIndex}&amp;authMethod=Basic#foreach($mapEntry in $body.http.options.entrySet())&amp;$mapEntry.key=$mapEntry.value#end#[[${in.header.httpQueryEncoded}]]#" />
+				<toD uri="${body.http.scheme}://${body.http.hostname}:${body.http.port}/$resourceUri?bridgeEndpoint=true&amp;x509HostnameVerifier=noopHostnameVerifierProducer${exchange.properties.camelSplitIndex}&amp;authMethod=Basic#foreach($mapEntry in $body.http.options.entrySet())&amp;$mapEntry.key=$mapEntry.value#end#[[${in.header.httpQueryEncoded}]]#" />
 ## NTLM authentication
 #elseif ($authType == "NTLM")
 				<!-- call HTTP endpoint -->
 				<removeHeaders pattern="Authorization" />
-				<toD uri="${body.http.scheme}://${body.http.hostname}:${body.http.port}/$resourceUri?bridgeEndpoint=true&amp;x509HostnameVerifier=noopHostnameVerifierProducer${exchange.properties.CamelSplitIndex}&amp;authMethod=NTLM&amp;authUsername=${body.http.authentication[0].NTLM.authUsername}&amp;authPassword=${body.http.authentication[0].NTLM.authPassword}&amp;authDomain=${body.http.authentication[0].NTLM.authDomain}&amp;authHost=${body.http.authentication[0].NTLM.authHost}#foreach($mapEntry in $body.http.options.entrySet())&amp;$mapEntry.key=$mapEntry.value#end" />
+				<toD uri="${body.http.scheme}://${body.http.hostname}:${body.http.port}/$resourceUri?bridgeEndpoint=true&amp;x509HostnameVerifier=noopHostnameVerifierProducer${exchange.properties.camelSplitIndex}&amp;authMethod=NTLM&amp;authUsername=${body.http.authentication[0].NTLM.authUsername}&amp;authPassword=${body.http.authentication[0].NTLM.authPassword}&amp;authDomain=${body.http.authentication[0].NTLM.authDomain}&amp;authHost=${body.http.authentication[0].NTLM.authHost}#foreach($mapEntry in $body.http.options.entrySet())&amp;$mapEntry.key=$mapEntry.value#end" />
 ## No authentication
 #else
 				<!-- call HTTP endpoint -->
-				<toD uri="${body.http.scheme}://${body.http.hostname}:${body.http.port}/$resourceUri?bridgeEndpoint=true&amp;x509HostnameVerifier=noopHostnameVerifierProducer${exchange.properties.CamelSplitIndex}#foreach($mapEntry in $body.http.options.entrySet())&amp;$mapEntry.key=$mapEntry.value#end" />
+				<toD uri="${body.http.scheme}://${body.http.hostname}:${body.http.port}/$resourceUri?bridgeEndpoint=true&amp;x509HostnameVerifier=noopHostnameVerifierProducer${exchange.properties.camelSplitIndex}#foreach($mapEntry in $body.http.options.entrySet())&amp;$mapEntry.key=$mapEntry.value#end" />
 #end
 
 				<!-- check HTTP response code and throw an error -->

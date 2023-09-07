@@ -9,11 +9,11 @@
 #end
 #if($jms)
 	<!-- set reference to the ActiveMQ JMS connection factory -->
-	<reference id="activemqProducerJsonArraySplitter${exchange.properties.CamelSplitIndex}" interface="javax.jms.ConnectionFactory" />
+	<reference id="activemqProducerJsonArraySplitter${exchange.properties.camelSplitIndex}" interface="javax.jms.ConnectionFactory" />
 #end
 
 	<!-- reference to JsonSplitter -->
-	<bean id="jsonSplitter${exchange.properties.CamelSplitIndex}" class="de.ag.cas.casisp.jsonsplitter.JsonSplitterMultipleProducer">
+	<bean id="jsonSplitter${exchange.properties.camelSplitIndex}" class="de.ag.cas.casisp.jsonsplitter.JsonSplitterMultipleProducer">
 		<property name="producer">
 			<bean class="java.util.ArrayList" >
 				<argument>

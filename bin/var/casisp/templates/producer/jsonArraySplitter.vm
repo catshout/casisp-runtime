@@ -10,4 +10,4 @@
 
 				<!-- convert data to java.io.InputStream -->
 				<convertBodyTo type="java.io.InputStream" />
-				<process ref="jsonSplitter${exchange.properties.CamelSplitIndex}" />
+				<process ref="jsonSplitter${exchange.properties.camelSplitIndex}" />

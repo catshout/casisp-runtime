@@ -4,4 +4,4 @@
 	<!-- Enrich Processor Blueprint                                                     -->
 	<!--********************************************************************************-->
 
-	<bean id="${body.enrich.blueprint.enrichClass}" class="${body.enrich.blueprint.enrichPackage}.${body.enrich.blueprint.enrichClass}" />
+	<!--bean id="${body.enrich.blueprint.enrichClass}" class="${body.enrich.blueprint.enrichPackage}.${body.enrich.blueprint.enrichClass}" /-->

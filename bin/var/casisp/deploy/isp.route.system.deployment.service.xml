@@ -182,7 +182,7 @@
 			<split streaming="true" aggregationStrategy="groupedExchange">
 				<jsonpath suppressExceptions="true">$.processor[*]</jsonpath>
 				<setProperty name="processorType"><jsonpath>$.processorType</jsonpath></setProperty>
-				<setProperty name="CamelSplitIndex"><simple>${header.CamelSplitIndex}</simple></setProperty>
+				<setProperty name="camelSplitIndex"><simple>${header.CamelSplitIndex}</simple></setProperty>
 				<log message="processorType: ${header.processorType}" />
 
 				<!-- process the processor velocity template -->
@@ -206,7 +206,7 @@
 			<split streaming="true" aggregationStrategy="groupedExchange">
 				<jsonpath suppressExceptions="true">$.processor[*]</jsonpath>
 				<setProperty name="processorType"><jsonpath>$.processorType</jsonpath></setProperty>
-				<setProperty name="CamelSplitIndex"><simple>${header.CamelSplitIndex}</simple></setProperty>
+				<setProperty name="camelSplitIndex"><simple>${header.CamelSplitIndex}</simple></setProperty>
 
 				<!-- process the processor velocity template -->
 				<setProperty name="contextObject"><jsonpath suppressExceptions="true">$.*.context</jsonpath></setProperty>
@@ -237,7 +237,7 @@
 			<split streaming="true" aggregationStrategy="groupedExchange">
 				<jsonpath suppressExceptions="true">$.processor[*]</jsonpath>
 				<setProperty name="processorType"><jsonpath>$.processorType</jsonpath></setProperty>
-				<setProperty name="CamelSplitIndex"><simple>${header.CamelSplitIndex}</simple></setProperty>
+				<setProperty name="camelSplitIndex"><simple>${header.CamelSplitIndex}</simple></setProperty>
 
 				<!-- process the processor velocity template -->
 				<setProperty name="blueprintObject"><jsonpath suppressExceptions="true">$.*.blueprint</jsonpath></setProperty>
@@ -268,7 +268,7 @@
 			<split streaming="true" aggregationStrategy="groupedExchange">
 				<jsonpath suppressExceptions="true">$.producer[*]</jsonpath>
 				<setProperty name="producerType"><jsonpath>$.producerType</jsonpath></setProperty>
-				<setProperty name="CamelSplitIndex"><simple>${header.CamelSplitIndex}</simple></setProperty>
+				<setProperty name="camelSplitIndex"><simple>${header.CamelSplitIndex}</simple></setProperty>
 				<log message="producerType: ${header.producerType}" />
 
 				<!-- process the producer velocity template -->
@@ -292,7 +292,7 @@
 			<split streaming="true" aggregationStrategy="groupedExchange">
 				<jsonpath suppressExceptions="true">$.producer[*]</jsonpath>
 				<setProperty name="producerType"><jsonpath>$.producerType</jsonpath></setProperty>
-				<setProperty name="CamelSplitIndex"><simple>${header.CamelSplitIndex}</simple></setProperty>
+				<setProperty name="camelSplitIndex"><simple>${header.CamelSplitIndex}</simple></setProperty>
 
 				<!-- process the producer velocity template -->
 				<setProperty name="contextObject"><jsonpath suppressExceptions="true">$.*.context</jsonpath></setProperty>
@@ -323,7 +323,8 @@
 			<split streaming="true" aggregationStrategy="groupedExchange">
 				<jsonpath suppressExceptions="true">$.producer[*]</jsonpath>
 				<setProperty name="producerType"><jsonpath>$.producerType</jsonpath></setProperty>
-				<setProperty name="CamelSplitIndex"><simple>${header.CamelSplitIndex}</simple></setProperty>
+				<setProperty name="camelSplitIndex"><simple>${header.CamelSplitIndex}</simple></setProperty>
+				<log message="CamelSplitIndex: ${exchangeProperty.CamelSplitIndex}" />
 
 				<!-- process the producer velocity template -->
 				<setProperty name="blueprintObject"><jsonpath suppressExceptions="true">$.*.blueprint</jsonpath></setProperty>

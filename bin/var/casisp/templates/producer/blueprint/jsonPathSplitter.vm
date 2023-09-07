@@ -10,5 +10,5 @@
 	<!--********************************************************************************-->
 
 	<!-- set reference to the ActiveMQ JMS connection factory -->
-	<reference id="activemqProducerJsonPathSplitter${exchange.properties.CamelSplitIndex}" interface="javax.jms.ConnectionFactory" />
+	<reference id="activemqProducerJsonPathSplitter${exchange.properties.camelSplitIndex}" interface="javax.jms.ConnectionFactory" />
 #end

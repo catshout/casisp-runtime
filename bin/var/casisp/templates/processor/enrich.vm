@@ -4,6 +4,6 @@
 				<!-- Enrich Processor                                                               -->
 				<!--********************************************************************************-->
 
-                <enrich strategyRef="${body.enrich.enrichClass}">
+                <enrich>
 					<simple>${body.enrich.uri}</simple>
 				</enrich>

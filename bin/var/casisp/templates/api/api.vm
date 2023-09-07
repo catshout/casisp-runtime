@@ -53,7 +53,7 @@
 #end
 #if ($jms)
     <!-- set reference to the ActiveMQ JMS connection factory -->
-    <reference id="activemqAPI${exchange.properties.CamelSplitIndex}" interface="javax.jms.ConnectionFactory" />
+    <reference id="activemqAPI${exchange.properties.camelSplitIndex}" interface="javax.jms.ConnectionFactory" />
 #end
 
     <camelContext id="isp.api.${body.apiId}" xmlns="http://camel.apache.org/schema/blueprint" streamCache="true" useBreadcrumb="true">
@@ -144,7 +144,7 @@
                 #foreach ($serviceEndpoint in $endpoint.serviceEndpoint)
                 #if ($serviceEndpoint.type == 'jms')
                 <!-- send the chunk to the JMS endpoint -->
-                <inOnly uri="jms:${serviceEndpoint.jms.type}:${serviceEndpoint.jms.destinationName}?connectionFactory=activemqAPI${exchange.properties.CamelSplitIndex}" />
+                <inOnly uri="jms:${serviceEndpoint.jms.type}:${serviceEndpoint.jms.destinationName}?connectionFactory=activemqAPI${exchange.properties.camelSplitIndex}" />
                 #elseif ($serviceEndpoint.type == 'direct-vm')
                 <!-- send the chunk to direct -->
                 <to uri="direct-vm:${serviceEndpoint.someName}"/>

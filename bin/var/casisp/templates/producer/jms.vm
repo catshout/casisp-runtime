@@ -4,4 +4,4 @@
 				<!-- JMS Producer                                                                   -->
 				<!--********************************************************************************-->
 
-				<inOnly uri="jms:${body.jms.type}:${body.jms.destinationName}?connectionFactory=activemqProducerJms${exchange.properties.CamelSplitIndex}" />
+				<inOnly uri="jms:${body.jms.type}:${body.jms.destinationName}?connectionFactory=activemqProducerJms${exchange.properties.camelSplitIndex}" />
