@@ -14,7 +14,7 @@ It is intended to get commonly needed Integration Services up-and-running in a v
 The `casisp-runtime` contains a set of component Apache Velocity Templates for well tested XML DSL snippets of the mostly used Apache Camel components. Two main Apache Velocity Templates contain further the skeletons for an Integration Service and an Integration API.
 The deployed Integration Services and Integration APIs will be running as Apache Camel Routes within the Docker based Runtime.
 
-The JSON Schemas [integrationservice.schema.json](var/casisp/templates/integrationservice.schema.json) and [integrationapi.schema.json](var/casisp/templates/integrationapi.schema.json) define the JSON model for the Apache Camel Components configuration.
+The JSON Schemas [integrationservice.schema.json](bin/var/casisp/templates/schema/integrationservice.schema.json) and [integrationapi.schema.json](bin/var/casisp/templates/schema/integrationapi.schema.json) define the JSON model for the Apache Camel Components configuration.
 
 Additional Apache Camel components can be included into the `casisp-runtime` based on JSON schema extensions and additional Apache Velocity templates.
 
