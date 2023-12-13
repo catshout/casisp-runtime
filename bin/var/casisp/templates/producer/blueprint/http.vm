@@ -4,5 +4,15 @@
 	<!-- HTTP Producer Blueprint                                                        -->
 	<!--********************************************************************************-->
 
-	<!-- reference to NoopHostnameVerifier -->
-	<bean id="noopHostnameVerifierProducer${exchange.properties.camelSplitIndex}" class="org.apache.http.conn.ssl.NoopHostnameVerifier" />
+        <!-- reference to NoopHostnameVerifier -->
+        <bean id="noopHostnameVerifier" class="org.apache.http.conn.ssl.NoopHostnameVerifier"/>
+
+        <!-- reference to sslContextParameters -->
+        <sslContextParameters id="sslContextParameters" xmlns="http://camel.apache.org/schema/blueprint">
+                <keyManagers keyPassword="{{casisp.keyPassword}}">
+                        <keyStore resource="file:{{karaf.home}}/etc/{{casisp.keystoreName}}" password="{{casisp.keystorePassword}}" />
+                </keyManagers>
+                <trustManagers>
+                        <keyStore resource="file:{{karaf.home}}/etc/{{casisp.truststoreName}}" password="{{casisp.truststorePassword}}" />
+                </trustManagers>
+        </sslContextParameters>

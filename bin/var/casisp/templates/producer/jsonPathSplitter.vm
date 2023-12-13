@@ -13,8 +13,10 @@
 #end
 #foreach($endpoint in $body.jsonPathSplitter.endpoint)
 #if($endpoint.type == 'jms')
+${body.jsonPathSplitter.customXml}
+
 					<!-- send the chunk to the JMS endpoint -->
-					<inOnly uri="jms:${endpoint.jms.type}:${endpoint.jms.destinationName}?connectionFactory=activemqProducerJsonPathSplitter${exchange.properties.camelSplitIndex}" />
+					<toD uri="jms:${endpoint.jms.type}:${endpoint.jms.destinationName}?connectionFactory=activemqProducerJsonPathSplitter${exchange.properties.camelSplitIndex}" pattern="inOnly" />
 #elseif($endpoint.type == 'direct-vm')
 					<!-- send the chunk to direct -->
 					<toD uri="direct-vm:${endpoint.someName}"/>

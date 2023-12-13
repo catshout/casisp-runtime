@@ -37,6 +37,8 @@
                         <!--********************************************************************************-->
                         ${exchange.properties.consumerComponents}
 
+                        <claimCheck operation="Set" key="inBody" />
+
                         <!-- set processInstanceId -->
                         <choice>
                                 <when>
@@ -122,7 +124,8 @@
                         <!-- set process header -->
                         <setHeader name="event.process.id"><constant>${body.process.processId}</constant></setHeader>
                         <setHeader name="event.process.processCorrelation.processId"><simple>#[[${in.header.processInstanceId}]]#</simple></setHeader>
-                        <to uri="jms:queue:EVENT?connectionFactory=activemqEvent" />
+                        <setHeader name="event.process.terminate"><constant>${body.terminateProcess}</constant></setHeader>
+                        <to uri="jms:queue:{{eib.event.queue}}?connectionFactory=activemqEvent" />
                 </route>
 
                 <route id="isp.route.${body.serviceId}.eventSuccess">
@@ -145,7 +148,8 @@
                         <!-- set process header -->
                         <setHeader name="event.process.id"><constant>${body.process.processId}</constant></setHeader>
                         <setHeader name="event.process.processCorrelation.processId"><simple>#[[${in.header.processInstanceId}]]#</simple></setHeader>
-                        <to uri="jms:queue:EVENT?connectionFactory=activemqEvent" />
+                        <setHeader name="event.process.terminate"><constant>${body.terminateProcess}</constant></setHeader>
+                        <to uri="jms:queue:{{eib.event.queue}}?connectionFactory=activemqEvent" />
                 </route>
 
                 <route id="isp.route.${body.serviceId}.eventFailure">
@@ -168,7 +172,8 @@
                         <!-- set process header -->
                         <setHeader name="event.process.id"><constant>${body.process.processId}</constant></setHeader>
                         <setHeader name="event.process.processCorrelation.processId"><simple>#[[${in.header.processInstanceId}]]#</simple></setHeader>
-                        <to uri="jms:queue:EVENT?connectionFactory=activemqEvent" />
+                        <setHeader name="event.process.terminate"><constant>${body.terminateProcess}</constant></setHeader>
+                        <to uri="jms:queue:{{eib.event.queue}}?connectionFactory=activemqEvent" />
                 </route>
 
         </camelContext>

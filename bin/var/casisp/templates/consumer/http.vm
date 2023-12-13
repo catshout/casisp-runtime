@@ -11,3 +11,4 @@
 #end
 
 			<from uri="servlet://$relativePath?servletName=${exchange.properties.serviceId}" />
+                        <setExchangePattern pattern="InOnly" />

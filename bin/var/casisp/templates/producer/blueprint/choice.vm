@@ -11,10 +11,11 @@
 #end
 #end
 #if($jms)
-    <!--********************************************************************************-->
-    <!-- Choice Producer Blueprint                                                      -->
-    <!--********************************************************************************-->
 
-    <!-- set reference to the ActiveMQ JMS connection factory -->
-    <reference id="activemqProducerChoice${exchange.properties.camelSplitIndex}" interface="javax.jms.ConnectionFactory" />
+        <!--********************************************************************************-->
+        <!-- Choice Producer Blueprint                                                      -->
+        <!--********************************************************************************-->
+
+        <!-- set reference to the ActiveMQ JMS connection factory -->
+        <reference id="activemqProducerChoice${exchange.properties.camelSplitIndex}" interface="javax.jms.ConnectionFactory" />
 #end

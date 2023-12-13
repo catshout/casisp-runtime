@@ -19,7 +19,7 @@
 				<argument>
 					<list value-type="org.apache.camel.ProducerTemplate">
 #foreach($endpoint in $body.jsonArraySplitter.endpoint)
-						<ref component-id="splitTemplate${velocityCount}"/>
+						<ref component-id="splitTemplate${foreach.count}"/>
 #end
 					</list>
 				</argument>

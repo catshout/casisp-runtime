@@ -3,6 +3,7 @@
 #set ($counterpost = 1)
 #set ($counterput = 1)
 #set ($counterdelete = 1)
+#set ($counterJMS = 1)
 #define ($methodCounter)
 #evaluate ("$counter${endpoint.method}")
 #end
@@ -44,16 +45,15 @@
         <property name="httpService" ref="httpService" />
         <property name="servlet" ref="camelServlet" />
     </bean>
+
 #foreach ($endpoint in $body.endpoint)
 #foreach ($serviceEndpoint in $endpoint.serviceEndpoint)
 #if ($serviceEndpoint.type == 'jms')
-#set ($jms = true)
-#end
-#end
-#end
-#if ($jms)
     <!-- set reference to the ActiveMQ JMS connection factory -->
-    <reference id="activemqAPI${exchange.properties.camelSplitIndex}" interface="javax.jms.ConnectionFactory" />
+    <reference id="activemqAPI$counterJMS" interface="javax.jms.ConnectionFactory" />
+#set ($counterJMS = $counterJMS + 1)
+#end
+#end
 #end
 
     <camelContext id="isp.api.${body.apiId}" xmlns="http://camel.apache.org/schema/blueprint" streamCache="true" useBreadcrumb="true">
@@ -113,6 +113,7 @@
 #set ($counterpost = 1)
 #set ($counterput = 1)
 #set ($counterdelete = 1)
+#set ($counterJMS = 1)
 ## loop for endpoints
 #foreach ($endpoint in $body.endpoint)
         <route id="isp.api.${body.apiId}.${endpoint.method}.$methodCounter">
@@ -144,7 +145,8 @@
                 #foreach ($serviceEndpoint in $endpoint.serviceEndpoint)
                 #if ($serviceEndpoint.type == 'jms')
                 <!-- send the chunk to the JMS endpoint -->
-                <inOnly uri="jms:${serviceEndpoint.jms.type}:${serviceEndpoint.jms.destinationName}?connectionFactory=activemqAPI${exchange.properties.camelSplitIndex}" />
+                <inOnly uri="jms:${serviceEndpoint.jms.type}:${serviceEndpoint.jms.destinationName}?connectionFactory=activemqAPI$counterJMS" />
+                #set ($counterJMS = $counterJMS + 1)
                 #elseif ($serviceEndpoint.type == 'direct-vm')
                 <!-- send the chunk to direct -->
                 <to uri="direct-vm:${serviceEndpoint.someName}"/>
@@ -211,14 +213,14 @@
                 <setHeader name="event.message"><constant>${body.apiId} - Integration API aufgerufen.</constant></setHeader>
 
                 <!-- set service header -->
-                <setHeader name="event.service.mandator"><simple>${body.environment}</simple></setHeader>
+                <setHeader name="event.service.mandator"><simple>{{casisp.env}}</simple></setHeader>
                 <setHeader name="event.service.application"><constant>CAS ISP</constant></setHeader>
                 <setHeader name="event.service.function"><constant>${body.apiId} - ${body.apiName}</constant></setHeader>
 
                 <!-- set process header -->
-                <setHeader name="event.process.id"><constant>APIISP</constant></setHeader>
+                <setHeader name="event.process.id"><constant>${body.process.processId}</constant></setHeader>
                 <setHeader name="event.process.processCorrelation.processId"><simple>#[[${in.header.processInstanceId}]]#</simple></setHeader>
-                <to uri="jms:queue:EVENT?connectionFactory=activemqEvent" />
+                <to uri="jms:queue:{{eib.event.queue}}?connectionFactory=activemqEvent" />
         </route>
 
         <route id="isp.route.${body.apiId}.eventSuccess">
@@ -234,14 +236,14 @@
                 <setHeader name="event.message"><constant>${body.apiId} - Nachricht erfolgreich weitergeleitet.</constant></setHeader>
 
                 <!-- set service header -->
-                <setHeader name="event.service.mandator"><simple>${body.environment}</simple></setHeader>
+                <setHeader name="event.service.mandator"><simple>{{casisp.env}}</simple></setHeader>
                 <setHeader name="event.service.application"><constant>CAS ISP</constant></setHeader>
                 <setHeader name="event.service.function"><constant>${body.apiId} - ${body.apiName}</constant></setHeader>
 
                 <!-- set process header -->
-                <setHeader name="event.process.id"><constant>APIISP</constant></setHeader>
+                <setHeader name="event.process.id"><constant>${body.process.processId}</constant></setHeader>
                 <setHeader name="event.process.processCorrelation.processId"><simple>#[[${in.header.processInstanceId}]]#</simple></setHeader>
-                <to uri="jms:queue:EVENT?connectionFactory=activemqEvent" />
+                <to uri="jms:queue:{{eib.event.queue}}?connectionFactory=activemqEvent" />
         </route>
 
         <route id="isp.route.${body.apiId}.eventFailure">
@@ -257,14 +259,14 @@
                 <setHeader name="event.message"><simple>${body.apiId} - #[[${exception.message}]]#</simple></setHeader>
 
                 <!-- set service header -->
-                <setHeader name="event.service.mandator"><simple>${body.environment}</simple></setHeader>
+                <setHeader name="event.service.mandator"><simple>{{casisp.env}}</simple></setHeader>
                 <setHeader name="event.service.application"><constant>CAS ISP</constant></setHeader>
                 <setHeader name="event.service.function"><constant>${body.apiId} - ${body.apiName}</constant></setHeader>
 
                 <!-- set process header -->
-                <setHeader name="event.process.id"><constant>APIISP</constant></setHeader>
+                <setHeader name="event.process.id"><constant>${body.process.processId}</constant></setHeader>
                 <setHeader name="event.process.processCorrelation.processId"><simple>#[[${in.header.processInstanceId}]]#</simple></setHeader>
-                <to uri="jms:queue:EVENT?connectionFactory=activemqEvent" />
+                <to uri="jms:queue:{{eib.event.queue}}?connectionFactory=activemqEvent" />
         </route>
 
     </camelContext>

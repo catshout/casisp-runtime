@@ -5,8 +5,8 @@
 
 #foreach($endpoint in $body.jsonArraySplitter.endpoint)
 #if($endpoint.type == 'jms')
-		<template id="splitTemplate$velocityCount" defaultEndpoint="jms:${endpoint.jms.type}:${endpoint.jms.destinationName}?connectionFactory=activemqProducerJsonArraySplitter${exchange.properties.camelSplitIndex}" />
+		<template id="splitTemplate${foreach.count}" defaultEndpoint="jms:${endpoint.jms.type}:${endpoint.jms.destinationName}?connectionFactory=activemqProducerJsonArraySplitter${exchange.properties.camelSplitIndex}" />
 #elseif($endpoint.type == 'direct-vm')
-		<template id="splitTemplate$velocityCount" defaultEndpoint="direct-vm:${endpoint.someName}" />
+		<template id="splitTemplate${foreach.count}" defaultEndpoint="direct-vm:${endpoint.someName}" />
 #end
 #end
