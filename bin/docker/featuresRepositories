@@ -1,4 +1,4 @@
-    mvn:io.hawt/hawtio-karaf/2.17.0/xml/features, \
-    mvn:org.apache.activemq/activemq-karaf/5.17.4/xml/features, \
-    mvn:org.apache.camel.karaf/apache-camel/3.20.2/xml/features
+    mvn:io.hawt/hawtio-karaf/2.17.7/xml/features, \
+    mvn:org.apache.activemq/activemq-karaf/5.18.3/xml/features, \
+    mvn:org.apache.camel.karaf/apache-camel/3.21.2/xml/features
 
